@@ -1,0 +1,17 @@
+{
+  "include": ["src/*/**.ts"],
+  "compilerOptions": {
+    "rootDir": "src",
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "lib": ["es2019"],
+    "outDir": "dist",
+    "declaration": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  }
+}

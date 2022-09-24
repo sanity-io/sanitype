@@ -1,0 +1,45 @@
+{
+  "name": "zschema",
+  "version": "0.0.0",
+  "description": "",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "dist/esm/index.d.ts"
+      ]
+    }
+  },
+  "main": "dist/cjs/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --module es2020 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "postpublish": "npm run clean",
+    "watch": "run-p \"build:* -- --watch\"",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.172",
+    "eslint": "^8.2.0",
+    "eslint-plugin-import": "^2.25.3",
+    "jest": "^27.4.7",
+    "lodash": "^4.17.21",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4",
+    "zod": "^3.11.6"
+  },
+  "dependencies": {
+    "ts-expect": "^1.3.0"
+  }
+}
