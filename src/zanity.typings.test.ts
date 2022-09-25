@@ -30,7 +30,7 @@ test("Type assertions", () => {
   // test inferred type
   assertAssignable<number, MyObj["num"]>()
   assertAssignable<string | number, MyObj["stringOrNum"]>()
-  // assertAssignable<(string | number)[], MyObj["polyArr"]>()
+  assertAssignable<(string | number)[], MyObj["polyArr"]>()
   assertAssignable<string, MyObj["composed"]["someField"]>()
   assertAssignable<string, MyObj["composed"]["otherField"]>()
 
@@ -48,6 +48,12 @@ test("Type assertions", () => {
 })
 
 test("Restrictions", () => {
-  // @ts-expect-error Arrays of arrays is not allowed
+  // @ts-expect-error array of array is not allowed
   array(array(number()))
+
+  // @ts-expect-error array of array is not allowed
+  array(array(object({foo: string()})))
+
+  // @ts-expect-error array of both objects and numbers are not allowed
+  array(union([object({foo: string()}), string()]))
 })
