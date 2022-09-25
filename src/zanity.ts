@@ -16,21 +16,29 @@ export interface ObjectSchema<T extends Shape<any>> {
   parse: (input: unknown) => {[key in keyof T]: Infer<T[key]>}
 }
 
-export interface ArraySchema<
-  T extends PrimitiveSchema<any> | UnionSchema<T> | ObjectSchema<any>,
+export interface PrimitiveArraySchema<
+  T extends PrimitiveSchema<any> | UnionSchema<PrimitiveSchema<any>>,
 > {
-  type: "array"
-  parse: (input: unknown) => Array<T>
+  type: "primitiveArray"
+  parse: (input: unknown) => Array<Infer<T>>
+}
+
+export interface ObjectArraySchema<
+  T extends ObjectSchema<any> | UnionSchema<ObjectSchema<any>>,
+> {
+  type: "objectArray"
+  parse: (input: unknown) => Array<Infer<T>>
 }
 
 export interface UnionSchema<T extends Schema<any>> {
   type: "union"
+  schema: T
   parse: (input: unknown) => Infer<T>
 }
 
 export type Infer<T extends Schema<any>> = T extends ObjectSchema<infer O>
   ? {[key in keyof O]: Infer<O[key]>}
-  : T extends ArraySchema<infer E>
+  : T extends PrimitiveArraySchema<infer E>
   ? Infer<E>[]
   : T extends PrimitiveSchema<infer V>
   ? V
@@ -43,9 +51,24 @@ export declare function union<T extends Schema<any>>(
 ): UnionSchema<T>
 
 export declare function object<T extends Shape<any>>(shape: T): ObjectSchema<T>
-export declare function array<
-  T extends PrimitiveSchema<any> | ObjectSchema<any> | UnionSchema<any>,
->(elementSchema: T): ArraySchema<T>
+
+export declare function objectArray<
+  T extends ObjectSchema<any> | UnionSchema<ObjectSchema<any>>,
+>(elementSchema: T): ObjectArraySchema<T>
+
+export declare function primitiveArray<
+  T extends PrimitiveSchema<any> | UnionSchema<PrimitiveSchema<any>>,
+>(elementSchema: T): PrimitiveArraySchema<T>
+
+export declare interface ArrayCreator {
+  <T extends ObjectSchema<any> | UnionSchema<ObjectSchema<any>>>(
+    elementSchema: T,
+  ): ObjectArraySchema<T>
+  <T extends PrimitiveSchema<any> | UnionSchema<PrimitiveSchema<any>>>(
+    elementSchema: T,
+  ): PrimitiveArraySchema<T>
+}
+export declare const array: ArrayCreator
 
 export declare function string(): PrimitiveSchema<string>
 export declare function number(): PrimitiveSchema<number>

@@ -1,5 +1,15 @@
 import {test} from "vitest"
-import {array, boolean, Infer, number, object, string, union} from "./zanity"
+import {
+  primitiveArray,
+  objectArray,
+  boolean,
+  Infer,
+  number,
+  object,
+  string,
+  union,
+  array,
+} from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
 
@@ -11,8 +21,8 @@ test("Type assertions", () => {
   const num = number()
   const bool = boolean()
   const stringOrNum = union([string(), number()])
-  const arr1 = array(string())
-  const polyArr = array(union([string(), number()]))
+  const arr1 = primitiveArray(string())
+  const polyArr = primitiveArray(union([string(), number()]))
   const composed = object({...sharedFields, ...otherFields})
 
   const myObj = object({
@@ -54,6 +64,12 @@ test("Restrictions", () => {
   // @ts-expect-error array of array is not allowed
   array(array(object({foo: string()})))
 
-  // @ts-expect-error array of both objects and numbers are not allowed
-  array(union([object({foo: string()}), string()]))
+  // @ts-expect-error objectArray of a primitive value is not allowed
+  objectArray(string())
+
+  // @ts-expect-error mixed array (containing both objects and primitives) is not supported
+  primitiveArray(union([object({foo: string()}), string()]))
+
+  // @ts-expect-error mixed array (containing both objects and primitives) is not supported
+  objectArray(union([object({foo: string()}), string()]))
 })
