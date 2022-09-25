@@ -9,6 +9,7 @@ import {
   string,
   union,
   array,
+  literal,
 } from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
@@ -24,10 +25,12 @@ test("Type assertions", () => {
   const arr1 = primitiveArray(string())
   const polyArr = primitiveArray(union([string(), number()]))
   const composed = object({...sharedFields, ...otherFields})
+  const lit = literal("literal value")
 
   const myObj = object({
     str,
     num,
+    lit,
     stringOrNum,
     polyArr: polyArr,
     bool,
@@ -36,6 +39,11 @@ test("Type assertions", () => {
   })
 
   type MyObj = Infer<typeof myObj>
+
+  assertAssignable<"literal value", MyObj["lit"]>()
+
+  // @ts-expect-error
+  assertAssignable<string, MyObj["lit"]>()
 
   // test inferred type
   assertAssignable<number, MyObj["num"]>()
@@ -72,4 +80,14 @@ test("Restrictions", () => {
 
   // @ts-expect-error mixed array (containing both objects and primitives) is not supported
   objectArray(union([object({foo: string()}), string()]))
+})
+
+test("Key's in arrays", () => {
+  const o = objectArray(
+    union([object({foo: string()}), object({bar: string()})]),
+  )
+  const parsed = o.parse({})
+
+  const keys = parsed.map(item => item._key)
+  assertAssignable<string[], typeof keys>()
 })

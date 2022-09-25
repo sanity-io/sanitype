@@ -10,6 +10,12 @@ export interface PrimitiveSchema<T extends boolean | string | number> {
   parse: (input: unknown) => T
 }
 
+export interface LiteralSchema<T extends boolean | string | number> {
+  type: "literal"
+  value: T
+  parse: (input: unknown) => T
+}
+
 export interface ObjectSchema<T extends Shape<any>> {
   type: "object"
   shape: T
@@ -27,7 +33,7 @@ export interface ObjectArraySchema<
   T extends ObjectSchema<any> | UnionSchema<ObjectSchema<any>>,
 > {
   type: "objectArray"
-  parse: (input: unknown) => Array<Infer<T>>
+  parse: (input: unknown) => Array<Infer<T> & {_key: string}>
 }
 
 export interface UnionSchema<T extends Schema<any>> {
@@ -40,7 +46,9 @@ export type Infer<T extends Schema<any>> = T extends ObjectSchema<infer O>
   ? {[key in keyof O]: Infer<O[key]>}
   : T extends PrimitiveArraySchema<infer E>
   ? Infer<E>[]
-  : T extends PrimitiveSchema<infer V>
+  : T extends ObjectArraySchema<infer E>
+  ? (Infer<E> & {_key: string})[]
+  : T extends PrimitiveSchema<infer V> | LiteralSchema<infer V>
   ? V
   : T extends UnionSchema<infer V>
   ? Infer<V>
@@ -68,8 +76,12 @@ export declare interface ArrayCreator {
     elementSchema: T,
   ): PrimitiveArraySchema<T>
 }
+
 export declare const array: ArrayCreator
 
 export declare function string(): PrimitiveSchema<string>
+export declare function literal<T extends boolean | number | string>(
+  literal: T,
+): LiteralSchema<T>
 export declare function number(): PrimitiveSchema<number>
 export declare function boolean(): PrimitiveSchema<boolean>
