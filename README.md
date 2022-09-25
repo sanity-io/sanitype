@@ -1,4 +1,10 @@
-# Type safe schemas for Sanity
+# zani*ty*
+
+------
+
+# Experimenting with TypeScript-first schemas for Sanity
+
+Runtime validation & static type inference
 
 ## Features:
 

@@ -1,3 +1,4 @@
 dist
 node_modules
 tmp
+.vitest-result.json
