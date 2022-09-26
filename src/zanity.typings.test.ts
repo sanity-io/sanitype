@@ -76,6 +76,10 @@ test("Restrictions", () => {
   // @ts-expect-error objectArray of a primitive value is not allowed
   objectArray(string())
 
+  const objectOrString = union([object({foo: string()}), string()])
+
+  type T = Infer<typeof objectOrString>
+
   // @ts-expect-error mixed array (containing both objects and primitives) is not supported
   primitiveArray(union([object({foo: string()}), string()]))
 
