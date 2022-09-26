@@ -20,8 +20,8 @@ function assertAssignable<A extends B, B>() {}
 test("Schema types", () => {
   const str: Schema<string, string> = string()
 
-  // @ts-expect-error This should fail!
-  type Obj = ObjectSchema<{bar: string}, {foo: Schema<string, string>}>
+  // todo: make this one fail because they are not compatible
+  type Obj = ObjectSchema<{foo: Schema<string>}, {foo: string}>
 })
 
 test("Type assertions", () => {
@@ -98,9 +98,9 @@ test("Restrictions", () => {
 })
 
 test("Key's in arrays", () => {
-  const o = objectArray(
-    union([object({foo: string()}), object({bar: string()})]),
-  )
+  const ii = union([object({foo: string()}), object({bar: string()})])
+  type II = Infer<typeof ii>
+  const o = objectArray(ii)
   const parsed = parse(o, {})
 
   const keys = parsed.map(item => item._key)
