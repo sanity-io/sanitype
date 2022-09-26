@@ -4,6 +4,7 @@ import {
   literal,
   object,
   ObjectSchema,
+  parse,
   Shape,
   string,
   union,
@@ -55,7 +56,7 @@ const personRef = reference(countrySchema)
 
 type PersonSchema = Infer<typeof personSchema>
 
-const person = personSchema.parse({})
+const person = parse(personSchema, {})
 
 const keys = person.pets.map(pet => pet._key)
 assertAssignable<string[], typeof keys>()

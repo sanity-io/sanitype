@@ -1,45 +1,38 @@
 export interface Schema<T> {
   type: string
-  parse: (input: unknown) => T
+  def: T
 }
 
 export type Shape<T> = {[key in keyof T]: Schema<T[key]>}
 
-export interface PrimitiveSchema<T extends boolean | string | number> {
+export interface PrimitiveSchema<T extends boolean | string | number>
+  extends Schema<T> {
   type: "primitive"
-  parse: (input: unknown) => T
 }
 
-export interface LiteralSchema<T extends boolean | string | number> {
+export interface LiteralSchema<T extends boolean | string | number>
+  extends Schema<T> {
   type: "literal"
-  value: T
-  parse: (input: unknown) => T
 }
 
-export interface ObjectSchema<T extends Shape<any>> {
+export interface ObjectSchema<T extends Shape<any>> extends Schema<T> {
   type: "object"
-  shape: T
-  parse: (input: unknown) => {[key in keyof T]: Infer<T[key]>}
 }
 
 export interface PrimitiveArraySchema<
   T extends PrimitiveSchema<any> | UnionSchema<PrimitiveSchema<any>>,
-> {
+> extends Schema<T> {
   type: "primitiveArray"
-  parse: (input: unknown) => Array<Infer<T>>
 }
 
 export interface ObjectArraySchema<
   T extends ObjectSchema<any> | UnionSchema<ObjectSchema<any>>,
-> {
+> extends Schema<T> {
   type: "objectArray"
-  parse: (input: unknown) => Array<Infer<T> & {_key: string}>
 }
 
-export interface UnionSchema<T extends Schema<any>> {
+export interface UnionSchema<T extends Schema<any>> extends Schema<T> {
   type: "union"
-  schema: T
-  parse: (input: unknown) => Infer<T>
 }
 
 export type Infer<T extends Schema<any>> = T extends ObjectSchema<infer O>
@@ -85,3 +78,8 @@ export declare function literal<T extends boolean | number | string>(
 ): LiteralSchema<T>
 export declare function number(): PrimitiveSchema<number>
 export declare function boolean(): PrimitiveSchema<boolean>
+
+export declare function parse<T extends Schema<any>>(
+  schema: T,
+  input: unknown,
+): Infer<T>

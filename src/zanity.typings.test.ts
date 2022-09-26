@@ -10,6 +10,7 @@ import {
   union,
   array,
   literal,
+  parse,
 } from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
@@ -53,7 +54,7 @@ test("Type assertions", () => {
   assertAssignable<string, MyObj["composed"]["otherField"]>()
 
   // test validation output type
-  const res = myObj.parse({})
+  const res = parse(myObj, {})
   assertAssignable<string, typeof res.str>()
   assertAssignable<number, typeof res.num>()
   assertAssignable<boolean, typeof res.bool>()
@@ -86,7 +87,7 @@ test("Key's in arrays", () => {
   const o = objectArray(
     union([object({foo: string()}), object({bar: string()})]),
   )
-  const parsed = o.parse({})
+  const parsed = parse(o, {})
 
   const keys = parsed.map(item => item._key)
   assertAssignable<string[], typeof keys>()
