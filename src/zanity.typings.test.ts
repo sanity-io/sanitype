@@ -11,9 +11,18 @@ import {
   array,
   literal,
   parse,
+  Schema,
+  ObjectSchema,
 } from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
+
+test("Schema types", () => {
+  const str: Schema<string, string> = string()
+
+  // @ts-expect-error This should fail!
+  type Obj = ObjectSchema<{bar: string}, {foo: Schema<string, string>}>
+})
 
 test("Type assertions", () => {
   const sharedFields = {someField: string()}
@@ -25,6 +34,7 @@ test("Type assertions", () => {
   const stringOrNum = union([string(), number()])
   const arr1 = primitiveArray(string())
   const polyArr = primitiveArray(union([string(), number()]))
+
   const composed = object({...sharedFields, ...otherFields})
   const lit = literal("literal value")
 

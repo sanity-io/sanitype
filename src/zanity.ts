@@ -27,16 +27,16 @@ export interface ObjectSchema<Output = any, Def extends Shape<any> = Shape<any>>
 
 export interface PrimitiveArraySchema<
   Output = any,
-  Def extends PrimitiveSchema<any> | UnionSchema<PrimitiveSchema<any>> =
-    | PrimitiveSchema<any>
-    | UnionSchema<PrimitiveSchema<any>>,
+  Def extends PrimitiveSchema | UnionSchema<any, PrimitiveSchema> =
+    | PrimitiveSchema
+    | UnionSchema<any, PrimitiveSchema>,
 > extends Schema<Output, Def> {
   type: "primitiveArray"
 }
 
 export interface ObjectArraySchema<
   Output = any,
-  Def extends ObjectSchema | UnionSchema<ObjectSchema> =
+  Def extends ObjectSchema | UnionSchema<any, ObjectSchema> =
     | ObjectSchema
     | UnionSchema<any, ObjectSchema>,
 > extends Schema<Output, Def> {
@@ -69,45 +69,39 @@ export type Infer<T extends Schema<any>> = T extends ObjectSchema<
 
 export declare function union<Def extends Schema>(
   shapes: Def[],
-): UnionSchema<unknown, Def>
+): UnionSchema<any, Def>
 
 export declare function object<Def extends Shape<any>>(
   shape: Def,
-): ObjectSchema<unknown, Def>
+): ObjectSchema<any, Def>
 
 export declare function objectArray<
   Def extends ObjectSchema<any> | UnionSchema<any, ObjectSchema<any>>,
->(elementSchema: Def): ObjectArraySchema<unknown, Def>
+>(elementSchema: Def): ObjectArraySchema<any, Def>
 
 export declare function primitiveArray<
   Def extends PrimitiveSchema | UnionSchema<any, PrimitiveSchema>,
->(elementSchema: Def): PrimitiveArraySchema<unknown, Def>
+>(elementSchema: Def): PrimitiveArraySchema<any, Def>
 
 export declare interface ArrayCreator {
   <Def extends ObjectSchema | UnionSchema<any, ObjectSchema>>(
     elementSchema: Def,
-  ): ObjectArraySchema<unknown, Def>
+  ): ObjectArraySchema<any, Def>
   <Def extends PrimitiveSchema | UnionSchema<any, PrimitiveSchema>>(
     elementSchema: Def,
-  ): PrimitiveArraySchema<unknown, Def>
+  ): PrimitiveArraySchema<any, Def>
 }
 
 export declare const array: ArrayCreator
 
-export declare function string<Def extends string>(): PrimitiveSchema<
-  unknown,
-  Def
->
+export declare function string<Def extends string>(): PrimitiveSchema<any, Def>
 export declare function literal<T extends boolean | number | string>(
   literal: T,
-): LiteralSchema<unknown, T>
+): LiteralSchema<any, T>
 
-export declare function number<Def extends number>(): PrimitiveSchema<
-  unknown,
-  Def
->
+export declare function number<Def extends number>(): PrimitiveSchema<any, Def>
 export declare function boolean<Def extends boolean>(): PrimitiveSchema<
-  unknown,
+  any,
   Def
 >
 
@@ -116,7 +110,10 @@ export declare function parse<T extends Schema<any>>(
   input: unknown,
 ): Infer<T>
 
-export declare function lazy<T>(factory: () => T): T
+export declare function lazy<Output = any, Def = any>(
+  factory: () => Def,
+): Schema<Def>["output"]
 
-const f = object({foo: string()})
+const f: ObjectSchema<{bar: number}> = object({foo: string()})
+
 const p = parse(f, {})
