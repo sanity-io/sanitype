@@ -10,7 +10,9 @@ import {
   union,
 } from "./zanity"
 
-function document<T extends Shape<any>, N extends string>(name: N, shape: T) {
+function assertAssignable<A extends B, B>() {}
+
+function document<N extends string, T extends Shape<any>>(name: N, shape: T) {
   return object({
     _type: literal(name),
     _createdAt: string(),
@@ -27,17 +29,17 @@ function reference(to: ObjectSchema<any>) {
   })
 }
 
-const countrySchema = document("country", {
+const country = document("country", {
   name: string(),
 })
 
-const petSchema = object({
+const pet = object({
   _type: literal("pet"),
   species: union([literal("dog"), literal("cat")]),
   name: string(),
 })
 
-const personSchema = document("person", {
+const person = document("person", {
   firstName: string(),
   lastName: string(),
   address: object({
@@ -46,22 +48,19 @@ const personSchema = document("person", {
     zip: string(),
     country: string(),
   }),
-  visitedCountries: array(reference(countrySchema)),
-  pets: array(petSchema),
+  visitedCountries: array(reference(country)),
+  pets: array(pet),
 })
 
-function assertAssignable<A extends B, B>() {}
+const somePerson = parse(person, {})
 
-const personRef = reference(countrySchema)
 
-type PersonSchema = Infer<typeof personSchema>
 
-const person = parse(personSchema, {})
+const keys = somePerson.pets.map(pet => pet._key)
 
-const keys = person.pets.map(pet => pet._key)
 assertAssignable<string[], typeof keys>()
 
-const references = person.visitedCountries.map(country => [
+const references = somePerson.visitedCountries.map(country => [
   country._ref,
   country._key,
 ])

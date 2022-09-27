@@ -8,7 +8,7 @@ export type Shape<T> = {[key in keyof T]: Schema<T[key]>}
 
 export interface PrimitiveSchema<
   Def extends boolean | string | number = boolean | string | number,
-  Output = any,
+  Output = Def,
 > extends Schema<Def, Output> {
   type: "primitive"
 }
@@ -96,10 +96,10 @@ export declare interface ArrayCreator {
 
 export declare const array: ArrayCreator
 
-export declare function string<Def extends string>(): PrimitiveSchema<Def>
-export declare function literal<T extends boolean | number | string>(
-  literal: T,
-): LiteralSchema<T, any>
+export declare function string<Def extends string>(): PrimitiveSchema<string>
+export declare function literal<Def extends boolean | number | string>(
+  literal: Def,
+): LiteralSchema<Def>
 
 export declare function number<Def extends number>(): PrimitiveSchema<Def>
 export declare function boolean<Def extends boolean>(): PrimitiveSchema<Def>
