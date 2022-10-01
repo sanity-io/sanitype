@@ -1,29 +1,28 @@
 import {test} from "vitest"
 import {
-  primitiveArray,
-  objectArray,
+  array,
   boolean,
   Infer,
-  number,
-  object,
-  string,
-  union,
-  array,
   literal,
-  parse,
-  Type,
+  number,
+  NumberTypeDef,
+  object,
+  objectArray,
   ObjectTypeDef,
-  OutputType,
-  PrimitiveType,
+  parse,
+  primitiveArray,
+  string,
+  TypeDef,
+  union,
 } from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
 
 test("Schema types", () => {
-  const str: Type<string, string> = string()
+  const str: TypeDef<string, string> = string()
 
   // todo: make this one fail because they are not compatible
-  type Obj = OutputType<{foo: string}, {foo: PrimitiveType<number>}>
+  type Obj = ObjectTypeDef<{foo: string}, {foo: NumberTypeDef}>
 })
 
 test("Type assertions", () => {

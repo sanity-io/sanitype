@@ -1,25 +1,12 @@
-import {
-  Infer,
-  lazy,
-  number,
-  object,
-  objectArray,
-  ObjectTypeDef,
-  OutputFromShape,
-  parse,
-  PrimitiveType,
-  Shape,
-  string,
-  Type,
-} from "./zanity"
-import {ObjectType} from "./types"
+import {Infer, lazy, number, object, objectArray, parse, string} from "./zanity"
+import {Lazy} from "./types"
 
 type Person = {
   name: string
   parents: Person[]
 }
 
-const person: ObjectType<Person> = lazy(() =>
+const person: Lazy<Person> = lazy(() =>
   object({
     name: string(),
     parents: objectArray(person),
@@ -35,11 +22,7 @@ parsed.parents.map(parent =>
   parent.parents.map(p => p.parents.map(p1 => p1._key)),
 )
 
-type I = OutputFromShape<Shape<{foo: PrimitiveType<string>}>>
-
-type O = ObjectTypeDef<Shape<{foo: PrimitiveType<string>}>>
-
-const simple: ObjectType<{foo: string}> = lazy(() => object({foo: string()}))
+const simple: Lazy<{foo: string}> = lazy(() => object({foo: string()}))
 
 type Simple = Infer<typeof simple>
 
@@ -51,7 +34,7 @@ interface Circular {
   self: Circular
 }
 
-const shouldWork: ObjectType<Circular> = lazy(() =>
+const shouldWork: Lazy<Circular> = lazy(() =>
   object({foo: string(), self: shouldWork, bar: number()}),
 )
 

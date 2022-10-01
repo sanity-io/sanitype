@@ -1,8 +1,8 @@
-import {ObjectArrayType, ObjectTypeDef, Type} from "./zanity"
+import {ObjectTypeDef, TypeDef} from "./zanity"
 
-export type StringType = Type<string, string>
-export type NumberType = Type<number, number>
-export type BooleanType = Type<boolean, boolean>
+export type StringType = TypeDef<string, string>
+export type NumberType = TypeDef<number, number>
+export type BooleanType = TypeDef<boolean, boolean>
 
 type MaybeAddKey<T extends any> = T extends Array<infer E>
   ? (MaybeAddKeyToArrayProps<E> & {_key: string})[]
@@ -16,7 +16,7 @@ export type MaybeAddKeyToArrayProps<T extends any> = T extends {
     }
   : T
 
-export type ObjectType<Output> = ObjectTypeDef<
+export type Lazy<Output> = ObjectTypeDef<
   any,
   {
     [key in keyof Output]: MaybeAddKey<Output[key]>

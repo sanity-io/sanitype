@@ -54,8 +54,6 @@ const person = document("person", {
 
 const somePerson = parse(person, {})
 
-
-
 const keys = somePerson.pets.map(pet => pet._key)
 
 assertAssignable<string[], typeof keys>()
