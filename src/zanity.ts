@@ -23,8 +23,13 @@ export type OutputFromShape<T extends Shape<any>> = T extends Shape<any>
       [key in keyof T]: Infer<T[key]>
     }
   : never
-
 export type OutputOf<T extends TypeDef> = T["output"]
+
+export type Merge<A, B> = {
+  [K in keyof A]: K extends keyof B ? B[K] : A[K]
+} & B extends infer O
+  ? {[K in keyof O]: O[K]}
+  : never
 
 export interface ObjectTypeDef<
   Def extends Shape<any> = Shape<any>,
@@ -32,6 +37,17 @@ export interface ObjectTypeDef<
 > extends TypeDef<Def, Output> {
   name: "object"
 }
+
+type AddKey<T> = Merge<T, {_key: string}>
+
+export type GroupUnderscoreKeys<T> = Merge<
+  Pick<T, UnderscoreKeys<T>>,
+  Omit<T, UnderscoreKeys<T>>
+>
+
+type UnderscoreKeys<T> = {
+  [K in keyof T]: K extends `_${infer S}` ? K : never
+}[keyof T]
 
 export type FlattenUnion<T extends TypeDef> = OutputOf<T>
 
@@ -48,7 +64,7 @@ export interface ObjectArrayTypeDef<
   Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef> =
     | ObjectTypeDef
     | UnionTypeDef<ObjectTypeDef>,
-  Output = (FlattenUnion<Def> & {_key: string})[],
+  Output = AddKey<FlattenUnion<Def>>[],
 > extends TypeDef<Def, Output> {
   name: "objectArray"
 }

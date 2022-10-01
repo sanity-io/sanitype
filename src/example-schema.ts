@@ -1,6 +1,6 @@
 import {
   array,
-  Infer,
+  boolean,
   literal,
   object,
   ObjectTypeDef,
@@ -26,6 +26,7 @@ function reference(to: ObjectTypeDef<any>) {
   return object({
     _type: literal("reference"),
     _ref: string(),
+    _weak: boolean(),
   })
 }
 

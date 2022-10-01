@@ -1,13 +1,15 @@
-import {Infer, lazy, number, object, objectArray, parse, string} from "./zanity"
+import {Infer, lazy, literal, number, object, objectArray, parse, string} from "./zanity"
 import {Lazy} from "./types"
 
 type Person = {
+  _type: 'person'
   name: string
   parents: Person[]
 }
 
 const person: Lazy<Person> = lazy(() =>
   object({
+    _type: literal('person'),
     name: string(),
     parents: objectArray(person),
   }),

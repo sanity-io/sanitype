@@ -36,7 +36,10 @@ test("Type assertions", () => {
   const arr1 = primitiveArray(string())
   const polyArr = primitiveArray(union([string(), number()]))
   const polyObjectArr = array(
-    union([object({foo: string()}), object({age: number()})]),
+    union([
+      object({_type: literal("foo"), foo: string()}),
+      object({_type: literal("two"), age: number()}),
+    ]),
   )
 
   const composed = object({...sharedFields, ...otherFields})
@@ -65,8 +68,16 @@ test("Type assertions", () => {
   assertAssignable<number, MyObj["num"]>()
   assertAssignable<string | number, MyObj["stringOrNum"]>()
   assertAssignable<(string | number)[], MyObj["polyArr"]>()
-  assertAssignable<{age: number; _key: string}, MyObj["polyObjectArr"][0]>()
-  assertAssignable<{foo: string; _key: string}, MyObj["polyObjectArr"][0]>()
+
+  assertAssignable<
+    //@ts-expect-error this isn't a valid value for "foo" type
+    {_type: "foo"; age: number; _key: string},
+    MyObj["polyObjectArr"][0]
+  >()
+  assertAssignable<
+    {_type: "foo"; foo: string; _key: string},
+    MyObj["polyObjectArr"][0]
+  >()
   assertAssignable<string, MyObj["composed"]["someField"]>()
   assertAssignable<string, MyObj["composed"]["otherField"]>()
 
@@ -75,6 +86,11 @@ test("Type assertions", () => {
   assertAssignable<string, typeof res.str>()
   assertAssignable<number, typeof res.num>()
   assertAssignable<boolean, typeof res.bool>()
+
+  assertAssignable<
+    {_type: "foo"; foo: string; _key: string}[],
+    typeof res.polyObjectArr
+  >()
 
   assertAssignable<number, typeof res.stringOrNum>()
   assertAssignable<string, typeof res.stringOrNum>()
