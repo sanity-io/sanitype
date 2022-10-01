@@ -12,6 +12,7 @@ import {
   parse,
   primitiveArray,
   string,
+  StringTypeDef,
   TypeDef,
   union,
 } from "./zanity"
@@ -21,8 +22,8 @@ function assertAssignable<A extends B, B>() {}
 test("Schema types", () => {
   const str: TypeDef<string, string> = string()
 
-  // todo: make this one fail because they are not compatible
-  type Obj = ObjectTypeDef<{foo: string}, {foo: NumberTypeDef}>
+  //@ts-expect-error type definition says foo should be a number, but output type requires it to be a string
+  type Obj = ObjectTypeDef<{foo: NumberTypeDef}, {foo: string}>
 })
 
 test("Type assertions", () => {

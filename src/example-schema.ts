@@ -1,10 +1,9 @@
 import {
   array,
-  boolean,
   literal,
   object,
-  ObjectTypeDef,
   parse,
+  reference,
   Shape,
   string,
   union,
@@ -19,14 +18,6 @@ function document<N extends string, T extends Shape<any>>(name: N, shape: T) {
     _updatedAt: string(),
     _rev: string(),
     ...shape,
-  })
-}
-
-function reference(to: ObjectTypeDef<any>) {
-  return object({
-    _type: literal("reference"),
-    _ref: string(),
-    _weak: boolean(),
   })
 }
 

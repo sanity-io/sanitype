@@ -23,6 +23,7 @@ export type OutputFromShape<T extends Shape<any>> = T extends Shape<any>
       [key in keyof T]: Infer<T[key]>
     }
   : never
+
 export type OutputOf<T extends TypeDef> = T["output"]
 
 export type Merge<A, B> = {
@@ -36,6 +37,34 @@ export interface ObjectTypeDef<
   Output extends OutputFromShape<Def> = OutputFromShape<Def>,
 > extends TypeDef<Def, Output> {
   name: "object"
+}
+
+type ReferenceShape = {
+  _type: LiteralTypeDef<"reference">
+  _ref?: StringTypeDef
+  _weak?: BooleanTypeDef
+}
+
+/** @internal */
+//readonly __internal_refTypeDef: RefType
+
+type AttachRefTypeDef<T, RefTypeDef> = Merge<
+  T,
+  {
+    /** @internal */
+    readonly __internal_refTypeDef: RefTypeDef
+  }
+>
+
+export interface ReferenceTypeDef<
+  RefType extends ObjectTypeDef,
+  Output extends AttachRefTypeDef<
+    OutputFromShape<ReferenceShape>,
+    RefType
+  > = AttachRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
+> extends ObjectTypeDef<ReferenceShape, Output> {
+  name: "object"
+  referenceType: RefType
 }
 
 type AddKey<T> = Merge<T, {_key: string}>
@@ -75,7 +104,7 @@ export interface UnionTypeDef<
 > extends TypeDef<Def, Output> {
   name: "union"
 }
-export type Infer<T extends TypeDef<any>> = OutputOf<T>
+export type Infer<T extends any> = T extends TypeDef ? OutputOf<T> : T
 
 export declare function lazy<Output extends any, T extends TypeDef>(
   getter: () => T,
@@ -115,6 +144,10 @@ export declare function literal<Def extends boolean | number | string>(
 
 export declare function number<Def extends number>(): NumberTypeDef
 export declare function boolean<Def extends boolean>(): BooleanTypeDef
+
+export declare function reference<RefType extends ObjectTypeDef>(
+  to: RefType,
+): ReferenceTypeDef<RefType>
 
 export declare function parse<T extends TypeDef<any>>(
   schema: T,
