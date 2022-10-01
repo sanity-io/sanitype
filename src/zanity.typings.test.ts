@@ -11,17 +11,19 @@ import {
   array,
   literal,
   parse,
-  Schema,
-  ObjectSchema,
+  Type,
+  ObjectTypeDef,
+  OutputType,
+  PrimitiveType,
 } from "./zanity"
 
 function assertAssignable<A extends B, B>() {}
 
 test("Schema types", () => {
-  const str: Schema<string, string> = string()
+  const str: Type<string, string> = string()
 
   // todo: make this one fail because they are not compatible
-  type Obj = ObjectSchema<{foo: Schema<string>}, {foo: string}>
+  type Obj = OutputType<{foo: string}, {foo: PrimitiveType<number>}>
 })
 
 test("Type assertions", () => {
@@ -34,6 +36,9 @@ test("Type assertions", () => {
   const stringOrNum = union([string(), number()])
   const arr1 = primitiveArray(string())
   const polyArr = primitiveArray(union([string(), number()]))
+  const polyObjectArr = array(
+    union([object({foo: string()}), object({age: number()})]),
+  )
 
   const composed = object({...sharedFields, ...otherFields})
   const lit = literal("literal value")
@@ -44,6 +49,7 @@ test("Type assertions", () => {
     lit,
     stringOrNum,
     polyArr: polyArr,
+    polyObjectArr,
     bool,
     arr1,
     composed,
@@ -60,6 +66,8 @@ test("Type assertions", () => {
   assertAssignable<number, MyObj["num"]>()
   assertAssignable<string | number, MyObj["stringOrNum"]>()
   assertAssignable<(string | number)[], MyObj["polyArr"]>()
+  assertAssignable<{age: number; _key: string}, MyObj["polyObjectArr"][0]>()
+  assertAssignable<{foo: string; _key: string}, MyObj["polyObjectArr"][0]>()
   assertAssignable<string, MyObj["composed"]["someField"]>()
   assertAssignable<string, MyObj["composed"]["otherField"]>()
 

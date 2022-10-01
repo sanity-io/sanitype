@@ -1,110 +1,107 @@
-export interface Schema<Def = any, Output = any> {
-  type: string
+export interface Type<Def = any, Output = any> {
+  name: string
   def: Def
   output: Output
 }
 
-export type Shape<T> = {[key in keyof T]: Schema<T[key]>}
+export type Shape<T> = {[key in keyof T]: T[key]}
 
-export interface PrimitiveSchema<
+export interface PrimitiveType<
   Def extends boolean | string | number = boolean | string | number,
-  Output = Def,
-> extends Schema<Def, Output> {
-  type: "primitive"
+> extends Type<Def, Def> {
+  name: "primitive"
 }
 
-export interface LiteralSchema<
+export interface LiteralType<
   Def extends boolean | string | number = boolean | string | number,
-  Output = any,
-> extends Schema<Def, Output> {
-  type: "literal"
+> extends Type<Def, Def> {
+  name: "literal"
 }
 
-export interface ObjectSchema<
-  Def extends Shape<any> = Shape<any>,
-  Output extends any = any,
-> extends Schema<Def, Output> {
-  type: "object"
-}
-
-export interface PrimitiveArraySchema<
-  Def extends PrimitiveSchema | UnionSchema<any, PrimitiveSchema> =
-    | PrimitiveSchema
-    | UnionSchema<PrimitiveSchema>,
-  Output = any,
-> extends Schema<Def, Output> {
-  type: "primitiveArray"
-}
-
-export interface ObjectArraySchema<
-  Def extends ObjectSchema | UnionSchema<ObjectSchema> =
-    | ObjectSchema
-    | UnionSchema<ObjectSchema>,
-  Output = any,
-> extends Schema<Def, Output> {
-  type: "objectArray"
-}
-
-export interface UnionSchema<
-  Def extends Schema<any> = Schema<any>,
-  Output = any,
-> extends Schema<Def, Output> {
-  type: "union"
-}
-type InferFromShape<T extends Shape<any>> = T extends Shape<any>
+export type OutputFromShape<T extends Shape<any>> = T extends Shape<any>
   ? {
       [key in keyof T]: Infer<T[key]>
     }
   : never
 
-export type Infer<T extends Schema<any>> = T extends ObjectSchema<infer Def>
-  ? {[key in keyof Def]: Infer<Def[key]>}
-  : T extends PrimitiveArraySchema<infer Def>
-  ? Infer<Def>[]
-  : T extends ObjectArraySchema<infer Def>
-  ? (Infer<Def> & {_key: string})[]
-  : T extends PrimitiveSchema<infer Def> | LiteralSchema<infer Def>
-  ? Def
-  : T extends UnionSchema<infer Def>
-  ? Infer<Def>
-  : never
+export type OutputOf<T extends Type> = T["output"]
 
-export declare function union<Def extends Schema>(
-  shapes: Def[],
-): UnionSchema<Def>
+export interface ObjectTypeDef<
+  Def extends Shape<any> = Shape<any>,
+  Output extends OutputFromShape<Def> = OutputFromShape<Def>,
+> extends Type<Def, Output> {
+  name: "object"
+}
+
+export type FlattenUnion<T extends Type> = OutputOf<T>
+
+export interface PrimitiveArrayType<
+  Def extends PrimitiveType | UnionType<PrimitiveType> =
+    | PrimitiveType
+    | UnionType<PrimitiveType>,
+  Output = FlattenUnion<Def>[],
+> extends Type<Def, Output> {
+  name: "primitiveArray"
+}
+
+export interface ObjectArrayType<
+  Def extends ObjectTypeDef | UnionType<ObjectTypeDef> =
+    | ObjectTypeDef
+    | UnionType<ObjectTypeDef>,
+  Output = (FlattenUnion<Def> & {_key: string})[],
+> extends Type<Def, Output> {
+  name: "objectArray"
+}
+
+export interface UnionType<Def extends Type = Type, Output = OutputOf<Def>>
+  extends Type<Def, Output> {
+  name: "union"
+}
+export type Infer<T extends Type<any>> = OutputOf<T>
+
+export type OutputType<Output extends any, Def extends any = any> = Type<
+  Def,
+  Output
+>
+
+export declare function lazy<Output extends any, T extends Type>(
+  getter: () => T,
+): T
+
+export declare function union<Def extends Type>(shapes: Def[]): UnionType<Def>
 
 export declare function object<Def extends Shape<any>>(
   shape: Def,
-): ObjectSchema<Def>
+): ObjectTypeDef<Def>
 
 export declare function objectArray<
-  Def extends ObjectSchema | UnionSchema<ObjectSchema>,
->(elementSchema: Def): ObjectArraySchema<Def>
+  Def extends ObjectTypeDef | UnionType<ObjectTypeDef>,
+>(elementSchema: Def): ObjectArrayType<Def>
 
 export declare function primitiveArray<
-  Def extends PrimitiveSchema | UnionSchema<PrimitiveSchema>,
->(elementSchema: Def): PrimitiveArraySchema<Def>
+  Def extends PrimitiveType | UnionType<PrimitiveType>,
+>(elementSchema: Def): PrimitiveArrayType<Def>
 
 export declare interface ArrayCreator {
-  <Def extends ObjectSchema | UnionSchema<ObjectSchema>>(
+  <Def extends ObjectTypeDef | UnionType<ObjectTypeDef>>(
     elementSchema: Def,
-  ): ObjectArraySchema<Def>
-  <Def extends PrimitiveSchema | UnionSchema<PrimitiveSchema>>(
+  ): ObjectArrayType<Def>
+  <Def extends PrimitiveType | UnionType<PrimitiveType>>(
     elementSchema: Def,
-  ): PrimitiveArraySchema<Def>
+  ): PrimitiveArrayType<Def>
 }
 
 export declare const array: ArrayCreator
 
-export declare function string<Def extends string>(): PrimitiveSchema<string>
+export declare function string<Def extends string>(): PrimitiveType<string>
 export declare function literal<Def extends boolean | number | string>(
   literal: Def,
-): LiteralSchema<Def>
+): LiteralType<Def>
 
-export declare function number<Def extends number>(): PrimitiveSchema<Def>
-export declare function boolean<Def extends boolean>(): PrimitiveSchema<Def>
+export declare function number<Def extends number>(): PrimitiveType<Def>
+export declare function boolean<Def extends boolean>(): PrimitiveType<Def>
 
-export declare function parse<T extends Schema<any>>(
+export declare function parse<T extends Type<any>>(
   schema: T,
   input: unknown,
 ): Infer<T>

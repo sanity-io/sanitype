@@ -3,7 +3,7 @@ import {
   Infer,
   literal,
   object,
-  ObjectSchema,
+  ObjectTypeDef,
   parse,
   Shape,
   string,
@@ -22,7 +22,7 @@ function document<N extends string, T extends Shape<any>>(name: N, shape: T) {
   })
 }
 
-function reference(to: ObjectSchema<any>) {
+function reference(to: ObjectTypeDef<any>) {
   return object({
     _type: literal("reference"),
     _ref: string(),
