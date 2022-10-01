@@ -2,9 +2,10 @@ import {ObjectArrayType, ObjectTypeDef, Type} from "./zanity"
 
 export type StringType = Type<string, string>
 export type NumberType = Type<number, number>
+export type BooleanType = Type<boolean, boolean>
 
-type MaybeAddKey<T extends any> = T extends Array<infer ElementType>
-  ? (MaybeAddKeyToArrayProps<ElementType> & {_key: string})[]
+type MaybeAddKey<T extends any> = T extends Array<infer E>
+  ? (MaybeAddKeyToArrayProps<E> & {_key: string})[]
   : T
 
 export type MaybeAddKeyToArrayProps<T extends any> = T extends {

@@ -59,11 +59,6 @@ export interface UnionType<Def extends Type = Type, Output = OutputOf<Def>>
 }
 export type Infer<T extends Type<any>> = OutputOf<T>
 
-export type OutputType<Output extends any, Def extends any = any> = Type<
-  Def,
-  Output
->
-
 export declare function lazy<Output extends any, T extends Type>(
   getter: () => T,
 ): T
