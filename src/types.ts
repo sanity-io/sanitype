@@ -4,14 +4,16 @@ export type StringType = Type<string, string>
 export type NumberType = Type<number, number>
 
 type MaybeAddKey<T extends any> = T extends Array<infer ElementType>
-  ? (ElementType & {_key: string})[]
+  ? (MaybeAddKeyToArrayProps<ElementType> & {_key: string})[]
   : T
 
-export type MaybeAddKeyToArrayProps<T extends {[key: string]: any}> = {
-  [key in keyof T]: MaybeAddKey<T[key]>
+export type MaybeAddKeyToArrayProps<T extends any> = T extends {
+  [key: string]: any
 }
-
-type WithKeys<T> = {[P in keyof T]: MaybeAddKey<T[P]>}
+  ? {
+      [key in keyof T]: MaybeAddKey<T[key]>
+    }
+  : T
 
 export type ObjectType<Output> = ObjectTypeDef<
   any,
@@ -19,5 +21,3 @@ export type ObjectType<Output> = ObjectTypeDef<
     [key in keyof Output]: MaybeAddKey<Output[key]>
   }
 >
-
-type O = WithKeys<{foo: Array<{bar: string}>}>

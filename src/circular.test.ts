@@ -1,18 +1,16 @@
 import {
-  array,
   Infer,
-  OutputFromShape,
+  lazy,
   object,
+  objectArray,
   ObjectTypeDef,
+  OutputFromShape,
+  OutputType,
   parse,
   PrimitiveType,
   Shape,
   string,
   Type,
-  OutputOf,
-  lazy,
-  OutputType,
-  objectArray,
 } from "./zanity"
 import {MaybeAddKeyToArrayProps, ObjectType} from "./types"
 
@@ -34,6 +32,10 @@ const parsed = parse(person, {})
 
 parsed.parents.map(parent => parent.name)
 parsed.parents.map(parent => parent._key)
+parsed.parents.map(parent => parent.parents.map(p => p._key))
+parsed.parents.map(parent =>
+  parent.parents.map(p => p.parents.map(p1 => p1._key)),
+)
 
 // export type Person = Infer<typeof person>
 
