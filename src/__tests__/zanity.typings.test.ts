@@ -1,21 +1,17 @@
 import {test} from "vitest"
+import type {Infer, NumberTypeDef, ObjectTypeDef, TypeDef} from "../defs"
 import {
   array,
   boolean,
-  Infer,
   literal,
   number,
-  NumberTypeDef,
   object,
   objectArray,
-  ObjectTypeDef,
-  parse,
   primitiveArray,
   string,
-  StringTypeDef,
-  TypeDef,
   union,
-} from "./zanity"
+} from "../typeCreators"
+import {parse} from "../parse"
 
 function assertAssignable<A extends B, B>() {}
 

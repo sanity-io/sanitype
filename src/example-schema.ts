@@ -1,29 +1,15 @@
 import {
   array,
+  document,
   literal,
   object,
-  parse,
   reference,
-  Shape,
   string,
   union,
-} from "./zanity"
+} from "./factories"
+import {parse} from "./parse"
 
 function assertAssignable<A extends B, B>() {}
-
-export function document<N extends string, T extends Shape<any>>(
-  name: N,
-  shape: T,
-) {
-  return object({
-    _type: literal(name),
-    _id: string(),
-    _createdAt: string(),
-    _updatedAt: string(),
-    _rev: string(),
-    ...shape,
-  })
-}
 
 const country = document("country", {
   name: string(),

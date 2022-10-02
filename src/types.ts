@@ -1,8 +1,5 @@
-import {GroupUnderscoreKeys, Merge, ObjectTypeDef, TypeDef} from "./zanity"
-
-export type StringType = TypeDef<string, string>
-export type NumberType = TypeDef<number, number>
-export type BooleanType = TypeDef<boolean, boolean>
+import type {ObjectTypeDef} from "./defs"
+import {GroupUnderscoreKeys, Merge} from "./utils"
 
 type MaybeAddKey<T extends any> = T extends Array<infer E>
   ? GroupUnderscoreKeys<Merge<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
