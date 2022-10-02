@@ -4,23 +4,20 @@ import {
   NumberTypeDef,
   ObjectArrayTypeDef,
   ObjectTypeDef,
+  DocumentTypeDef,
   PrimitiveArrayTypeDef,
   PrimitiveTypeDef,
   ReferenceTypeDef,
-  Shape,
+  Attributes,
   StringTypeDef,
   TypeDef,
   UnionTypeDef,
 } from "./defs"
 
-export function document<N extends string, T extends Shape<any>>(
+export declare function document<N extends string, T extends Attributes>(
   name: N,
   shape: T,
-) {
-  return object({
-    ...shape,
-  })
-}
+): DocumentTypeDef<N, T>
 
 export declare function lazy<Output extends any, T extends TypeDef>(
   getter: () => T,
@@ -30,9 +27,7 @@ export declare function union<Def extends TypeDef>(
   shapes: Def[],
 ): UnionTypeDef<Def>
 
-export declare function object<Def extends Shape<any>>(
-  shape: Def,
-): ObjectTypeDef<Def>
+export declare function object<T extends Attributes>(shape: T): ObjectTypeDef<T>
 
 export declare function objectArray<
   Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef>,
@@ -61,6 +56,6 @@ export declare function literal<Def extends boolean | number | string>(
 export declare function number<Def extends number>(): NumberTypeDef
 export declare function boolean<Def extends boolean>(): BooleanTypeDef
 
-export declare function reference<RefType extends ObjectTypeDef>(
+export declare function reference<RefType extends DocumentTypeDef<any>>(
   to: RefType,
 ): ReferenceTypeDef<RefType>

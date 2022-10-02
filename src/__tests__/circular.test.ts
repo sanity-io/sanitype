@@ -1,12 +1,5 @@
 import type {Infer} from "../defs"
-import {
-  lazy,
-  literal,
-  number,
-  object,
-  objectArray,
-  string,
-} from "../typeCreators"
+import {lazy, literal, number, object, objectArray, string} from "../factories"
 import {Lazy} from "../types"
 import {parse} from "../parse"
 import {test} from "vitest"

@@ -10,14 +10,10 @@ import {
   primitiveArray,
   string,
   union,
-} from "../typeCreators"
+} from "../factories"
 import {parse} from "../parse"
 
-function assertAssignable<A extends B, B>() {}
-
 test("Schema types", () => {
-  const str: TypeDef<string, string> = string()
-
   //@ts-expect-error type definition says foo should be a number, but output type requires it to be a string
   type Obj = ObjectTypeDef<{foo: NumberTypeDef}, {foo: string}>
 })
@@ -118,9 +114,8 @@ test("Restrictions", () => {
 })
 
 test("Key's in arrays", () => {
-  const ii = union([object({foo: string()}), object({bar: string()})])
-  type II = Infer<typeof ii>
-  const o = objectArray(ii)
+  const items = union([object({foo: string()}), object({bar: string()})])
+  const o = objectArray(items)
   const parsed = parse(o, {})
 
   const keys = parsed.map(item => item._key)

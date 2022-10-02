@@ -1,4 +1,4 @@
-import {Merge} from "./utils"
+import {GroupUnderscoreKeys, Merge} from "./utils"
 
 export interface TypeDef<Def = any, Output = any> {
   typeName: string
@@ -24,16 +24,34 @@ export interface UnionTypeDef<
   typeName: "union"
 }
 
-export type Shape<T> = {[key in keyof T]: T[key]}
+export type Attributes<T = any> = {[key in keyof T]: TypeDef}
 
 export interface ObjectTypeDef<
-  Def extends Shape<any> = Shape<any>,
+  Def extends Attributes = Attributes,
   Output extends OutputFromShape<Def> = OutputFromShape<Def>,
 > extends TypeDef<Def, Output> {
   typeName: "object"
 }
 
-export type OutputFromShape<T extends Shape<any>> = T extends Shape<any>
+type DocumentSchemaAttrs<Name extends string> = {
+  _id: StringTypeDef
+  _type: LiteralTypeDef<Name>
+  _createdAt: StringTypeDef
+  _updatedAt: StringTypeDef
+  _rev: StringTypeDef
+}
+
+export interface DocumentTypeDef<
+  Name extends string,
+  Attrs extends Attributes = Attributes,
+> extends TypeDef<
+    Attrs,
+    OutputFromShape<DocumentSchemaAttrs<Name> & Attrs>
+  > {
+  typeName: "document"
+}
+
+export type OutputFromShape<T extends Attributes> = T extends Attributes
   ? {
       [key in keyof T]: Infer<T[key]>
     }
@@ -65,7 +83,7 @@ export type ReferenceShape = {
   _weak?: BooleanTypeDef
 }
 
-type AttachInternalRefTypeDef<T, RefTypeDef> = Merge<
+type SetInternalRefTypeDef<T, RefTypeDef extends DocumentTypeDef<any>> = Merge<
   T,
   {
     /** @internal */
@@ -73,12 +91,16 @@ type AttachInternalRefTypeDef<T, RefTypeDef> = Merge<
   }
 >
 
+export type StripInternalRefType<T> = {
+  [P in keyof T]: P extends "__internal_refTypeDef" ? never : T[P]
+}
+
 export interface ReferenceTypeDef<
-  RefType extends ObjectTypeDef,
-  Output extends AttachInternalRefTypeDef<
+  RefType extends DocumentTypeDef<string>,
+  Output extends SetInternalRefTypeDef<
     OutputFromShape<ReferenceShape>,
     RefType
-  > = AttachInternalRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
+  > = SetInternalRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
 > extends ObjectTypeDef<ReferenceShape, Output> {
   typeName: "object"
   referenceType: RefType
