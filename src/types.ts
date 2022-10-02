@@ -1,8 +1,8 @@
 import type {ObjectTypeDef} from "./defs"
-import {GroupUnderscoreKeys, Merge} from "./utils"
+import {GroupUnderscoreKeys, Combine} from "./utils"
 
 type MaybeAddKey<T extends any> = T extends Array<infer E>
-  ? GroupUnderscoreKeys<Merge<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
+  ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
   : T
 
 export type MaybeAddKeyToArrayProps<T extends any> = T extends {

@@ -1,4 +1,4 @@
-import {Merge} from "./utils"
+import {Combine} from "./utils"
 
 export interface TypeDef<Def = any, Output = any> {
   typeName: string
@@ -24,16 +24,16 @@ export interface UnionTypeDef<
   typeName: "union"
 }
 
-export type Attributes<T = any> = {[key in keyof T]: TypeDef}
+export type FieldsDef<T = any> = {[key in keyof T]: TypeDef}
 
 export interface ObjectTypeDef<
-  Def extends Attributes = Attributes,
+  Def extends FieldsDef = FieldsDef,
   Output extends OutputFromShape<Def> = OutputFromShape<Def>,
 > extends TypeDef<Def, Output> {
   typeName: "object"
 }
 
-type DocumentSchemaAttrs<Name extends string> = {
+type DocumentSchemaBase<Name extends string> = {
   _type: LiteralTypeDef<Name>
   _id: StringTypeDef
   _createdAt: StringTypeDef
@@ -42,13 +42,13 @@ type DocumentSchemaAttrs<Name extends string> = {
 }
 
 export interface DocumentTypeDef<
-  Name extends string,
-  Attrs extends Attributes = Attributes,
-> extends TypeDef<Attrs, OutputFromShape<DocumentSchemaAttrs<Name> & Attrs>> {
+  N extends string,
+  F extends FieldsDef = FieldsDef,
+> extends TypeDef<F, OutputFromShape<DocumentSchemaBase<N> & F>> {
   typeName: "document"
 }
 
-export type OutputFromShape<T extends Attributes> = T extends Attributes
+export type OutputFromShape<T extends FieldsDef> = T extends FieldsDef
   ? {
       [key in keyof T]: Infer<T[key]>
     }
@@ -72,7 +72,7 @@ export interface ObjectArrayTypeDef<
   typeName: "objectArray"
 }
 
-type AddArrayKey<T> = Merge<T, {_key: string}>
+type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type ReferenceShape = {
   _type: LiteralTypeDef<"reference">

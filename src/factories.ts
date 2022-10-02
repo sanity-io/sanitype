@@ -8,26 +8,22 @@ import {
   PrimitiveArrayTypeDef,
   PrimitiveTypeDef,
   ReferenceTypeDef,
-  Attributes,
+  FieldsDef,
   StringTypeDef,
   TypeDef,
   UnionTypeDef,
 } from "./defs"
 
-export declare function document<N extends string, T extends Attributes>(
+export declare function document<N extends string, T extends FieldsDef>(
   name: N,
   shape: T,
 ): DocumentTypeDef<N, T>
-
-export declare function lazy<Output extends any, T extends TypeDef>(
-  getter: () => T,
-): T
 
 export declare function union<Def extends TypeDef>(
   shapes: Def[],
 ): UnionTypeDef<Def>
 
-export declare function object<T extends Attributes>(shape: T): ObjectTypeDef<T>
+export declare function object<T extends FieldsDef>(shape: T): ObjectTypeDef<T>
 
 export declare function objectArray<
   Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef>,
@@ -59,3 +55,7 @@ export declare function boolean<Def extends boolean>(): BooleanTypeDef
 export declare function reference<RefType extends DocumentTypeDef<any>>(
   to: RefType,
 ): ReferenceTypeDef<RefType>
+
+export declare function lazy<Output extends any, T extends TypeDef>(
+  getter: () => T,
+): T

@@ -6,7 +6,7 @@ interface DocumentLike {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  [attribute: string]: unknown
+  [field: string]: unknown
 }
 
 interface ReferenceLike {
