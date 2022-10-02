@@ -1,4 +1,4 @@
-import {GroupUnderscoreKeys, Merge} from "./utils"
+import {Merge} from "./utils"
 
 export interface TypeDef<Def = any, Output = any> {
   typeName: string
@@ -34,8 +34,8 @@ export interface ObjectTypeDef<
 }
 
 type DocumentSchemaAttrs<Name extends string> = {
-  _id: StringTypeDef
   _type: LiteralTypeDef<Name>
+  _id: StringTypeDef
   _createdAt: StringTypeDef
   _updatedAt: StringTypeDef
   _rev: StringTypeDef
@@ -44,10 +44,7 @@ type DocumentSchemaAttrs<Name extends string> = {
 export interface DocumentTypeDef<
   Name extends string,
   Attrs extends Attributes = Attributes,
-> extends TypeDef<
-    Attrs,
-    OutputFromShape<DocumentSchemaAttrs<Name> & Attrs>
-  > {
+> extends TypeDef<Attrs, OutputFromShape<DocumentSchemaAttrs<Name> & Attrs>> {
   typeName: "document"
 }
 
@@ -83,24 +80,20 @@ export type ReferenceShape = {
   _weak?: BooleanTypeDef
 }
 
-type SetInternalRefTypeDef<T, RefTypeDef extends DocumentTypeDef<any>> = Merge<
-  T,
-  {
-    /** @internal */
-    readonly __internal_refTypeDef: RefTypeDef
-  }
->
-
-export type StripInternalRefType<T> = {
-  [P in keyof T]: P extends "__internal_refTypeDef" ? never : T[P]
+export interface Internal<T> {
+  /** @deprecated Do not use. Only exists in the type system and will be undefined at runtime. */
+  __internal: T
 }
+
+type WithRefTypeDef<T, RefTypeDef extends DocumentTypeDef<any>> = T &
+  Internal<RefTypeDef>
 
 export interface ReferenceTypeDef<
   RefType extends DocumentTypeDef<string>,
-  Output extends SetInternalRefTypeDef<
+  Output extends WithRefTypeDef<
     OutputFromShape<ReferenceShape>,
     RefType
-  > = SetInternalRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
+  > = WithRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
 > extends ObjectTypeDef<ReferenceShape, Output> {
   typeName: "object"
   referenceType: RefType

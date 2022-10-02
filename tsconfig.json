@@ -12,7 +12,6 @@
     "esModuleInterop": true,
     "lib": ["es2019"],
     "outDir": "dist",
-    "stripInternal": true,
     "declaration": true,
     "moduleResolution": "node",
     "skipLibCheck": true

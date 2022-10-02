@@ -13,9 +13,8 @@ const personType = document("person", {
   country: reference(country),
 })
 
-const person = parse(personType, {})
-
 test("reference expansion", async () => {
+  const person = parse(personType, {})
   const personCountry = await expand(person.country)
 
   assertAssignable<typeof personCountry._type, "country">()

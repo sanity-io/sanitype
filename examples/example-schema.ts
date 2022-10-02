@@ -6,8 +6,9 @@ import {
   reference,
   string,
   union,
-} from "./factories"
-import {parse} from "./parse"
+} from "../src/factories"
+import {parse} from "../src/parse"
+import {expand} from "../src/expand"
 
 function assertAssignable<A extends B, B>() {}
 
@@ -28,13 +29,17 @@ const person = document("person", {
     _type: literal("address"),
     street: string(),
     zip: string(),
-    country: string(),
+    country: reference(country),
   }),
   visitedCountries: array(reference(country)),
   pets: array(pet),
 })
 
 const somePerson = parse(person, {})
+
+console.log(somePerson.address.country.__internal)
+
+const somePersonCountry = await expand(somePerson.address.country)
 
 const keys = somePerson.pets.map(pet => pet._key)
 
