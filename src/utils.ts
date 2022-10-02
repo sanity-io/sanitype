@@ -48,7 +48,7 @@ type StripInternalRefType<T> = {
   [P in keyof T]: P extends "__internal_refTypeDef" ? never : T[P]
 }
 
-declare function expand<
+export declare function expand<
   T extends {
     _type: "reference"
     _ref?: string

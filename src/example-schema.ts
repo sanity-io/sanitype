@@ -11,9 +11,13 @@ import {
 
 function assertAssignable<A extends B, B>() {}
 
-function document<N extends string, T extends Shape<any>>(name: N, shape: T) {
+export function document<N extends string, T extends Shape<any>>(
+  name: N,
+  shape: T,
+) {
   return object({
     _type: literal(name),
+    _id: string(),
     _createdAt: string(),
     _updatedAt: string(),
     _rev: string(),
