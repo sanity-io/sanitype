@@ -48,11 +48,11 @@ export interface DocumentTypeDef<
   typeName: "document"
 }
 
-export type OutputFromShape<T extends FieldsDef> = T extends FieldsDef
-  ? {
-      [key in keyof T]: Infer<T[key]>
-    }
-  : never
+type OutputFormatFix = {}
+
+export type OutputFromShape<T extends FieldsDef> = {
+  [key in keyof T]: Infer<T[key]>
+} & OutputFormatFix
 
 export interface PrimitiveArrayTypeDef<
   Def extends PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef> =
