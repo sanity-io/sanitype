@@ -80,13 +80,25 @@ export type ReferenceShape = {
   _weak?: BooleanTypeDef
 }
 
-export interface Internal<T> {
-  /** @deprecated Do not use. Only exists in the type system and will be undefined at runtime. */
-  __internal: T
+/**
+ *
+ * This is used to retain type information that is not accessible
+ * */
+export class Conceal<T> {
+  /** @deprecated - Do not use. Only exists in the type system and will throw an error if accessed at runtime. */
+  get "@@internal"(): T {
+    throw new Error(
+      "Tried to access a concealed value that exists only in the type system",
+    )
+  }
 }
 
+export type Reveal<T extends Conceal<any>> = T extends Conceal<infer Concealed>
+  ? Concealed
+  : never
+
 type WithRefTypeDef<T, RefTypeDef extends DocumentTypeDef<any>> = T &
-  Internal<RefTypeDef>
+  Conceal<RefTypeDef>
 
 export interface ReferenceTypeDef<
   RefType extends DocumentTypeDef<string>,
