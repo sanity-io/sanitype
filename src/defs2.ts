@@ -1,84 +1,76 @@
-import {Infer} from "./defs"
+import {lazy, literal, object, string} from "./factories2"
+import {Combine} from "./utils"
 
-interface SanityType<Output = any, Def = any> {
+export interface SanityType<Output = any, Def = any> {
   typeName: string
   def: Def
   output: Output
 }
 
-type SanityAny = SanityType<any, any>
-type SanityString = SanityType<string, string>
+export type SanityAny = SanityType<any, any>
+export type SanityString = SanityType<string, string>
+export type SanityNumber = SanityType<number, number>
+export type SanityBoolean = SanityType<boolean, boolean>
 
+export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
 > extends SanityType<Def, Def> {
   typeName: "literal"
 }
 
-type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
+export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
+  extends SanityType<Output, Def[]> {
+  typeName: "union"
+}
+
+export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
+
+export interface SanityObject<
+  Def extends SanityObjectShape = SanityObjectShape,
+  Output = OutputFromShape<Def>,
+> extends SanityType<Output, Def> {}
+
+export interface SanityLazy<T extends SanityType>
+  extends SanityType<OutputOf<T>> {
+  typeName: "lazy"
+}
 
 type OutputFormatFix = {}
-
 export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>
 } & OutputFormatFix
 
-interface SanityObject<
-  Def extends SanityObjectShape = SanityObjectShape,
-  Output = OutputFromShape<Def>,
-> extends SanityType<Output, Def> {}
-export type OutputOf<T extends SanityType> = T["output"]
+type AddArrayKey<T> = Combine<T, {_key: string}>
 
-interface SanityLazy<T extends SanityType> extends SanityType<OutputOf<T>> {
-  typeName: "lazy"
+export interface SanityObjectArray<
+  ElementType extends SanityObject | SanityUnion<SanityObject> =
+    | SanityObject
+    | SanityUnion<SanityObject>,
+  Output = AddArrayKey<OutputOf<ElementType>>[],
+> extends SanityType<Output, ElementType> {
+  typeName: "objectArray"
 }
+
+export interface SanityPrimitiveArray<
+  ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
+    | SanityPrimitive
+    | SanityUnion<SanityPrimitive>,
+  Output = FlattenUnion<ElementType>[],
+> extends SanityType<Output, ElementType> {
+  typeName: "primitiveArray"
+}
+
+type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
 type Obj = SanityType<{foo: string}>
 
 declare const obj: Obj
 declare const output: OutputOf<typeof obj>
 
-const throwOnOutputAccess = {
-  get output(): any {
-    throw new Error("This method is not defined runtime")
-  },
-}
+export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
 
-export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
-  return {
-    typeName: "object",
-    def: shape,
-    ...throwOnOutputAccess,
-  }
-}
-
-export function string(): SanityString {
-  return {
-    typeName: "string",
-    def: "",
-    ...throwOnOutputAccess,
-  }
-}
-
-export function literal<Def extends boolean | number | string>(
-  literal: Def,
-): SanityLiteral<Def> {
-  return {
-    typeName: "literal",
-    def: literal,
-    ...throwOnOutputAccess,
-  }
-}
-const test: SanityObject<{foo: SanityString}> = object({foo: string()})
-
-//--------lazy
-function lazy<T extends SanityAny>(creator: () => T): SanityLazy<T> {
-  return {
-    typeName: "lazy",
-    def: creator,
-    ...throwOnOutputAccess,
-  }
-}
+export type OutputOf<T extends SanityAny> = T["output"]
 
 type Result = SanityType<{foo: string}>
 type LazyDef = SanityLazy<SanityObject<{foo: SanityString}>>

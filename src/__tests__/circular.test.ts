@@ -1,33 +1,29 @@
-import type {Infer} from "../defs"
-import {lazy, literal, number, object, objectArray, string} from "../factories"
-import {Lazy} from "../types"
+import type {Infer, SanityType} from "../defs2"
+import {lazy, literal, number, object, string} from "../factories2"
 import {parse} from "../parse"
 import {test} from "vitest"
 
-type Person = {
+interface Person {
   _type: "person"
   name: string
-  parents: Person[]
+  parent: Person
 }
 
-const person: Lazy<Person> = lazy(() =>
+const person: SanityType<Person> = lazy(() =>
   object({
     _type: literal("person"),
     name: string(),
-    parents: objectArray(person),
+    parent: person,
   }),
 )
 test("Schema types", () => {
   const parsed = parse(person, {})
 
-  parsed.parents.map(parent => parent.name)
-  parsed.parents.map(parent => parent._key)
-  parsed.parents.map(parent => parent.parents.map(p => p._key))
-  parsed.parents.map(parent =>
-    parent.parents.map(p => p.parents.map(p1 => p1._key)),
-  )
+  parsed.parent.name
+  parsed.parent.parent.name
+  parsed.parent
 
-  const simple: Lazy<{foo: string}> = lazy(() => object({foo: string()}))
+  const simple: SanityType<{foo: string}> = lazy(() => object({foo: string()}))
 
   type Simple = Infer<typeof simple>
 
@@ -39,7 +35,7 @@ test("Schema types", () => {
     self: Circular
   }
 
-  const shouldWork: Lazy<Circular> = lazy(() =>
+  const shouldWork: SanityType<Circular> = lazy(() =>
     object({foo: string(), self: shouldWork, bar: number()}),
   )
 

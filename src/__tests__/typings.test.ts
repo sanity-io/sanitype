@@ -1,22 +1,17 @@
 import {test} from "vitest"
-import type {
-  Infer,
-  NumberTypeDef,
-  ObjectTypeDef,
-  OutputOf,
-  TypeDef,
-} from "../defs"
+import {Infer} from "../defs2"
+
 import {
-  array,
+  primitiveArray,
   boolean,
   literal,
   number,
   object,
   objectArray,
-  primitiveArray,
   string,
   union,
-} from "../factories"
+  array,
+} from "../factories2"
 import {parse} from "../parse"
 import {assertAssignable} from "./helpers"
 

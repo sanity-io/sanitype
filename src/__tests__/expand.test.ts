@@ -2,6 +2,7 @@ import {test} from "vitest"
 import {document, reference, string} from "../factories"
 import {parse} from "../parse"
 import {expand} from "../expand"
+import {assertAssignable} from "./helpers"
 
 const country = document("country", {
   name: string(),
