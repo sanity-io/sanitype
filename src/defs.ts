@@ -20,7 +20,7 @@ export interface LiteralTypeDef<
 export interface UnionTypeDef<
   Def extends TypeDef = TypeDef,
   Output = OutputOf<Def>,
-> extends TypeDef<Def, Output> {
+> extends TypeDef<Def[], Output> {
   typeName: "union"
 }
 

@@ -1,5 +1,11 @@
 import {test} from "vitest"
-import type {Infer, NumberTypeDef, ObjectTypeDef, TypeDef} from "../defs"
+import type {
+  Infer,
+  NumberTypeDef,
+  ObjectTypeDef,
+  OutputOf,
+  TypeDef,
+} from "../defs"
 import {
   array,
   boolean,
