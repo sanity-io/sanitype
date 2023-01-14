@@ -24,6 +24,8 @@ export interface UnionTypeDef<
   typeName: "union"
 }
 
+export type LazyTypeDef<T = TypeDef> = () => TypeDef<T>
+
 export type FieldsDef<T = any> = {[key in keyof T]: TypeDef}
 
 export interface ObjectTypeDef<

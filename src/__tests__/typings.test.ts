@@ -18,6 +18,7 @@ import {
   union,
 } from "../factories"
 import {parse} from "../parse"
+import {assertAssignable} from "./helpers"
 
 test("Schema types", () => {
   //@ts-expect-error type definition says foo should be a number, but output type requires it to be a string

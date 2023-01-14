@@ -13,7 +13,9 @@ import {
   TypeDef,
   UnionTypeDef,
   ReferenceShape,
+  LazyTypeDef,
 } from "./defs"
+import {Lazy} from "./types"
 
 export function document<N extends string, T extends FieldsDef>(
   name: N,
@@ -194,6 +196,6 @@ export function reference<RefType extends DocumentTypeDef<any>>(
 
 export function lazy<Output extends any, T extends TypeDef>(
   getter: () => T,
-): T {
-  return getter()
+): LazyTypeDef<T> {
+  return getter
 }
