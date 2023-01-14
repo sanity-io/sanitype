@@ -15,87 +15,49 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs"
-
-const throwOnOutputAccess = {
-  get output(): any {
-    throw new Error("This method is not defined runtime")
-  },
-}
+import {defineHiddenGetter} from "./utils"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
-  return {
-    typeName: "object",
-    def: shape,
-    ...throwOnOutputAccess,
-  }
+  return disallowOutput({typeName: "object", def: shape})
 }
 
-const STRING: SanityString = {
-  typeName: "string",
-  def: "",
-  ...throwOnOutputAccess,
-}
-
+const STRING: SanityString = disallowOutput({typeName: "string", def: ""})
 export function string(): SanityString {
   return STRING
 }
 
-const NUMBER: SanityNumber = {
-  typeName: "number",
-  def: 0,
-  ...throwOnOutputAccess,
-}
+const NUMBER: SanityNumber = disallowOutput({typeName: "number", def: 0})
 export function number<Def extends number>(): SanityNumber {
   return NUMBER
 }
 
-const BOOLEAN: SanityBoolean = {
-  typeName: "boolean",
-  def: false,
-  ...throwOnOutputAccess,
-}
+const BOOLEAN: SanityBoolean = disallowOutput({typeName: "boolean", def: false})
 export function boolean<Def extends boolean>(): SanityBoolean {
   return BOOLEAN
 }
 export function union<Def extends SanityType>(shapes: Def[]): SanityUnion<Def> {
-  return {typeName: "union", def: shapes, ...throwOnOutputAccess}
+  return disallowOutput({typeName: "union", def: shapes})
 }
 
 export function literal<Def extends boolean | number | string>(
   literal: Def,
 ): SanityLiteral<Def> {
-  return {
-    typeName: "literal",
-    def: literal,
-    ...throwOnOutputAccess,
-  }
+  return disallowOutput({typeName: "literal", def: literal})
 }
 
 export function lazy<T extends SanityAny>(creator: () => T): SanityLazy<T> {
-  return {
-    typeName: "lazy",
-    def: creator,
-    ...throwOnOutputAccess,
-  }
+  return disallowOutput({typeName: "lazy", def: creator})
 }
 
 export function objectArray<
   ElementType extends SanityObject | SanityUnion<SanityObject>,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
-  return {
-    typeName: "objectArray",
-    def: elementSchema,
-    ...throwOnOutputAccess,
-  }
+  return disallowOutput({typeName: "objectArray", def: elementSchema})
 }
 export function primitiveArray<
   ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>,
 >(elementSchema: ElementType): SanityPrimitiveArray<ElementType> {
-  return {
-    typeName: "primitiveArray",
-    def: elementSchema,
-    ...throwOnOutputAccess,
-  }
+  return disallowOutput({typeName: "primitiveArray", def: elementSchema})
 }
 
 function isObjectArray(
@@ -140,20 +102,24 @@ export function document<Name extends string, Shape extends SanityObjectShape>(
   })
 }
 
-const doc: SanityDocument<"doc"> = document("doc", {})
-
 const referenceShape = object({
   _type: literal("reference"),
   _ref: string(),
-  _weak: boolean()
+  _weak: boolean(),
 })
+
 export function reference<RefType extends SanityDocument>(
   to: RefType,
 ): SanityReference<RefType> {
-  return {
+  return disallowOutput({
     typeName: "object",
     def: referenceShape.def,
     referenceType: to,
-    ...throwOnOutputAccess,
-  }
+  })
+}
+
+function disallowOutput<T>(target: T): T & {output: never} {
+  return defineHiddenGetter(target, "output", () => {
+    throw new Error("This method is not defined runtime")
+  }) as T & {output: never}
 }

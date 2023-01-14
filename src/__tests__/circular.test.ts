@@ -6,7 +6,7 @@ import {test} from "vitest"
 interface Person {
   _type: "person"
   name: string
-  parent: Person
+  parent?: Person
 }
 
 const person: SanityType<Person> = lazy(() =>
@@ -19,9 +19,9 @@ const person: SanityType<Person> = lazy(() =>
 test("Schema types", () => {
   const parsed = parse(person, {})
 
-  parsed.parent.name
-  parsed.parent.parent.name
-  parsed.parent
+  parsed?.parent?.name
+  parsed?.parent?.parent?.name
+  parsed?.parent
 
   const simple: SanityType<{foo: string}> = lazy(() => object({foo: string()}))
 
@@ -40,5 +40,5 @@ test("Schema types", () => {
   )
 
   const r = parse(shouldWork, {})
-  r.self.self.self
+  r.self?.self?.self
 })

@@ -25,3 +25,15 @@ export type GroupUnderscoreKeys<T> = Combine<
   Pick<T, UnderscoreKeys<T>>,
   Omit<T, UnderscoreKeys<T>>
 >
+
+export function defineHiddenGetter<T>(
+  target: T,
+  name: string,
+  getter: () => any,
+) {
+  return Object.defineProperty(target, name, {
+    get: getter,
+    enumerable: false,
+    configurable: false,
+  })
+}
