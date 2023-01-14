@@ -1,5 +1,5 @@
 import {test} from "vitest"
-import {Infer} from "../defs2"
+import {Infer} from "../defs"
 
 import {
   primitiveArray,
@@ -11,7 +11,7 @@ import {
   string,
   union,
   array,
-} from "../factories2"
+} from "../factories"
 import {parse} from "../parse"
 import {assertAssignable} from "./helpers"
 

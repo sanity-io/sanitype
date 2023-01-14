@@ -1,86 +1,83 @@
+import {lazy, literal, object, string} from "./factories"
 import {Combine} from "./utils"
 
-export interface TypeDef<Def = any, Output = any> {
+export interface SanityType<Output = any, Def = any> {
   typeName: string
   def: Def
   output: Output
 }
 
-export type StringTypeDef = TypeDef<string, string>
-export type NumberTypeDef = TypeDef<number, number>
-export type BooleanTypeDef = TypeDef<boolean, boolean>
-export type PrimitiveTypeDef = StringTypeDef | NumberTypeDef | BooleanTypeDef
+export type SanityAny = SanityType<any, any>
+export type SanityString = SanityType<string, string>
+export type SanityNumber = SanityType<number, number>
+export type SanityBoolean = SanityType<boolean, boolean>
 
-export interface LiteralTypeDef<
+export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
+export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
-> extends TypeDef<Def, Def> {
+> extends SanityType<Def, Def> {
   typeName: "literal"
 }
 
-export interface UnionTypeDef<
-  Def extends TypeDef = TypeDef,
-  Output = OutputOf<Def>,
-> extends TypeDef<Def[], Output> {
+export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
+  extends SanityType<Output, Def[]> {
   typeName: "union"
 }
 
-export type LazyTypeDef<T = TypeDef> = () => TypeDef<T>
+export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
 
-export type FieldsDef<T = any> = {[key in keyof T]: TypeDef}
-
-export interface ObjectTypeDef<
-  Def extends FieldsDef = FieldsDef,
-  Output extends OutputFromShape<Def> = OutputFromShape<Def>,
-> extends TypeDef<Def, Output> {
+export interface SanityObject<
+  Def extends SanityObjectShape = SanityObjectShape,
+  Output = OutputFromShape<Def>,
+> extends SanityType<Output, Def> {
   typeName: "object"
 }
 
-type DocumentSchemaBase<Name extends string> = {
-  _type: LiteralTypeDef<Name>
-  _id: StringTypeDef
-  _createdAt: StringTypeDef
-  _updatedAt: StringTypeDef
-  _rev: StringTypeDef
-}
-
-export interface DocumentTypeDef<
-  N extends string,
-  F extends FieldsDef = FieldsDef,
-> extends TypeDef<F, OutputFromShape<DocumentSchemaBase<N> & F>> {
-  typeName: "document"
+export interface SanityLazy<T extends SanityType>
+  extends SanityType<OutputOf<T>> {
+  typeName: "lazy"
 }
 
 type OutputFormatFix = {}
-
-export type OutputFromShape<T extends FieldsDef> = {
+export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>
 } & OutputFormatFix
 
-export interface PrimitiveArrayTypeDef<
-  Def extends PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef> =
-    | PrimitiveTypeDef
-    | UnionTypeDef<PrimitiveTypeDef>,
-  Output = FlattenUnion<Def>[],
-> extends TypeDef<Def, Output> {
-  typeName: "primitiveArray"
-}
+type AddArrayKey<T> = Combine<T, {_key: string}>
 
-export interface ObjectArrayTypeDef<
-  Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef> =
-    | ObjectTypeDef
-    | UnionTypeDef<ObjectTypeDef>,
-  Output = AddArrayKey<FlattenUnion<Def>>[],
-> extends TypeDef<Def, Output> {
+export interface SanityObjectArray<
+  ElementType extends SanityObject | SanityUnion<SanityObject> =
+    | SanityObject
+    | SanityUnion<SanityObject>,
+  Output = AddArrayKey<OutputOf<ElementType>>[],
+> extends SanityType<Output, ElementType> {
   typeName: "objectArray"
 }
 
-type AddArrayKey<T> = Combine<T, {_key: string}>
+export interface SanityPrimitiveArray<
+  ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
+    | SanityPrimitive
+    | SanityUnion<SanityPrimitive>,
+  Output = FlattenUnion<ElementType>[],
+> extends SanityType<Output, ElementType> {
+  typeName: "primitiveArray"
+}
+
+type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
 export type ReferenceShape = {
-  _type: LiteralTypeDef<"reference">
-  _ref?: StringTypeDef
-  _weak?: BooleanTypeDef
+  _type: SanityLiteral<"reference">
+  _ref?: SanityString
+  _weak?: SanityBoolean
 }
+
+export type SanityDocument<Name extends string = string> = SanityObject<{
+  _type: SanityLiteral<Name>
+  _id: SanityString
+  _createdAt: SanityString
+  _updatedAt: SanityString
+  _rev: SanityString
+}>
 
 /**
  *
@@ -99,20 +96,45 @@ export type Reveal<T extends Conceal<any>> = T extends Conceal<infer Concealed>
   ? Concealed
   : never
 
-type WithRefTypeDef<RefType extends DocumentTypeDef<any>> = Combine<
+type WithRefTypeDef<RefType extends SanityDocument<any>> = Combine<
   OutputFromShape<ReferenceShape>,
   Conceal<RefType>
 >
 
-export interface ReferenceTypeDef<
-  RefType extends DocumentTypeDef<string>,
+export interface SanityReference<
+  RefType extends SanityDocument,
   Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
-> extends ObjectTypeDef<ReferenceShape, Output> {
-  typeName: "object"
+> extends SanityObject<ReferenceShape, Output> {
   referenceType: RefType
 }
 
-export type Infer<T extends any> = T extends TypeDef ? OutputOf<T> : T
+type Obj = SanityType<{foo: string}>
 
-export type OutputOf<T extends TypeDef> = T["output"]
-type FlattenUnion<T extends TypeDef> = OutputOf<T>
+declare const obj: Obj
+declare const output: OutputOf<typeof obj>
+
+export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
+
+export type OutputOf<T extends SanityAny> = T["output"]
+
+type Result = SanityType<{foo: string}>
+type LazyDef = SanityLazy<SanityObject<{foo: SanityString}>>
+
+declare const def: LazyDef
+const r: Result = def
+
+interface Person {
+  _type: "person"
+  name: string
+  parent: Person
+}
+
+const lazyPerson: SanityType<Person> = lazy(() =>
+  object({
+    _type: literal("person"),
+    name: lazy(() => string()),
+    parent: lazy(() => lazyPerson),
+  }),
+)
+
+declare const person: OutputOf<typeof lazyPerson>

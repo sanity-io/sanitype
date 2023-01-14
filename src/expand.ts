@@ -1,4 +1,4 @@
-import {Conceal, DocumentTypeDef, Reveal, TypeDef} from "./defs"
+import {Conceal, SanityDocument, SanityType} from "./defs"
 
 interface DocumentLike {
   _type: string
@@ -17,11 +17,11 @@ interface ReferenceLike {
 
 export declare function expand<
   T extends ReferenceLike | (ReferenceLike & Conceal<RefTypeDef>),
-  RefTypeDef extends DocumentTypeDef<any>,
+  RefTypeDef extends SanityDocument,
 >(
   reference: T,
 ): T extends Conceal<infer RefTypeDef>
-  ? RefTypeDef extends TypeDef<any, infer Output>
+  ? RefTypeDef extends SanityType<infer Output>
     ? Promise<Output>
     : T extends {_weak: true}
     ? Promise<undefined | DocumentLike>

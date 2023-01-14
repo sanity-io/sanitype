@@ -1,6 +1,6 @@
-import {Infer, TypeDef} from "./defs"
+import {Infer, SanityType} from "./defs"
 
-export declare function parse<T extends TypeDef<any>>(
+export declare function parse<T extends SanityType>(
   schema: T,
   input: unknown,
 ): Infer<T>

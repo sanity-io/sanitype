@@ -1,4 +1,4 @@
-import {array, document, reference, string} from "../src/factories2"
+import {array, document, reference, string} from "../src/factories"
 import {parse} from "../src/parse"
 import {expand} from "../src/expand"
 import {Infer, OutputOf} from "../src/defs"

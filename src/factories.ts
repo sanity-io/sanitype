@@ -1,201 +1,159 @@
 import {
-  BooleanTypeDef,
-  LiteralTypeDef,
-  NumberTypeDef,
-  ObjectArrayTypeDef,
-  ObjectTypeDef,
-  DocumentTypeDef,
-  PrimitiveArrayTypeDef,
-  PrimitiveTypeDef,
-  ReferenceTypeDef,
-  FieldsDef,
-  StringTypeDef,
-  TypeDef,
-  UnionTypeDef,
-  ReferenceShape,
-  LazyTypeDef,
+  SanityAny,
+  SanityBoolean,
+  SanityDocument,
+  SanityLazy,
+  SanityLiteral,
+  SanityNumber,
+  SanityObject,
+  SanityObjectArray,
+  SanityObjectShape,
+  SanityPrimitive,
+  SanityPrimitiveArray,
+  SanityReference,
+  SanityString,
+  SanityType,
+  SanityUnion,
 } from "./defs"
-import {Lazy} from "./types"
 
-export function document<N extends string, T extends FieldsDef>(
-  name: N,
-  shape: T,
-): DocumentTypeDef<N, T> {
-  return {
-    typeName: "document",
-    def: {_type: literal(name), ...shape},
-    output: throwIfAccessed,
-  }
+const throwOnOutputAccess = {
+  get output(): any {
+    throw new Error("This method is not defined runtime")
+  },
 }
 
-export function union<Def extends TypeDef>(shapes: Def[]): UnionTypeDef<Def> {
-  return {typeName: "union", def: shapes, output: throwIfAccessed}
-}
-
-export function object<T extends FieldsDef>(shape: T): ObjectTypeDef<T> {
+export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
   return {
     typeName: "object",
     def: shape,
-    output: throwIfAccessed,
+    ...throwOnOutputAccess,
+  }
+}
+
+const STRING: SanityString = {
+  typeName: "string",
+  def: "",
+  ...throwOnOutputAccess,
+}
+
+export function string(): SanityString {
+  return STRING
+}
+
+const NUMBER: SanityNumber = {
+  typeName: "number",
+  def: 0,
+  ...throwOnOutputAccess,
+}
+export function number<Def extends number>(): SanityNumber {
+  return NUMBER
+}
+
+const BOOLEAN: SanityBoolean = {
+  typeName: "boolean",
+  def: false,
+  ...throwOnOutputAccess,
+}
+export function boolean<Def extends boolean>(): SanityBoolean {
+  return BOOLEAN
+}
+export function union<Def extends SanityType>(shapes: Def[]): SanityUnion<Def> {
+  return {typeName: "union", def: shapes, ...throwOnOutputAccess}
+}
+
+export function literal<Def extends boolean | number | string>(
+  literal: Def,
+): SanityLiteral<Def> {
+  return {
+    typeName: "literal",
+    def: literal,
+    ...throwOnOutputAccess,
+  }
+}
+
+export function lazy<T extends SanityAny>(creator: () => T): SanityLazy<T> {
+  return {
+    typeName: "lazy",
+    def: creator,
+    ...throwOnOutputAccess,
   }
 }
 
 export function objectArray<
-  Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef>,
->(elementSchema: Def): ObjectArrayTypeDef<Def> {
+  ElementType extends SanityObject | SanityUnion<SanityObject>,
+>(elementSchema: ElementType): SanityObjectArray<ElementType> {
   return {
     typeName: "objectArray",
     def: elementSchema,
-    output: throwIfAccessed,
+    ...throwOnOutputAccess,
   }
 }
-
 export function primitiveArray<
-  Def extends PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef>,
->(elementSchema: Def): PrimitiveArrayTypeDef<Def> {
+  ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>,
+>(elementSchema: ElementType): SanityPrimitiveArray<ElementType> {
   return {
     typeName: "primitiveArray",
     def: elementSchema,
-    output: throwIfAccessed,
+    ...throwOnOutputAccess,
   }
-}
-
-function isPrimitiveTypeDef(typeDef: TypeDef): typeDef is PrimitiveTypeDef {
-  return (
-    typeDef.typeName === "number" ||
-    typeDef.typeName === "boolean" ||
-    typeDef.typeName === "string"
-  )
-}
-function isObjectTypeDef(typeDef: TypeDef): typeDef is ObjectTypeDef {
-  return typeDef.typeName === "object"
-}
-
-function isUnionType(typeDef: TypeDef): typeDef is UnionTypeDef {
-  return typeDef.typeName === "union"
-}
-
-function isObjectUnion(
-  typeDef: UnionTypeDef,
-): typeDef is UnionTypeDef<ObjectTypeDef> {
-  return typeDef.def.every(unionDef => isObjectTypeDef(unionDef))
 }
 
 function isObjectArray(
   elementSchema:
-    | ObjectTypeDef
-    | UnionTypeDef<ObjectTypeDef>
-    | PrimitiveTypeDef
-    | UnionTypeDef<PrimitiveTypeDef>,
-): elementSchema is ObjectTypeDef | UnionTypeDef<ObjectTypeDef> {
-  return true
-}
-function isPrimitiveArray(
-  elementSchema:
-    | ObjectTypeDef
-    | UnionTypeDef<ObjectTypeDef>
-    | PrimitiveTypeDef
-    | UnionTypeDef<PrimitiveTypeDef>,
-): elementSchema is PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef> {
+    | SanityObject
+    | SanityUnion<SanityObject>
+    | SanityPrimitive
+    | SanityUnion<SanityPrimitive>,
+): elementSchema is SanityObject | SanityUnion<SanityObject> {
   return true
 }
 
-export function _array<Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef>>(
-  elementSchema: ObjectTypeDef | UnionTypeDef<ObjectTypeDef>,
-): ObjectArrayTypeDef
-export function _array<
-  Def extends PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef>,
->(elementSchema: Def): PrimitiveArrayTypeDef<Def>
-export function _array(
+export function array<Def extends SanityObject | SanityUnion<SanityObject>>(
+  elementSchema: Def,
+): SanityObjectArray<Def>
+export function array<
+  Def extends SanityPrimitive | SanityUnion<SanityPrimitive>,
+>(elementSchema: Def): SanityPrimitiveArray<Def>
+export function array(
   elementSchema:
-    | ObjectTypeDef
-    | UnionTypeDef<ObjectTypeDef>
-    | PrimitiveTypeDef
-    | UnionTypeDef<PrimitiveTypeDef>,
+    | SanityObject
+    | SanityUnion<SanityObject>
+    | SanityPrimitive
+    | SanityUnion<SanityPrimitive>,
 ) {
   return isObjectArray(elementSchema)
-    ? {
-        typeName: "objectArray",
-        def: elementSchema,
-        output: throwIfAccessed,
-      }
-    : {
-        typeName: "primitiveArray",
-        def: elementSchema,
-        output: throwIfAccessed,
-      }
+    ? objectArray(elementSchema)
+    : primitiveArray(elementSchema)
 }
 
-export interface ArrayCreator {
-  <Def extends ObjectTypeDef | UnionTypeDef<ObjectTypeDef>>(
-    elementSchema: Def,
-  ): ObjectArrayTypeDef<Def>
-
-  <Def extends PrimitiveTypeDef | UnionTypeDef<PrimitiveTypeDef>>(
-    elementSchema: Def,
-  ): PrimitiveArrayTypeDef<Def>
-}
-export const array: ArrayCreator = _array
-
-const throwIfAccessed: any = () => {
-  throw new Error("This method is not defined runtime")
-}
-
-const STRING: StringTypeDef = {
-  typeName: "string",
-  def: "",
-  output: throwIfAccessed,
-}
-export function string<Def extends string>(): StringTypeDef {
-  return STRING
+export function document<Name extends string, Shape extends SanityObjectShape>(
+  name: Name,
+  shape: Shape,
+) {
+  return object({
+    _type: literal(name),
+    _id: string(),
+    _createdAt: string(),
+    _updatedAt: string(),
+    _rev: string(),
+    ...shape,
+  })
 }
 
-const NUMBER: NumberTypeDef = {
-  typeName: "number",
-  def: 0,
-  output: throwIfAccessed,
-}
-export function number<Def extends number>(): NumberTypeDef {
-  return NUMBER
-}
+const doc: SanityDocument<"doc"> = document("doc", {})
 
-const BOOLEAN: BooleanTypeDef = {
-  typeName: "boolean",
-  def: false,
-  output: throwIfAccessed,
-}
-export function boolean<Def extends boolean>(): BooleanTypeDef {
-  return BOOLEAN
-}
-export function literal<Def extends boolean | number | string>(
-  literal: Def,
-): LiteralTypeDef<Def> {
-  return {
-    typeName: "literal",
-    def: literal,
-    output: throwIfAccessed,
-  }
-}
-
-const referenceShape = {
+const referenceShape = object({
   _type: literal("reference"),
   _ref: string(),
-  _weak: boolean(),
-}
-
-export function reference<RefType extends DocumentTypeDef<any>>(
+  _weak: boolean()
+})
+export function reference<RefType extends SanityDocument>(
   to: RefType,
-): ReferenceTypeDef<RefType> {
+): SanityReference<RefType> {
   return {
     typeName: "object",
-    def: referenceShape,
+    def: referenceShape.def,
     referenceType: to,
-    output: throwIfAccessed,
+    ...throwOnOutputAccess,
   }
-}
-
-export function lazy<Output extends any, T extends TypeDef>(
-  getter: () => T,
-): LazyTypeDef<T> {
-  return getter
 }

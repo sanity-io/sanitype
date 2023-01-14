@@ -1,5 +1,4 @@
-import type {ObjectTypeDef} from "./defs"
-import {GroupUnderscoreKeys, Combine} from "./utils"
+import {Combine, GroupUnderscoreKeys} from "./utils"
 
 type MaybeAddKey<T extends any> = T extends Array<infer E>
   ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
@@ -13,9 +12,3 @@ export type MaybeAddKeyToArrayProps<T extends any> = T extends {
     }
   : T
 
-export type Lazy<Output> = ObjectTypeDef<
-  any,
-  {
-    [key in keyof Output]: MaybeAddKey<Output[key]>
-  }
->

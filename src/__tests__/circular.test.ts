@@ -1,5 +1,5 @@
-import type {Infer, SanityType} from "../defs2"
-import {lazy, literal, number, object, string} from "../factories2"
+import type {Infer, SanityType} from "../defs"
+import {lazy, literal, number, object, string} from "../factories"
 import {parse} from "../parse"
 import {test} from "vitest"
 
