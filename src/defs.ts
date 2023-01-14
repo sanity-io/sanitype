@@ -86,7 +86,7 @@ export type ReferenceShape = {
  * */
 export class Conceal<T> {
   /** @deprecated - Do not use. Only exists in the type system and will throw an error if accessed at runtime. */
-  get "@@internal"(): T {
+  get "@@internal_ref_type"(): T {
     throw new Error(
       "Tried to access a concealed value that exists only in the type system",
     )
@@ -97,15 +97,14 @@ export type Reveal<T extends Conceal<any>> = T extends Conceal<infer Concealed>
   ? Concealed
   : never
 
-type WithRefTypeDef<T, RefTypeDef extends DocumentTypeDef<any>> = T &
-  Conceal<RefTypeDef>
+type WithRefTypeDef<RefType extends DocumentTypeDef<any>> = Combine<
+  OutputFromShape<ReferenceShape>,
+  Conceal<RefType>
+>
 
 export interface ReferenceTypeDef<
   RefType extends DocumentTypeDef<string>,
-  Output extends WithRefTypeDef<
-    OutputFromShape<ReferenceShape>,
-    RefType
-  > = WithRefTypeDef<OutputFromShape<ReferenceShape>, RefType>,
+  Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
 > extends ObjectTypeDef<ReferenceShape, Output> {
   typeName: "object"
   referenceType: RefType
@@ -113,5 +112,5 @@ export interface ReferenceTypeDef<
 
 export type Infer<T extends any> = T extends TypeDef ? OutputOf<T> : T
 
-type OutputOf<T extends TypeDef> = T["output"]
+export type OutputOf<T extends TypeDef> = T["output"]
 type FlattenUnion<T extends TypeDef> = OutputOf<T>

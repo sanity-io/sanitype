@@ -2,6 +2,7 @@ import {
   array,
   document,
   literal,
+  number,
   object,
   reference,
   string,
@@ -9,6 +10,7 @@ import {
 } from "../src/factories"
 import {parse} from "../src/parse"
 import {expand} from "../src/expand"
+import {OutputOf} from "../src/defs"
 
 function assertAssignable<A extends B, B>() {}
 
@@ -21,6 +23,11 @@ const pet = object({
   species: union([literal("dog"), literal("cat")]),
   name: string(),
 })
+declare const petOutput: OutputOf<typeof pet>
+
+const list = array(object({test: string()}))
+
+declare const listOutput: OutputOf<typeof list>
 
 const person = document("person", {
   firstName: string(),
@@ -35,9 +42,21 @@ const person = document("person", {
   pets: array(pet),
 })
 
+declare const personOutput: OutputOf<typeof person>
+
+const polyObjectArr = array(
+  union([
+    object({_type: literal("foo"), foo: string()}),
+    object({_type: literal("two"), age: number()}),
+  ]),
+)
+declare const stringOrNumOut: OutputOf<typeof polyObjectArr>
+
+const t = reference(country)
+
 const somePerson = parse(person, {})
 
-console.log(somePerson.address.country.__internal)
+console.log(somePerson.address.country)
 
 const somePersonCountry = await expand(somePerson.address.country)
 
