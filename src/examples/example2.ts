@@ -1,11 +1,11 @@
-import {array, document, reference, string} from "../src/factories"
-import {parse} from "../src/parse"
-import {expand} from "../src/expand"
-import {Infer, OutputOf} from "../src/defs"
+import {array, document, reference, string} from "../factories.js"
+import {parse} from "../parse.js"
+import {expand} from "../expand.js"
+import {Infer} from "../defs.js"
 
 const pet = document("pet", {name: string()})
 
-declare const petOutput: OutputOf<typeof pet>
+declare const petOutput: Infer<typeof pet>
 
 const person = document("person", {
   firstName: string(),
@@ -14,7 +14,7 @@ const person = document("person", {
   pets: array(reference(pet)),
 })
 
-declare const personOutput: OutputOf<typeof person>
+declare const personOutput: Infer<typeof person>
 
 type Person = Infer<typeof person>
 

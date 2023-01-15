@@ -1,4 +1,4 @@
-import {Combine, GroupUnderscoreKeys} from "./utils"
+import {Combine, GroupUnderscoreKeys} from "./utils.js"
 
 type MaybeAddKey<T extends any> = T extends Array<infer E>
   ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]

@@ -14,8 +14,8 @@ import {
   SanityString,
   SanityType,
   SanityUnion,
-} from "./defs"
-import {defineHiddenGetter} from "./utils"
+} from "./defs.js"
+import {defineHiddenGetter} from "./utils.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
   return disallowOutput({typeName: "object", def: shape})

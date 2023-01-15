@@ -7,10 +7,10 @@ import {
   reference,
   string,
   union,
-} from "../src/factories"
-import {parse} from "../src/parse"
-import {expand} from "../src/expand"
-import {OutputOf} from "../src/defs"
+} from "../factories.js"
+import {parse} from "../parse.js"
+import {expand} from "../expand.js"
+import {OutputOf} from "../defs.js"
 
 function assertAssignable<A extends B, B>() {}
 

@@ -1,6 +1,6 @@
-import type {Infer, SanityType} from "../defs"
-import {lazy, literal, number, object, string} from "../factories"
-import {parse} from "../parse"
+import type {Infer, SanityType} from "../defs.js"
+import {lazy, literal, number, object, string} from "../factories.js"
+import {parse} from "../parse.js"
 import {test} from "vitest"
 
 interface Person {

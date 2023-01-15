@@ -1,4 +1,4 @@
-import {Conceal, SanityDocument, SanityType} from "./defs"
+import {Conceal, SanityDocument, SanityType} from "./defs.js"
 
 interface DocumentLike {
   _type: string
@@ -27,5 +27,5 @@ export function expand<
     ? Promise<undefined | DocumentLike>
     : Promise<DocumentLike>
   : Promise<DocumentLike> {
-  return Promise.resolve({} as any)
+  return Promise.resolve({} as any) as any
 }

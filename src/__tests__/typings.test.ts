@@ -1,5 +1,5 @@
 import {test} from "vitest"
-import {Infer} from "../defs"
+import {Infer} from "../defs.js"
 
 import {
   primitiveArray,
@@ -11,9 +11,9 @@ import {
   string,
   union,
   array,
-} from "../factories"
-import {parse} from "../parse"
-import {assertAssignable} from "./helpers"
+} from "../factories.js"
+import {parse} from "../parse.js"
+import {assertAssignable} from "./helpers.js"
 
 test("Schema types", () => {
   //@ts-expect-error type definition says foo should be a number, but output type requires it to be a string

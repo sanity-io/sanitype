@@ -1,9 +1,12 @@
-import {lazy, literal, object, string} from "./factories"
-import {Combine} from "./utils"
+import {lazy, literal, object, string} from "./factories.js"
+import {Combine} from "./utils.js"
 
 export interface SanityType<Output = any, Def = any> {
   typeName: string
   def: Def
+  /**
+   * @deprecated ** DO NOT USE ** This will throw an error if you try to access it at runtime
+   */
   output: Output
 }
 
@@ -42,6 +45,9 @@ type OutputFormatFix = {}
 export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>
 } & OutputFormatFix
+
+type T = OutputFromShape<SanityObjectShape>
+type T2 = OutputOf<SanityObject>
 
 type AddArrayKey<T> = Combine<T, {_key: string}>
 

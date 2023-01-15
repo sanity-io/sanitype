@@ -1,8 +1,8 @@
 import {test} from "vitest"
-import {document, reference, string} from "../factories"
-import {parse} from "../parse"
-import {expand} from "../expand"
-import {assertAssignable} from "./helpers"
+import {document, reference, string} from "../factories.js"
+import {parse} from "../parse.js"
+import {expand} from "../expand.js"
+import {assertAssignable} from "./helpers.js"
 
 const country = document("country", {
   name: string(),

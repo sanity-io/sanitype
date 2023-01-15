@@ -2,8 +2,9 @@
   "include": ["src/*/**.ts"],
   "compilerOptions": {
     "rootDir": "src",
-    "target": "ES2022",
-    "module": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
     "strict": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
@@ -13,7 +14,6 @@
     "lib": ["es2019"],
     "outDir": "dist",
     "declaration": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
   }
 }
