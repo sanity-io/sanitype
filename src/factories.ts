@@ -2,6 +2,7 @@ import {
   SanityAny,
   SanityBoolean,
   SanityDocument,
+  SanityDocumentShape,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -15,59 +16,65 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {defineHiddenGetter} from "./utils.js"
+import {Combine, defineHiddenGetter} from "./utils.js"
+import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
-  return disallowOutput({typeName: "object", def: shape})
+  return throwOnOutputAccess({typeName: "object", def: shape})
 }
 
-const STRING: SanityString = disallowOutput({typeName: "string", def: ""})
+const STRING: SanityString = throwOnOutputAccess({typeName: "string", def: ""})
 export function string(): SanityString {
   return STRING
 }
 
-const NUMBER: SanityNumber = disallowOutput({typeName: "number", def: 0})
+const NUMBER: SanityNumber = throwOnOutputAccess({typeName: "number", def: 0})
 export function number<Def extends number>(): SanityNumber {
   return NUMBER
 }
 
-const BOOLEAN: SanityBoolean = disallowOutput({typeName: "boolean", def: false})
+const BOOLEAN: SanityBoolean = throwOnOutputAccess({
+  typeName: "boolean",
+  def: false,
+})
 export function boolean<Def extends boolean>(): SanityBoolean {
   return BOOLEAN
 }
-export function union<Def extends SanityType>(shapes: Def[]): SanityUnion<Def> {
-  return disallowOutput({typeName: "union", def: shapes})
+export function union<Def extends SanityType>(
+  schemas: Def[],
+): SanityUnion<Def> {
+  return throwOnOutputAccess({typeName: "union", def: schemas})
 }
 
 export function literal<Def extends boolean | number | string>(
   literal: Def,
 ): SanityLiteral<Def> {
-  return disallowOutput({typeName: "literal", def: literal})
+  return throwOnOutputAccess({typeName: "literal", def: literal})
 }
 
 export function lazy<T extends SanityAny>(creator: () => T): SanityLazy<T> {
-  return disallowOutput({typeName: "lazy", def: creator})
+  return throwOnOutputAccess({typeName: "lazy", def: creator})
 }
 
+function addKeyProperty<T extends SanityObject | SanityUnion<SanityObject>>(
+  target: T,
+): T {
+  return isUnionSchema(target)
+    ? {...target, def: target.def.map(addKeyProperty)}
+    : {...target, def: {...target.def, _key: string()}}
+}
 export function objectArray<
   ElementType extends SanityObject | SanityUnion<SanityObject>,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
-  return disallowOutput({typeName: "objectArray", def: elementSchema})
+  return throwOnOutputAccess({
+    typeName: "objectArray",
+    def: addKeyProperty(elementSchema),
+  })
 }
 export function primitiveArray<
   ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>,
 >(elementSchema: ElementType): SanityPrimitiveArray<ElementType> {
-  return disallowOutput({typeName: "primitiveArray", def: elementSchema})
-}
-
-function isObjectArray(
-  elementSchema:
-    | SanityObject
-    | SanityUnion<SanityObject>
-    | SanityPrimitive
-    | SanityUnion<SanityPrimitive>,
-): elementSchema is SanityObject | SanityUnion<SanityObject> {
-  return true
+  return throwOnOutputAccess({typeName: "primitiveArray", def: elementSchema})
 }
 
 export function array<Def extends SanityObject | SanityUnion<SanityObject>>(
@@ -83,7 +90,7 @@ export function array(
     | SanityPrimitive
     | SanityUnion<SanityPrimitive>,
 ) {
-  return isObjectArray(elementSchema)
+  return isItemObjectArrayCompatible(elementSchema)
     ? objectArray(elementSchema)
     : primitiveArray(elementSchema)
 }
@@ -111,14 +118,14 @@ const referenceShape = object({
 export function reference<RefType extends SanityDocument>(
   to: RefType,
 ): SanityReference<RefType> {
-  return disallowOutput({
+  return throwOnOutputAccess({
     typeName: "object",
     def: referenceShape.def,
     referenceType: to,
   })
 }
 
-function disallowOutput<T>(target: T): T & {output: never} {
+function throwOnOutputAccess<T>(target: T): T & {output: never} {
   return defineHiddenGetter(target, "output", () => {
     throw new Error("This method is not defined runtime")
   }) as T & {output: never}

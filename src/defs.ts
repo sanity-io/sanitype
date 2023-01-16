@@ -77,25 +77,23 @@ export type ReferenceShape = {
   _weak?: SanityBoolean
 }
 
-export type SanityDocument<Name extends string = string> = SanityObject<{
+export type SanityDocumentShape<Name extends string = string> = {
   _type: SanityLiteral<Name>
   _id: SanityString
   _createdAt: SanityString
   _updatedAt: SanityString
   _rev: SanityString
-}>
+}
+export type SanityDocument<
+  Name extends string = string,
+  Shape extends SanityObjectShape = SanityObjectShape,
+> = SanityObject<Combine<SanityDocumentShape<Name>, Shape>>
 
-/**
- *
- * This is used to retain type information that is not accessible
- * */
-export class Conceal<T> {
+export const INTERNAL_REF_TYPE_PROPERTY = "@@internal_ref_type" as const
+
+export interface Conceal<T> {
   /** @deprecated - Do not use. Only exists in the type system and will throw an error if accessed at runtime. */
-  get "@@internal_ref_type"(): T {
-    throw new Error(
-      "Tried to access a concealed value that exists only in the type system",
-    )
-  }
+  [INTERNAL_REF_TYPE_PROPERTY]: T
 }
 
 export type Reveal<T extends Conceal<any>> = T extends Conceal<infer Concealed>
@@ -126,8 +124,8 @@ export type OutputOf<T extends SanityAny> = T["output"]
 type Result = SanityType<{foo: string}>
 type LazyDef = SanityLazy<SanityObject<{foo: SanityString}>>
 
-declare const def: LazyDef
-const r: Result = def
+// declare const def: LazyDef
+// const r: Result = def
 
 interface Person {
   _type: "person"

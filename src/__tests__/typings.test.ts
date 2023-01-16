@@ -12,7 +12,7 @@ import {
   union,
   array,
 } from "../factories.js"
-import {parse} from "../parse.js"
+import {parse, safeParse} from "../parse.js"
 import {assertAssignable} from "./helpers.js"
 
 test("Schema types", () => {
@@ -118,8 +118,10 @@ test("Restrictions", () => {
 test("Key's in arrays", () => {
   const items = union([object({foo: string()}), object({bar: string()})])
   const o = objectArray(items)
-  const parsed = parse(o, {})
+  const parsed = safeParse(o, {})
 
-  const keys = parsed.map(item => item._key)
-  assertAssignable<string[], typeof keys>()
+  if (parsed.status === "ok") {
+    const keys = parsed.value.map(item => item._key)
+    assertAssignable<string[], typeof keys>()
+  }
 })

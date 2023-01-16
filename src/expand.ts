@@ -1,4 +1,4 @@
-import {Conceal, SanityDocument, SanityType} from "./defs.js"
+import {Conceal, SanityDocumentShape, SanityType} from "./defs.js"
 
 interface DocumentLike {
   _type: string
@@ -17,7 +17,7 @@ interface ReferenceLike {
 
 export function expand<
   T extends ReferenceLike | (ReferenceLike & Conceal<RefTypeDef>),
-  RefTypeDef extends SanityDocument,
+  RefTypeDef extends SanityDocumentShape,
 >(
   reference: T,
 ): T extends Conceal<infer RefTypeDef>

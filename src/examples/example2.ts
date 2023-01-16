@@ -19,6 +19,7 @@ declare const personOutput: Infer<typeof person>
 type Person = Infer<typeof person>
 
 const aPerson = parse(person, {})
+
 console.log(aPerson.favoritePet["@@internal_ref_type"])
 const allPets = await Promise.all(aPerson.pets.map(pet => expand(pet)))
 
