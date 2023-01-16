@@ -96,10 +96,6 @@ export interface Conceal<T> {
   [INTERNAL_REF_TYPE_PROPERTY]: T
 }
 
-export type Reveal<T extends Conceal<any>> = T extends Conceal<infer Concealed>
-  ? Concealed
-  : never
-
 type WithRefTypeDef<RefType extends SanityDocument<any>> = Combine<
   OutputFromShape<ReferenceShape>,
   Conceal<RefType>

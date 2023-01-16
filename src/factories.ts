@@ -98,7 +98,7 @@ export function array(
 export function document<Name extends string, Shape extends SanityObjectShape>(
   name: Name,
   shape: Shape,
-) {
+): SanityDocument<Name, Shape> {
   return object({
     _type: literal(name),
     _id: string(),
@@ -106,7 +106,7 @@ export function document<Name extends string, Shape extends SanityObjectShape>(
     _updatedAt: string(),
     _rev: string(),
     ...shape,
-  })
+  }) as any as SanityDocument<Name, Shape>
 }
 
 const referenceShape = object({
