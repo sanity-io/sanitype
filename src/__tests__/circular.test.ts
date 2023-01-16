@@ -2,6 +2,7 @@ import type {Infer, SanityType} from "../defs.js"
 import {lazy, literal, number, object, string} from "../factories.js"
 import {parse} from "../parse.js"
 import {test} from "vitest"
+import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
 
 interface Person {
   _type: "person"
@@ -16,6 +17,19 @@ const person: SanityType<Person> = lazy(() =>
     parent: person,
   }),
 )
+
+test("typings", () => {
+  type Obj = SanityType<{foo: string}>
+
+  const obj: Obj = {} as any
+  const output: OutputOf<typeof obj> = {} as any
+
+  type Result = SanityType<{foo: string}>
+  type LazyDef = SanityLazy<SanityObject<{foo: SanityString}>>
+
+  const def: LazyDef = {} as any
+  const r: Result = def
+})
 test("Schema types", () => {
   const parsed = parse(person, {})
 

@@ -108,20 +108,9 @@ export interface SanityReference<
   referenceType: RefType
 }
 
-type Obj = SanityType<{foo: string}>
-
-declare const obj: Obj
-declare const output: OutputOf<typeof obj>
-
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
 
 export type OutputOf<T extends SanityAny> = T["output"]
-
-type Result = SanityType<{foo: string}>
-type LazyDef = SanityLazy<SanityObject<{foo: SanityString}>>
-
-// declare const def: LazyDef
-// const r: Result = def
 
 interface Person {
   _type: "person"
