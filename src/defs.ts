@@ -51,9 +51,6 @@ export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>
 } & OutputFormatFix
 
-type T = OutputFromShape<SanityObjectShape>
-type T2 = OutputOf<SanityObject>
-
 type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export interface SanityObjectArray<
@@ -116,19 +113,3 @@ export interface SanityReference<
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
 
 export type OutputOf<T extends SanityAny> = T["output"]
-
-interface Person {
-  _type: "person"
-  name: string
-  parent: Person
-}
-
-const lazyPerson: SanityType<Person> = lazy(() =>
-  object({
-    _type: literal("person"),
-    name: lazy(() => string()),
-    parent: lazy(() => lazyPerson),
-  }),
-)
-
-declare const person: OutputOf<typeof lazyPerson>
