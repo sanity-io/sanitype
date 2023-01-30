@@ -14,7 +14,7 @@ const personType = document("person", {
   country: reference(country),
 })
 
-test("reference expansion", async () => {
+test("resolve reference", async () => {
   const person = parse(personType, {})
   const personCountry = await resolve(person.country)
 
