@@ -41,6 +41,11 @@ export interface SanityLazy<T extends SanityType>
   typeName: "lazy"
 }
 
+export interface SanityOptional<Def extends SanityType>
+  extends SanityType<OutputOf<Def> | undefined, Def> {
+  typeName: "optional"
+}
+
 type OutputFormatFix = {}
 export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>

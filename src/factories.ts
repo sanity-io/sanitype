@@ -9,6 +9,7 @@ import {
   SanityObject,
   SanityObjectArray,
   SanityObjectShape,
+  SanityOptional,
   SanityPrimitive,
   SanityPrimitiveArray,
   SanityReference,
@@ -16,7 +17,7 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {Combine, defineHiddenGetter} from "./utils.js"
+import {defineHiddenGetter} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
@@ -54,6 +55,9 @@ export function literal<Def extends boolean | number | string>(
 
 export function lazy<T extends SanityAny>(creator: () => T): SanityLazy<T> {
   return throwOnOutputAccess({typeName: "lazy", def: creator})
+}
+export function optional<T extends SanityType>(def: T): SanityOptional<T> {
+  return throwOnOutputAccess({typeName: "optional", def})
 }
 
 function addKeyProperty<T extends SanityObject | SanityUnion<SanityObject>>(
