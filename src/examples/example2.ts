@@ -1,4 +1,4 @@
-import {array, document, reference, string} from "../factories.js"
+import {array, document, optional, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
 import {expand} from "../expand.js"
 import {Infer} from "../defs.js"
@@ -9,7 +9,7 @@ declare const petOutput: Infer<typeof pet>
 
 const person = document("person", {
   firstName: string(),
-  lastName: string(),
+  lastName: optional(string()),
   favoritePet: reference(pet),
   pets: array(reference(pet)),
 })

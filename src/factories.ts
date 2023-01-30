@@ -9,6 +9,7 @@ import {
   SanityObject,
   SanityObjectArray,
   SanityObjectShape,
+  SanityOptional,
   SanityPrimitive,
   SanityPrimitiveArray,
   SanityReference,
