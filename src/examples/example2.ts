@@ -1,6 +1,6 @@
 import {array, document, optional, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
-import {expand} from "../expand.js"
+import {resolve} from "../resolve.js"
 import {Infer} from "../defs.js"
 
 const pet = document("pet", {name: string()})
@@ -21,8 +21,8 @@ type Person = Infer<typeof person>
 const aPerson = parse(person, {})
 
 console.log(aPerson.favoritePet["@@internal_ref_type"])
-const allPets = await Promise.all(aPerson.pets.map(pet => expand(pet)))
+const allPets = await Promise.all(aPerson.pets.map(pet => resolve(pet)))
 
-const fetchedPet = await expand(aPerson.favoritePet)
+const fetchedPet = await resolve(aPerson.favoritePet)
 
 console.log(aPerson.favoritePet)

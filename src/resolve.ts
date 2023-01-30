@@ -15,7 +15,7 @@ interface ReferenceLike {
   _weak?: boolean
 }
 
-export function expand<
+export declare function resolve<
   T extends ReferenceLike | (ReferenceLike & Conceal<RefTypeDef>),
   RefTypeDef extends SanityDocumentShape,
 >(
@@ -26,6 +26,4 @@ export function expand<
     : T extends {_weak: true}
     ? Promise<undefined | DocumentLike>
     : Promise<DocumentLike>
-  : Promise<DocumentLike> {
-  return Promise.resolve({} as any) as any
-}
+  : Promise<DocumentLike>
