@@ -2,6 +2,7 @@ import {
   SanityAny,
   SanityBoolean,
   SanityDocument,
+  SanityDocumentValue,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -118,7 +119,7 @@ const referenceShape = object({
   _weak: boolean(),
 })
 
-export function reference<RefType extends SanityDocument>(
+export function reference<RefType extends SanityType<SanityDocumentValue>>(
   to: RefType,
 ): SanityReference<RefType> {
   return throwOnOutputAccess({

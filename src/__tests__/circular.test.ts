@@ -1,5 +1,14 @@
-import type {Infer, SanityType} from "../defs.js"
-import {lazy, literal, number, object, string} from "../factories.js"
+import type {Infer, SanityDocumentValue, SanityType} from "../defs.js"
+import {
+  array,
+  document,
+  lazy,
+  literal,
+  number,
+  object,
+  reference,
+  string,
+} from "../factories.js"
 import {parse} from "../parse.js"
 import {test} from "vitest"
 import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
@@ -55,4 +64,17 @@ test("Schema types", () => {
 
   const r = parse(shouldWork, {})
   r.self?.self?.self
+})
+
+test("circular/lazy references", () => {
+  interface Human extends SanityDocumentValue {
+    name: string
+  }
+
+  const human: SanityType<Human> = document("human", {
+    name: string(),
+    pets: lazy(() => array(reference(pet))),
+  })
+
+  const pet = document("pet", {name: string(), owner: reference(human)})
 })

@@ -42,7 +42,7 @@ export interface SanityLazy<T extends SanityType>
 }
 
 export interface SanityReference<
-  RefType extends SanityDocument,
+  RefType extends SanityType<SanityDocumentValue>,
   Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
 > extends SanityType<Output> {
   typeName: "reference"
@@ -104,6 +104,8 @@ export type SanityDocument<
   Shape extends SanityObjectShape = SanityObjectShape,
 > = SanityObject<Combine<SanityDocumentShape<Name>, Shape>>
 
+export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
+
 export const INTERNAL_REF_TYPE_PROPERTY = "@@internal_ref_type" as const
 
 export interface Conceal<T> {
@@ -111,7 +113,7 @@ export interface Conceal<T> {
   [INTERNAL_REF_TYPE_PROPERTY]: T
 }
 
-type WithRefTypeDef<RefType extends SanityDocument<any>> = Combine<
+type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
   ReferenceValue,
   Conceal<RefType>
 >
