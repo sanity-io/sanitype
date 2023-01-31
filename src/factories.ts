@@ -2,7 +2,6 @@ import {
   SanityAny,
   SanityBoolean,
   SanityDocument,
-  SanityDocumentShape,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -81,9 +80,9 @@ export function primitiveArray<
   return throwOnOutputAccess({typeName: "primitiveArray", def: elementSchema})
 }
 
-export function array<Def extends SanityObject | SanityUnion<SanityObject>>(
-  elementSchema: Def,
-): SanityObjectArray<Def>
+export function array<
+  Def extends SanityObject | SanityUnion<SanityObject> | SanityReference<any>,
+>(elementSchema: Def): SanityObjectArray<Def>
 export function array<
   Def extends SanityPrimitive | SanityUnion<SanityPrimitive>,
 >(elementSchema: Def): SanityPrimitiveArray<Def>
@@ -123,10 +122,10 @@ export function reference<RefType extends SanityDocument>(
   to: RefType,
 ): SanityReference<RefType> {
   return throwOnOutputAccess({
-    typeName: "object",
+    typeName: "reference",
     def: referenceShape.def,
     referenceType: to,
-  })
+  }) as any as SanityReference<RefType>
 }
 
 function throwOnOutputAccess<T>(target: T): T & {output: never} {

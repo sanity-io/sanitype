@@ -26,14 +26,14 @@ export type GroupUnderscoreKeys<T> = Combine<
   Omit<T, UnderscoreKeys<T>>
 >
 
-export function defineHiddenGetter<T>(
+export function defineHiddenGetter<T, Prop extends keyof any>(
   target: T,
-  name: string,
+  name: Prop,
   getter: () => any,
-) {
+): T & {[key in Prop]: any} {
   return Object.defineProperty(target, name, {
     get: getter,
     enumerable: false,
     configurable: false,
-  })
+  }) as any
 }

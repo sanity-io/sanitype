@@ -1,4 +1,4 @@
-import {lazy, literal, object, string} from "./factories.js"
+import {boolean, lazy, literal, object, string} from "./factories.js"
 import {Combine} from "./utils.js"
 
 export interface SanityType<Output = any, Def = any> {
@@ -41,6 +41,14 @@ export interface SanityLazy<T extends SanityType>
   typeName: "lazy"
 }
 
+export interface SanityReference<
+  RefType extends SanityDocument,
+  Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
+> extends SanityType<Output> {
+  typeName: "reference"
+  referenceType: RefType
+}
+
 export interface SanityOptional<Def extends SanityType>
   extends SanityType<OutputOf<Def> | undefined, Def> {
   typeName: "optional"
@@ -53,10 +61,13 @@ export type OutputFromShape<T extends SanityObjectShape> = {
 
 type AddArrayKey<T> = Combine<T, {_key: string}>
 
+type SanityObjectLike =
+  | SanityObject
+  | SanityUnion<SanityObject>
+  | SanityReference<any>
+
 export interface SanityObjectArray<
-  ElementType extends SanityObject | SanityUnion<SanityObject> =
-    | SanityObject
-    | SanityUnion<SanityObject>,
+  ElementType extends SanityObjectLike = SanityObjectLike,
   Output = AddArrayKey<OutputOf<ElementType>>[],
 > extends SanityType<Output, ElementType> {
   typeName: "objectArray"
@@ -73,11 +84,13 @@ export interface SanityPrimitiveArray<
 
 type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
-export type ReferenceShape = {
-  _type: SanityLiteral<"reference">
-  _ref?: SanityString
-  _weak?: SanityBoolean
-}
+export const reference = object({
+  _type: literal("reference"),
+  _ref: string(),
+  _weak: boolean(),
+})
+
+export type ReferenceValue = Infer<typeof reference>
 
 export type SanityDocumentShape<Name extends string = string> = {
   _type: SanityLiteral<Name>
@@ -99,16 +112,9 @@ export interface Conceal<T> {
 }
 
 type WithRefTypeDef<RefType extends SanityDocument<any>> = Combine<
-  OutputFromShape<ReferenceShape>,
+  ReferenceValue,
   Conceal<RefType>
 >
-
-export interface SanityReference<
-  RefType extends SanityDocument,
-  Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
-> extends SanityObject<ReferenceShape, Output> {
-  referenceType: RefType
-}
 
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
 

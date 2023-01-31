@@ -1,6 +1,7 @@
 import {
   Infer,
   OutputOf,
+  reference,
   SanityBoolean,
   SanityLazy,
   SanityLiteral,
@@ -187,7 +188,7 @@ export function parseReference<S extends SanityReference<any>>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const parsed = parseObject(schema, input)
+  const parsed = parseObject(reference, input)
   if (parsed.status === "fail") {
     return parsed
   }
