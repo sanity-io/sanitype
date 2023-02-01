@@ -60,3 +60,9 @@ export function createResolve(fetch: (ref: string) => Promise<any>) {
     )
   }
 }
+
+export const resolve = createResolve(() =>
+  Promise.reject(
+    new Error("This is a stubbed `resolve` for demo purposes only"),
+  ),
+)
