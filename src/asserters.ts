@@ -23,9 +23,7 @@ export function isObjectSchema(schema: SanityType): schema is SanityObject {
 export function isReferenceSchema(
   schema: SanityType,
 ): schema is SanityReference<any> {
-  return (
-    schema.typeName === "object" && (schema as any).referenceType !== undefined
-  )
+  return schema.typeName === "reference"
 }
 export function isLiteralSchema(schema: SanityType): schema is SanityLiteral {
   return schema.typeName === "literal"

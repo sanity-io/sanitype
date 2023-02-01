@@ -9,7 +9,7 @@ import {
   union,
 } from "../factories.js"
 import {parse} from "../parse.js"
-import {resolve} from "../resolve.js"
+import {createResolve} from "../resolve.js"
 import {OutputOf} from "../defs.js"
 
 function assertAssignable<A extends B, B>() {}
@@ -58,6 +58,7 @@ const somePerson = parse(person, {})
 
 console.log(somePerson.address.country)
 
+const resolve = createResolve(() => Promise.resolve())
 const somePersonCountry = await resolve(somePerson.address.country)
 
 const keys = somePerson.pets.map(pet => pet._key)
