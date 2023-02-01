@@ -8,6 +8,7 @@ import {
   SanityNumber,
   SanityObject,
   SanityObjectArray,
+  SanityObjectLike,
   SanityObjectShape,
   SanityOptional,
   SanityPrimitive,
@@ -17,7 +18,12 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {defineNonEnumerableGetter} from "./utils.js"
+import {
+  defineNonEnumerableGetter,
+  ValidateFieldChars,
+  ValidateFieldName,
+  ValidateKeyOf,
+} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
@@ -60,15 +66,15 @@ export function optional<T extends SanityType>(def: T): SanityOptional<T> {
   return throwOnOutputAccess({typeName: "optional", def})
 }
 
-function addKeyProperty<T extends SanityObject | SanityUnion<SanityObject>>(
-  target: T,
-): T {
+function addKeyProperty<
+  T extends SanityObjectLike | SanityUnion<SanityObjectLike>,
+>(target: T): T {
   return isUnionSchema(target)
     ? {...target, def: target.def.map(addKeyProperty)}
     : {...target, def: {...target.def, _key: string()}}
 }
 export function objectArray<
-  ElementType extends SanityObject | SanityUnion<SanityObject>,
+  ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
   return throwOnOutputAccess({
     typeName: "objectArray",
@@ -82,15 +88,15 @@ export function primitiveArray<
 }
 
 export function array<
-  Def extends SanityObject | SanityUnion<SanityObject> | SanityReference<any>,
+  Def extends SanityObjectLike | SanityUnion<SanityObjectLike>,
 >(elementSchema: Def): SanityObjectArray<Def>
 export function array<
   Def extends SanityPrimitive | SanityUnion<SanityPrimitive>,
 >(elementSchema: Def): SanityPrimitiveArray<Def>
 export function array(
   elementSchema:
-    | SanityObject
-    | SanityUnion<SanityObject>
+    | SanityObjectLike
+    | SanityUnion<SanityObjectLike>
     | SanityPrimitive
     | SanityUnion<SanityPrimitive>,
 ) {
@@ -99,10 +105,28 @@ export function array(
     : primitiveArray(elementSchema)
 }
 
+type ExcludeInvalid<Name extends keyof any> = ValidateKeyOf<Name> extends true
+  ? Name
+  : never
+
+type SafeObject<Type> = {
+  [Property in keyof Type]: ValidateKeyOf<Property> extends true
+    ? Type[Property]
+    : never
+}
+type S = SafeObject<{_f: "hello"}>
+type S2 = ValidateFieldName<"_f">
+type S3 = ExcludeInvalid<"f">
+type S4 = ValidateKeyOf<"foo">
+
+type StripInvalidFieldNames<Type> = {
+  [Property in keyof Type as ExcludeInvalid<Property>]: Type[Property]
+}
+type F = StripInvalidFieldNames<{_foo: string; bar: "hello"}>
 export function document<Name extends string, Shape extends SanityObjectShape>(
   name: Name,
-  shape: Shape,
-): SanityDocument<Name, Shape> {
+  shape: SafeObject<Shape>,
+) {
   return object({
     _type: literal(name),
     _id: string(),
@@ -110,7 +134,7 @@ export function document<Name extends string, Shape extends SanityObjectShape>(
     _updatedAt: string(),
     _rev: string(),
     ...shape,
-  }) as any as SanityDocument<Name, Shape>
+  }) as any as SanityDocument<Name, StripInvalidFieldNames<Shape>>
 }
 
 const referenceShape = object({

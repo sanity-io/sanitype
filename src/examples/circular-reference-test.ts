@@ -11,6 +11,12 @@ const human: SanityType<Human> = document("human", {
   pets: lazy(() => array(reference(pet))),
 })
 
-const pet = document("pet", {name: string(), owner: reference(human)})
+const pet = document("pet", {
+  name: string(),
+  owner: reference(human),
+  human: human,
+})
 
 const myPet = parse(pet, {name: "fido", owner: {_type: "human", name: "bob"}})
+// @ts-expect-error
+myPet._foo

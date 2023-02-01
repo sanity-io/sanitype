@@ -5,6 +5,7 @@ import {
   SanityNumber,
   SanityObject,
   SanityObjectArray,
+  SanityObjectLike,
   SanityPrimitive,
   SanityReference,
   SanityString,
@@ -30,11 +31,11 @@ export function isLiteralSchema(schema: SanityType): schema is SanityLiteral {
 }
 export function isItemObjectArrayCompatible(
   elementSchema:
-    | SanityObject
-    | SanityUnion<SanityObject>
+    | SanityObjectLike
+    | SanityUnion<SanityObjectLike>
     | SanityPrimitive
     | SanityUnion<SanityPrimitive>,
-): elementSchema is SanityObject | SanityUnion<SanityObject> {
+): elementSchema is SanityObjectLike | SanityUnion<SanityObjectLike> {
   return (
     isObjectSchema(elementSchema) ||
     (isUnionSchema(elementSchema) &&
