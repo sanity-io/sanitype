@@ -1,4 +1,4 @@
-import {boolean, lazy, literal, object, string} from "./factories.js"
+import {boolean, lazy, literal, object, optional, string} from "./factories.js"
 import {Combine} from "./utils.js"
 
 export interface SanityType<Output = any, Def = any> {
@@ -84,13 +84,21 @@ export interface SanityPrimitiveArray<
 
 type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
-export const reference = object({
+export const referenceBase = object({
   _type: literal("reference"),
   _ref: string(),
-  _weak: boolean(),
+  _weak: optional(boolean()),
 })
 
-export type ReferenceValue = Infer<typeof reference>
+export type ReferenceValue = Infer<typeof referenceBase>
+
+export const documentBase = object({
+  _type: string(),
+  _id: string(),
+  _createdAt: string(),
+  _updatedAt: string(),
+  _rev: string(),
+})
 
 export type SanityDocumentShape<Name extends string = string> = {
   _type: SanityLiteral<Name>
@@ -106,11 +114,11 @@ export type SanityDocument<
 
 export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
 
-export const INTERNAL_REF_TYPE_PROPERTY = "@@internal_ref_type" as const
+export const INTERNAL_REF_TYPE_SCHEMA = "__schema__" as const
 
 export interface Conceal<T> {
   /** @deprecated - Do not use. Only exists in the type system and will throw an error if accessed at runtime. */
-  [INTERNAL_REF_TYPE_PROPERTY]: T
+  [INTERNAL_REF_TYPE_SCHEMA]: T
 }
 
 type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<

@@ -17,7 +17,7 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {defineHiddenGetter} from "./utils.js"
+import {defineNonEnumerableGetter} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
@@ -130,7 +130,7 @@ export function reference<RefType extends SanityType<SanityDocumentValue>>(
 }
 
 function throwOnOutputAccess<T>(target: T): T & {output: never} {
-  return defineHiddenGetter(target, "output", () => {
+  return defineNonEnumerableGetter(target, "output", () => {
     throw new Error("This method is not defined runtime")
   }) as T & {output: never}
 }

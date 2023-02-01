@@ -26,7 +26,7 @@ export type GroupUnderscoreKeys<T> = Combine<
   Omit<T, UnderscoreKeys<T>>
 >
 
-export function defineHiddenGetter<T, Prop extends keyof any>(
+export function defineNonEnumerableGetter<T, Prop extends keyof any>(
   target: T,
   name: Prop,
   getter: () => any,

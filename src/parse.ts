@@ -1,7 +1,8 @@
 import {
   Infer,
+  INTERNAL_REF_TYPE_SCHEMA,
   OutputOf,
-  reference,
+  referenceBase,
   SanityBoolean,
   SanityLazy,
   SanityLiteral,
@@ -25,7 +26,7 @@ import {
   isUnionSchema,
 } from "./asserters.js"
 import {isNumber} from "lodash"
-import {defineHiddenGetter} from "./utils.js"
+import {defineNonEnumerableGetter} from "./utils.js"
 
 type Path = Array<string | number | {_key: string}>
 
@@ -38,10 +39,10 @@ interface ParseErrorDetails {
   code: ErrorCode
   message: string
 }
-type ParseOk<T> = {status: "ok"; value: T}
-type ParseFail = {status: "fail"; errors: ParseErrorDetails[]}
+export type ParseOk<T> = {status: "ok"; value: T}
+export type ParseFail = {status: "fail"; errors: ParseErrorDetails[]}
 
-type ParseResult<T> = ParseOk<T> | ParseFail
+export type ParseResult<T> = ParseOk<T> | ParseFail
 
 function getLazySchema(schema: SanityType): SanityType {
   if (schema.typeName === "lazy") {
@@ -93,7 +94,7 @@ export function safeParse<T extends SanityType>(
     ],
   }
 }
-class ParseError extends Error {
+export class ParseError extends Error {
   constructor(public errors: ParseErrorDetails[]) {
     super(
       `Invalid input: ${errors[0]?.message || "<unknown>"} (+ ${
@@ -188,17 +189,17 @@ export function parseReference<S extends SanityReference<any>>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const parsed = parseObject(reference, input)
+  const parsed = parseObject(referenceBase, input)
   if (parsed.status === "fail") {
     return parsed
   }
   return {
     ...parsed,
-    value: defineHiddenGetter(parsed.value, "@@internal_ref_type", () => {
-      throw new Error(
-        "Tried to access a concealed value that exists only in the type system",
-      )
-    }),
+    value: defineNonEnumerableGetter(
+      parsed.value,
+      INTERNAL_REF_TYPE_SCHEMA,
+      () => schema.referenceType,
+    ),
   }
 }
 

@@ -11,8 +11,7 @@ import {
   string,
   union,
 } from "../factories.js"
-import {INTERNAL_REF_TYPE_PROPERTY, SanityType} from "../defs.js"
-import {isReferenceSchema} from "../asserters.js"
+import {INTERNAL_REF_TYPE_SCHEMA, SanityType} from "../defs.js"
 
 describe("string parsing", () => {
   test("successful parsing", () => {
@@ -170,9 +169,7 @@ describe("reference parsing", () => {
       _type: "reference",
     })
 
-    expect(() => parsed[INTERNAL_REF_TYPE_PROPERTY]).toThrowError(
-      /exists only in the type system/,
-    )
+    expect(parsed[INTERNAL_REF_TYPE_SCHEMA].typeName).toBe("object")
 
     expect(parsed).toEqual({
       _ref: "some-person",

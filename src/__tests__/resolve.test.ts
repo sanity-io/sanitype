@@ -1,7 +1,7 @@
-import {test} from "vitest"
+import {expect, test, vi} from "vitest"
 import {document, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
-import {resolve} from "../resolve.js"
+import {createResolve} from "../resolve.js"
 import {assertAssignable} from "./helpers.js"
 
 const country = document("country", {
@@ -14,15 +14,36 @@ const personType = document("person", {
   country: reference(country),
 })
 
-test("resolve reference", async () => {
-  const person = parse(personType, {})
+test("resolve reference with schema", async () => {
+  const person = parse(personType, {
+    _id: "carl",
+    _type: "person",
+    firstName: "Carl",
+    lastName: "Sagan",
+    country: {_type: "reference", _ref: "usa"},
+  })
+
+  const fetch = vi.fn().mockResolvedValueOnce({
+    _type: "country",
+    _id: "usa",
+  })
+  const resolve = createResolve(fetch)
+
   const personCountry = await resolve(person.country)
+  expect(fetch.mock.calls).toEqual([["usa"]])
 
   assertAssignable<typeof personCountry._type, "country">()
   // @ts-expect-error
   assertAssignable<typeof personCountry._type, "not-this">()
+})
+test("resolve schemaless reference", async () => {
+  const fetch = vi.fn().mockResolvedValueOnce({
+    _type: "country",
+    _id: "usa",
+  })
+  const resolve = createResolve(fetch)
 
-  const anonRef = await resolve({_ref: "xyz", _type: "reference"})
+  const anonRef = await resolve({_ref: "xyz", _type: "reference", _weak: false})
   // best we can do is string, since we have no type info available
   assertAssignable<typeof anonRef._type, string>()
 
