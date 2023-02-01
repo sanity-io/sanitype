@@ -1,7 +1,7 @@
 import {expect, test, vi} from "vitest"
 import {document, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
-import {createResolve} from "../resolve.js"
+import {createResolve} from "../createResolve.js"
 import {assertAssignable} from "./helpers.js"
 
 const country = document("country", {

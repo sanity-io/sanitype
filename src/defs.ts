@@ -1,5 +1,5 @@
 import {boolean, lazy, literal, object, optional, string} from "./factories.js"
-import {Combine} from "./utils.js"
+import {Combine, UnderscoreKeys} from "./utils.js"
 
 export interface SanityType<Output = any, Def = any> {
   typeName: string
@@ -61,13 +61,12 @@ export type OutputFromShape<T extends SanityObjectShape> = {
 
 type AddArrayKey<T> = Combine<T, {_key: string}>
 
-type SanityObjectLike =
-  | SanityObject
-  | SanityUnion<SanityObject>
-  | SanityReference<any>
+export type SanityObjectLike = SanityObject | SanityReference<any>
 
 export interface SanityObjectArray<
-  ElementType extends SanityObjectLike = SanityObjectLike,
+  ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike> =
+    | SanityObjectLike
+    | SanityUnion<SanityObjectLike>,
   Output = AddArrayKey<OutputOf<ElementType>>[],
 > extends SanityType<Output, ElementType> {
   typeName: "objectArray"
@@ -107,10 +106,14 @@ export type SanityDocumentShape<Name extends string = string> = {
   _updatedAt: SanityString
   _rev: SanityString
 }
-export type SanityDocument<
+
+export interface SanityDocument<
   Name extends string = string,
-  Shape extends SanityObjectShape = SanityObjectShape,
-> = SanityObject<Combine<SanityDocumentShape<Name>, Shape>>
+  Def extends SanityObjectShape = SanityObjectShape,
+  Output = OutputFromShape<Combine<Def, SanityDocumentShape<Name>>>,
+> extends SanityType<Output, Def> {
+  typeName: "document"
+}
 
 export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
 
@@ -124,6 +127,11 @@ export interface Conceal<T> {
 type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
   ReferenceValue,
   Conceal<RefType>
+>
+
+export type ReferenceTo<RefType> = Combine<
+  ReferenceValue,
+  Conceal<SanityType<RefType>>
 >
 
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T

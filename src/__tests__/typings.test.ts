@@ -11,6 +11,8 @@ import {
   string,
   union,
   array,
+  reference,
+  document,
 } from "../factories.js"
 import {parse, safeParse} from "../parse.js"
 import {assertAssignable} from "./helpers.js"
@@ -124,4 +126,11 @@ test("Key's in arrays", () => {
     const keys = parsed.value.map(item => item._key)
     assertAssignable<string[], typeof keys>()
   }
+})
+test("Key's in arrays of references", () => {
+  const pet = document("pet", {name: string()})
+  const o = objectArray(reference(pet))
+  const parsed = parse(o, [{_key: "someKey", name: 'jara'}])
+  const keys = parsed.map(item => item._key)
+  assertAssignable<string[], typeof keys>()
 })
