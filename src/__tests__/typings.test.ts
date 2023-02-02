@@ -128,9 +128,9 @@ test("Key's in arrays", () => {
   }
 })
 test("Key's in arrays of references", () => {
-  const pet = document("pet", {name: string()})
+  const pet = document({_type: literal("pet"), name: string()})
   const o = objectArray(reference(pet))
-  const parsed = parse(o, [{_key: "someKey", name: 'jara'}])
+  const parsed = parse(o, [{_key: "someKey", name: "jara"}])
   const keys = parsed.map(item => item._key)
   assertAssignable<string[], typeof keys>()
 })

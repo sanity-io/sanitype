@@ -1,8 +1,16 @@
-import {array, document, object, reference, string} from "../factories.js"
+import {
+  array,
+  document,
+  literal,
+  object,
+  reference,
+  string,
+} from "../factories.js"
 import {parse, safeParse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 
-const human = document("human", {
+const human = document({
+  _type: literal("human"),
   name: string(),
 })
 
@@ -11,7 +19,8 @@ const address = object({
   country: string(),
 })
 
-const pet = document("pet", {
+const pet = document({
+  _type: literal("pet"),
   name: string(),
   owners: array(reference(human)),
 })

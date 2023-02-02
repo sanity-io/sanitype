@@ -1,13 +1,21 @@
-import {array, document, optional, reference, string} from "../factories.js"
+import {
+  array,
+  document,
+  literal,
+  optional,
+  reference,
+  string,
+} from "../factories.js"
 import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 import {Infer} from "../defs.js"
 
-const pet = document("pet", {name: string()})
+const pet = document({_type: literal("pet"), name: string()})
 
 declare const petOutput: Infer<typeof pet>
 
-const person = document("person", {
+const person = document({
+  _type: literal("person"),
   firstName: string(),
   lastName: optional(string()),
   favoritePet: reference(pet),

@@ -14,7 +14,8 @@ import {OutputOf} from "../defs.js"
 
 function assertAssignable<A extends B, B>() {}
 
-const country = document("country", {
+const country = document({
+  _type: literal("country"),
   name: string(),
 })
 
@@ -29,7 +30,8 @@ const list = array(object({test: string()}))
 
 declare const listOutput: OutputOf<typeof list>
 
-const person = document("person", {
+const person = document({
+  _type: literal("person"),
   firstName: string(),
   lastName: string(),
   address: object({

@@ -1,4 +1,5 @@
 import type {Infer, SanityType} from "../defs.js"
+import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
 import {
   array,
   document,
@@ -11,7 +12,6 @@ import {
 } from "../factories.js"
 import {parse} from "../parse.js"
 import {test} from "vitest"
-import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
 import {SanityDocumentValue} from "../valueTypes.js"
 
 interface Person {
@@ -72,10 +72,15 @@ test("circular/lazy references", () => {
     name: string
   }
 
-  const human: SanityType<Human> = document("human", {
+  const human: SanityType<Human> = document({
+    _type: literal("human"),
     name: string(),
     pets: lazy(() => array(reference(pet))),
   })
 
-  const pet = document("pet", {name: string(), owner: reference(human)})
+  const pet = document({
+    _type: literal("human"),
+    name: string(),
+    owner: reference(human),
+  })
 })

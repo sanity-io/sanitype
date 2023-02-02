@@ -161,7 +161,7 @@ describe("object array parsing", () => {
 
 describe("reference parsing", () => {
   test("parsing of simple reference", () => {
-    const personSchema = document("person", {name: string()})
+    const personSchema = document({_type: literal("person"), name: string()})
     const referenceSchema = reference(personSchema)
 
     const parsed = parse(referenceSchema, {

@@ -1,8 +1,20 @@
-import {array, document, lazy, object, reference, string,} from "../factories.js"
+import {
+  array,
+  document,
+  lazy,
+  literal,
+  object,
+  reference,
+  string,
+} from "../factories.js"
 import {fetchDocument} from "../createFetchDocument.js"
 import {resolve} from "../createResolve.js"
 import {SanityType} from "../defs.js"
-import {SanityArrayValue, SanityDocumentValue, SanityReferenceValue,} from "../valueTypes.js"
+import {
+  SanityArrayValue,
+  SanityDocumentValue,
+  SanityReferenceValue,
+} from "../valueTypes.js"
 
 // todo: define a "human" document schema with name: {first, last}
 interface Human extends SanityDocumentValue {
@@ -11,7 +23,8 @@ interface Human extends SanityDocumentValue {
 }
 
 const human: SanityType<Human> = lazy(() =>
-  document("human", {
+  document({
+    _type: literal("human"),
     name: object({first: string(), last: string()}),
     coworkers: array(reference(human)),
   }),
@@ -21,7 +34,8 @@ const human: SanityType<Human> = lazy(() =>
 const knut = await fetchDocument("knut", human)
 
 // todo: make a "pet" document schema
-const pet = document("pet", {
+const pet = document({
+  _type: literal("pet"),
   name: string(),
   human: reference(human),
 })

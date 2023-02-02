@@ -107,3 +107,22 @@ export type ValidateFieldChars<T extends string> = T extends ""
         `Invalid character in field name: '${First}'.`
       >
   : never
+
+export type ValidFieldName<T extends keyof any> = T extends string
+  ? Uppercase<GetFirstChar<T>> extends ValidFirsChar
+    ? ValidFieldChars<T> extends true
+      ? T
+      : never
+    : never
+  : never
+
+export type ValidFieldChars<T extends string> = T extends ""
+  ? true
+  : T extends `${infer First}${infer Remainder}`
+  ? Uppercase<First> extends ValidFieldChar
+    ? ValidateFieldChars<Remainder>
+    : FieldError<
+        "FIELD_NAME_CANNOT_CONTAIN_CHARACTER",
+        `Invalid character in field name: '${First}'.`
+      >
+  : never
