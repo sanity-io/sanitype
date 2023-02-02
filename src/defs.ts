@@ -1,5 +1,6 @@
 import {boolean, lazy, literal, object, optional, string} from "./factories.js"
-import {Combine, UnderscoreKeys} from "./utils.js"
+import {Combine, OutputFormatFix} from "./utils.js"
+import {SanityDocumentValue} from "./valueTypes.js"
 
 export interface SanityType<Output = any, Def = any> {
   typeName: string
@@ -54,7 +55,6 @@ export interface SanityOptional<Def extends SanityType>
   typeName: "optional"
 }
 
-type OutputFormatFix = {}
 export type OutputFromShape<T extends SanityObjectShape> = {
   [key in keyof T]: Infer<T[key]>
 } & OutputFormatFix
@@ -89,7 +89,7 @@ export const referenceBase = object({
   _weak: optional(boolean()),
 })
 
-export type ReferenceValue = Infer<typeof referenceBase>
+export type ReferenceBase = Infer<typeof referenceBase>
 
 export const documentBase = object({
   _type: string(),
@@ -115,8 +115,6 @@ export interface SanityDocument<
   typeName: "document"
 }
 
-export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
-
 export const INTERNAL_REF_TYPE_SCHEMA = "__schema__" as const
 
 export interface Conceal<T> {
@@ -125,13 +123,8 @@ export interface Conceal<T> {
 }
 
 type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
-  ReferenceValue,
+  ReferenceBase,
   Conceal<RefType>
->
-
-export type ReferenceTo<RefType> = Combine<
-  ReferenceValue,
-  Conceal<SanityType<RefType>>
 >
 
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
