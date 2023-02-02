@@ -1,6 +1,6 @@
 import {array, document, object, reference, string} from "../factories.js"
 import {parse, safeParse} from "../parse.js"
-import {createResolve} from "../resolve.js"
+import {createResolve} from "../createResolve.js"
 
 const human = document("human", {
   name: string(),

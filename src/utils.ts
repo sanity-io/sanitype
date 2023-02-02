@@ -26,6 +26,8 @@ export type GroupUnderscoreKeys<T> = Combine<
   Omit<T, UnderscoreKeys<T>>
 >
 
+export type OutputFormatFix = {}
+
 export function defineNonEnumerableGetter<T, Prop extends keyof any>(
   target: T,
   name: Prop,
@@ -71,10 +73,6 @@ type Digits = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 export type ValidFieldChar = AZ | "_" | "-" | Digits
 export type ValidFirsChar = AZ
 
-type HasValidFirstChar<T extends string> = T extends `_${infer V}`
-  ? true
-  : false
-
 type GetFirstChar<T extends string> =
   T extends `${infer First}${infer Remainder}` ? First : T
 
@@ -90,13 +88,14 @@ export type ValidateKeyOf<T extends keyof any> = T extends string
   ? ValidateFieldName<T>
   : never
 
-export type ValidateFieldName<T extends string> =
-  Uppercase<GetFirstChar<T>> extends ValidFirsChar
-    ? ValidateFieldChars<T>
-    : FieldError<
-        "FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE",
-        `Invalid field name ${T}: Underscore field names are reserved for system fields`
-      >
+export type ValidateFieldName<T extends string> = Uppercase<
+  GetFirstChar<T>
+> extends ValidFirsChar
+  ? ValidateFieldChars<T>
+  : FieldError<
+      "FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE",
+      `Invalid field name ${T}: Underscore field names are reserved for system fields`
+    >
 
 export type ValidateFieldChars<T extends string> = T extends ""
   ? true

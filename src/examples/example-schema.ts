@@ -9,7 +9,7 @@ import {
   union,
 } from "../factories.js"
 import {parse} from "../parse.js"
-import {createResolve} from "../resolve.js"
+import {createResolve} from "../createResolve.js"
 import {OutputOf} from "../defs.js"
 
 function assertAssignable<A extends B, B>() {}

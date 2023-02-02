@@ -4,10 +4,10 @@ import {
   Infer,
   INTERNAL_REF_TYPE_SCHEMA,
   referenceBase,
-  SanityDocumentValue,
   SanityType,
 } from "./defs.js"
 import {ParseError, ParseOk, ParseResult, safeParse} from "./parse.js"
+import {SanityDocumentValue} from "./valueTypes.js"
 
 type DocumentLike = Infer<typeof documentBase>
 type ReferenceLike = Infer<typeof referenceBase>

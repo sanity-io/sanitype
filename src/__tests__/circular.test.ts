@@ -1,4 +1,4 @@
-import type {Infer, SanityDocumentValue, SanityType} from "../defs.js"
+import type {Infer, SanityType} from "../defs.js"
 import {
   array,
   document,
@@ -12,6 +12,7 @@ import {
 import {parse} from "../parse.js"
 import {test} from "vitest"
 import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
+import {SanityDocumentValue} from "../valueTypes.js"
 
 interface Person {
   _type: "person"

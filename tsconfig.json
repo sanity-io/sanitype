@@ -13,7 +13,8 @@
     "esModuleInterop": true,
     "lib": ["es2019"],
     "outDir": "dist",
+    "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }

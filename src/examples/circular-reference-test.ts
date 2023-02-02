@@ -1,6 +1,7 @@
-import {SanityDocumentValue, SanityType} from "../defs.js"
+import {SanityType} from "../defs.js"
 import {array, document, lazy, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
+import {SanityDocumentValue} from "../valueTypes.js"
 
 interface Human extends SanityDocumentValue {
   name: string

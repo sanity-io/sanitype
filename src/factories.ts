@@ -2,7 +2,6 @@ import {
   SanityAny,
   SanityBoolean,
   SanityDocument,
-  SanityDocumentValue,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -20,11 +19,11 @@ import {
 } from "./defs.js"
 import {
   defineNonEnumerableGetter,
-  ValidateFieldChars,
   ValidateFieldName,
   ValidateKeyOf,
 } from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
+import {SanityDocumentValue} from "./valueTypes.js"
 
 export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
   return throwOnOutputAccess({typeName: "object", def: shape})

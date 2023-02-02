@@ -1,6 +1,6 @@
 import {array, document, optional, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
-import {createResolve} from "../resolve.js"
+import {createResolve} from "../createResolve.js"
 import {Infer} from "../defs.js"
 
 const pet = document("pet", {name: string()})
