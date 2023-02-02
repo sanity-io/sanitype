@@ -7,6 +7,7 @@ import {
   string,
 } from "../factories.js"
 import {Infer, SanityObject, SanityType} from "../defs.js"
+// @ts-ignore
 import React, {useState} from "react"
 
 const pet = document({_type: literal("pet"), name: string()})
@@ -30,7 +31,9 @@ declare function stringForm<T extends SanityType = SanityType>(
 ): void
 
 // legacy schema-like
+// @ts-ignore
 const PetSelect = () => <input type="text" />
+// @ts-ignore
 const DwellingMap = () => <input type="text" />
 
 const legacyPersonSchema = {
@@ -58,6 +61,6 @@ const legacyPersonSchema = {
 
 function App() {
   const [value, setValue] = useState<Infer<typeof person>>()
-
+  // @ts-ignore
   return <form>{/*<MyForm value={value} onChange={setValue} />*/}</form>
 }
