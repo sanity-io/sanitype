@@ -4,6 +4,7 @@ import {
   OutputOf,
   referenceBase,
   SanityBoolean,
+  SanityDocument,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -17,6 +18,7 @@ import {
 import {inspect} from "util"
 import {
   isBooleanSchema,
+  isDocumentSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
@@ -73,6 +75,9 @@ export function safeParse<T extends SanityType>(
   }
   if (isObjectSchema(schema)) {
     return parseObject(schema, input) as any
+  }
+  if (isDocumentSchema(schema)) {
+    return parseDocument(schema, input) as any
   }
   if (isLiteralSchema(schema)) {
     return parseLiteral(schema, input) as any
@@ -234,7 +239,14 @@ type PlainObject = {[key: string]: unknown}
 const isPlainObject = (value: unknown): value is {[key: string]: unknown} => {
   return value !== null && typeof value === "object" && !Array.isArray(value)
 }
-export function parseObject<S extends SanityObject>(
+export function parseDocument<S extends SanityDocument>(
+  schema: S,
+  input: unknown,
+): ParseResult<OutputOf<S>> {
+  return parseObject(schema, input)
+}
+
+export function parseObject<S extends SanityObject | SanityDocument>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {

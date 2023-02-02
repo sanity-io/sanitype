@@ -1,6 +1,7 @@
 import {
   SanityAny,
   SanityBoolean,
+  SanityDocument,
   SanityLiteral,
   SanityNumber,
   SanityObject,
@@ -20,6 +21,9 @@ export function isUnionSchema(
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
   return schema.typeName === "object"
+}
+export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
+  return schema.typeName === "document"
 }
 export function isReferenceSchema(
   schema: SanityType,

@@ -16,6 +16,7 @@ const personType = document({
   country: reference(country),
 })
 
+
 test("resolve reference with schema", async () => {
   const person = parse(personType, {
     _id: "carl",

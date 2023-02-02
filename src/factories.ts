@@ -1,6 +1,7 @@
 import {
   SanityAny,
   SanityBoolean,
+  SanityDocument,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -30,6 +31,14 @@ export function _object<T extends SanityObjectShape>(
   shape: T,
 ): SanityObject<T> {
   return throwOnOutputAccess({typeName: "object", def: shape})
+}
+
+/**
+ * @internal*/
+export function _document<T extends SanityObjectShape>(
+  shape: T,
+): SanityDocument<T> {
+  return throwOnOutputAccess({typeName: "document", def: shape})
 }
 
 const STRING: SanityString = throwOnOutputAccess({typeName: "string", def: ""})
@@ -125,7 +134,7 @@ export function document<Shape extends SanityObjectShape>(
     _type: SanityLiteral<string>
   },
 ) {
-  return _object({
+  return _document({
     _id: string(),
     _createdAt: string(),
     _updatedAt: string(),
