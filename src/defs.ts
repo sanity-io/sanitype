@@ -1,4 +1,12 @@
-import {_object, boolean, lazy, literal, object, optional, string} from "./factories.js"
+import {
+  _object,
+  boolean,
+  lazy,
+  literal,
+  object,
+  optional,
+  string,
+} from "./factories.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 import {SanityDocumentValue} from "./valueTypes.js"
 
@@ -32,7 +40,7 @@ export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
 
 export interface SanityObject<
   Def extends SanityObjectShape = SanityObjectShape,
-  Output = OutputFromShape<Def>,
+  Output = UndefinedOptional<OutputFromShape<Def>>,
 > extends SanityType<Output, Def> {
   typeName: "object"
 }
@@ -55,8 +63,17 @@ export interface SanityOptional<Def extends SanityType>
   typeName: "optional"
 }
 
+type UndefinedToOptional<T> = {
+  [K in keyof T as undefined extends T[K] ? K : never]?: T[K]
+}
+type NonUndefined<T> = {
+  [K in keyof T as undefined extends T[K] ? never : K]: T[K]
+}
+
+type UndefinedOptional<T> = Combine<NonUndefined<T>, UndefinedToOptional<T>>
+
 export type OutputFromShape<T extends SanityObjectShape> = {
-  [key in keyof T]: Infer<T[key]>
+  [Property in keyof T]: Infer<T[Property]>
 } & OutputFormatFix
 
 type AddArrayKey<T> = Combine<T, {_key: string}>
