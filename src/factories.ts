@@ -20,7 +20,6 @@ import {
 import {Combine, defineNonEnumerableGetter, ValidFieldName} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 import {SanityDocumentValue} from "./valueTypes.js"
-import {parse} from "./parse.js"
 import {GetShapeOf} from "./types.js"
 
 export function object<T extends SanityObjectShape>(shape: T) {
