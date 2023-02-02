@@ -17,9 +17,11 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {defineNonEnumerableGetter, ValidFieldName} from "./utils.js"
+import {Combine, defineNonEnumerableGetter, ValidFieldName} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 import {SanityDocumentValue} from "./valueTypes.js"
+import {parse} from "./parse.js"
+import {GetShapeOf} from "./types.js"
 
 export function object<T extends SanityObjectShape>(shape: T) {
   return _object(shape)
@@ -31,6 +33,13 @@ export function _object<T extends SanityObjectShape>(
   shape: T,
 ): SanityObject<T> {
   return throwOnOutputAccess({typeName: "object", def: shape})
+}
+
+export function extend<O extends SanityObject, Shape extends SanityObjectShape>(
+  object: O,
+  shape: Shape,
+): SanityObject<Combine<GetShapeOf<O>, Shape>> {
+  return _object({...object.def, ...shape}) as any
 }
 
 /**
