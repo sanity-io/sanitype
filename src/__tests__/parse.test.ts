@@ -169,7 +169,7 @@ describe("reference parsing", () => {
       _type: "reference",
     })
 
-    expect(parsed[INTERNAL_REF_TYPE_SCHEMA].typeName).toBe("object")
+    expect(parsed[INTERNAL_REF_TYPE_SCHEMA].typeName).toBe("document")
 
     expect(parsed).toEqual({
       _ref: "some-person",

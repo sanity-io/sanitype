@@ -126,7 +126,7 @@ export type SanityDocumentShape = {
 
 export interface SanityDocument<
   Def extends SanityObjectShape = SanityObjectShape,
-  Output = OutputFromShape<Combine<Def, SanityDocumentShape>>,
+  Output = UndefinedOptional<OutputFromShape<Def>>,
 > extends SanityType<Output, Def> {
   typeName: "document"
 }
