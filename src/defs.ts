@@ -99,8 +99,8 @@ export const documentBase = object({
   _rev: string(),
 })
 
-export type SanityDocumentShape<Name extends string = string> = {
-  _type: SanityLiteral<Name>
+export type SanityDocumentShape = {
+  _type: SanityLiteral<string>
   _id: SanityString
   _createdAt: SanityString
   _updatedAt: SanityString
@@ -108,9 +108,8 @@ export type SanityDocumentShape<Name extends string = string> = {
 }
 
 export interface SanityDocument<
-  Name extends string = string,
   Def extends SanityObjectShape = SanityObjectShape,
-  Output = OutputFromShape<Combine<Def, SanityDocumentShape<Name>>>,
+  Output = OutputFromShape<Combine<Def, SanityDocumentShape>>,
 > extends SanityType<Output, Def> {
   typeName: "document"
 }
