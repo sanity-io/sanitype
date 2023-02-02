@@ -1,7 +1,6 @@
 import {
   SanityAny,
   SanityBoolean,
-  SanityDocument,
   SanityLazy,
   SanityLiteral,
   SanityNumber,
@@ -17,13 +16,18 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {defineNonEnumerableGetter, ValidateKeyOf} from "./utils.js"
+import {defineNonEnumerableGetter, ValidFieldName} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 import {SanityDocumentValue} from "./valueTypes.js"
-import {parse} from "./parse.js"
 
-export function object<T extends SanityObjectShape>(
-  shape: SafeObject<T>,
+export function object<T extends SanityObjectShape>(shape: T) {
+  return _object(shape)
+}
+
+/**
+ * @internal*/
+export function _object<T extends SanityObjectShape>(
+  shape: T,
 ): SanityObject<T> {
   return throwOnOutputAccess({typeName: "object", def: shape})
 }
@@ -103,30 +107,25 @@ export function array(
     : primitiveArray(elementSchema)
 }
 
-type ExcludeInvalid<
-  Name extends keyof any,
-  Allowed extends string = never,
-> = Name extends Allowed
-  ? Name
-  : ValidateKeyOf<Name> extends true
-  ? Name
+type ExtractValidFields<T extends keyof any> = T extends string
+  ? T extends ValidFieldName<T>
+    ? T
+    : never
   : never
 
 type SafeObject<Type, Allowed extends string = never> = {
   [Property in keyof Type]: Property extends Allowed
     ? Type[Property]
-    : ValidateKeyOf<Property> extends true
-    ? Type[Property]
-    : never
+    : Type[ValidFieldName<Property>]
 }
 
 export function document<Shape extends SanityObjectShape>(
   shape: SafeObject<Shape, "_id" | "_type"> & {
     _id?: SanityLiteral<string> | SanityString
-    _type: SanityLiteral<string> | SanityString
+    _type: SanityLiteral<string>
   },
 ) {
-  return object({
+  return _object({
     _id: string(),
     _createdAt: string(),
     _updatedAt: string(),
@@ -135,15 +134,7 @@ export function document<Shape extends SanityObjectShape>(
   })
 }
 
-const doc = document({
-  _id: literal("hello"),
-  _type: literal("doc"),
-  _foo: literal("bar"),
-})
-
-const f = parse(doc, {})
-
-const referenceShape = object({
+const referenceShape = _object({
   _type: literal("reference"),
   _ref: string(),
   _weak: boolean(),

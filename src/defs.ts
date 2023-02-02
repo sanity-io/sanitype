@@ -1,4 +1,4 @@
-import {boolean, lazy, literal, object, optional, string} from "./factories.js"
+import {_object, boolean, lazy, literal, object, optional, string} from "./factories.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 import {SanityDocumentValue} from "./valueTypes.js"
 
@@ -91,7 +91,7 @@ export const referenceBase = object({
 
 export type ReferenceBase = Infer<typeof referenceBase>
 
-export const documentBase = object({
+export const documentBase = _object({
   _type: string(),
   _id: string(),
   _createdAt: string(),

@@ -1,14 +1,16 @@
 import {expect, test, vi} from "vitest"
-import {document, reference, string} from "../factories.js"
+import {document, literal, reference, string} from "../factories.js"
 import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 import {assertAssignable} from "./helpers.js"
 
-const country = document("country", {
+const country = document({
+  _type: literal("country"),
   name: string(),
 })
 
-const personType = document("person", {
+const personType = document({
+  _type: literal("person"),
   firstName: string(),
   lastName: string(),
   country: reference(country),

@@ -1,5 +1,12 @@
 import {SanityType} from "../defs.js"
-import {array, document, lazy, reference, string} from "../factories.js"
+import {
+  array,
+  document,
+  lazy,
+  literal,
+  reference,
+  string,
+} from "../factories.js"
 import {parse} from "../parse.js"
 import {SanityDocumentValue} from "../valueTypes.js"
 
@@ -7,12 +14,14 @@ interface Human extends SanityDocumentValue {
   name: string
 }
 
-const human: SanityType<Human> = document("human", {
+const human: SanityType<Human> = document({
+  _type: literal("human"),
   name: string(),
   pets: lazy(() => array(reference(pet))),
 })
 
-const pet = document("pet", {
+const pet = document({
+  _type: literal("pet"),
   name: string(),
   owner: reference(human),
   human: human,
