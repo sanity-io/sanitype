@@ -20,8 +20,11 @@ import {
 import {defineNonEnumerableGetter, ValidateKeyOf} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 import {SanityDocumentValue} from "./valueTypes.js"
+import {parse} from "./parse.js"
 
-export function object<T extends SanityObjectShape>(shape: T): SanityObject<T> {
+export function object<T extends SanityObjectShape>(
+  shape: SafeObject<T>,
+): SanityObject<T> {
   return throwOnOutputAccess({typeName: "object", def: shape})
 }
 
@@ -100,31 +103,45 @@ export function array(
     : primitiveArray(elementSchema)
 }
 
-type ExcludeInvalid<Name extends keyof any> = ValidateKeyOf<Name> extends true
+type ExcludeInvalid<
+  Name extends keyof any,
+  Allowed extends string = never,
+> = Name extends Allowed
+  ? Name
+  : ValidateKeyOf<Name> extends true
   ? Name
   : never
 
-type SafeObject<Type> = {
-  [Property in keyof Type]: ValidateKeyOf<Property> extends true
+type SafeObject<Type, Allowed extends string = never> = {
+  [Property in keyof Type]: Property extends Allowed
+    ? Type[Property]
+    : ValidateKeyOf<Property> extends true
     ? Type[Property]
     : never
 }
-type StripInvalidFieldNames<Type> = {
-  [Property in keyof Type as ExcludeInvalid<Property>]: Type[Property]
-}
-export function document<Name extends string, Shape extends SanityObjectShape>(
-  name: Name,
-  shape: SafeObject<Shape>,
+
+export function document<Shape extends SanityObjectShape>(
+  shape: SafeObject<Shape, "_id" | "_type"> & {
+    _id?: SanityLiteral<string> | SanityString
+    _type: SanityLiteral<string> | SanityString
+  },
 ) {
   return object({
-    _type: literal(name),
     _id: string(),
     _createdAt: string(),
     _updatedAt: string(),
     _rev: string(),
     ...shape,
-  }) as any as SanityDocument<Name, StripInvalidFieldNames<Shape>>
+  })
 }
+
+const doc = document({
+  _id: literal("hello"),
+  _type: literal("doc"),
+  _foo: literal("bar"),
+})
+
+const f = parse(doc, {})
 
 const referenceShape = object({
   _type: literal("reference"),
