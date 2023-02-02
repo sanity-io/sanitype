@@ -17,11 +17,7 @@ import {
   SanityType,
   SanityUnion,
 } from "./defs.js"
-import {
-  defineNonEnumerableGetter,
-  ValidateFieldName,
-  ValidateKeyOf,
-} from "./utils.js"
+import {defineNonEnumerableGetter, ValidateKeyOf} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
 import {SanityDocumentValue} from "./valueTypes.js"
 
@@ -113,15 +109,9 @@ type SafeObject<Type> = {
     ? Type[Property]
     : never
 }
-type S = SafeObject<{_f: "hello"}>
-type S2 = ValidateFieldName<"_f">
-type S3 = ExcludeInvalid<"f">
-type S4 = ValidateKeyOf<"foo">
-
 type StripInvalidFieldNames<Type> = {
   [Property in keyof Type as ExcludeInvalid<Property>]: Type[Property]
 }
-type F = StripInvalidFieldNames<{_foo: string; bar: "hello"}>
 export function document<Name extends string, Shape extends SanityObjectShape>(
   name: Name,
   shape: SafeObject<Shape>,
