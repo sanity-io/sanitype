@@ -1,14 +1,7 @@
-import {Conceal, ReferenceBase, SanityReference, SanityType,} from "../defs.js"
+import {Conceal, ReferenceBase, SanityReference, SanityType} from "../defs.js"
 import {SanityDocumentValue} from "../valueTypes.js"
-import {_object, boolean, literal, string} from "../__deprecated_factories.js"
 import {Builder} from "./builder.js"
 import {Combine} from "../utils.js"
-
-const referenceShape = _object({
-  _type: literal("reference"),
-  _ref: string(),
-  _weak: boolean(),
-})
 
 type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
   ReferenceBase,

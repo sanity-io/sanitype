@@ -5,7 +5,7 @@ import {
   object,
   reference,
   string,
-} from "../__deprecated_factories.js"
+} from "../builders/index.js"
 import {parse, safeParse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 

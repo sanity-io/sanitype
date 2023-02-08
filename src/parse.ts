@@ -2,6 +2,7 @@ import {
   Infer,
   INTERNAL_REF_TYPE_SCHEMA,
   OutputOf,
+  referenceBase,
   SanityBoolean,
   SanityDocument,
   SanityLiteral,
@@ -26,7 +27,6 @@ import {
   isUnionSchema,
 } from "./asserters.js"
 import {defineNonEnumerableGetter} from "./utils.js"
-import {_object, boolean, literal, object, string} from "./builders/index.js"
 
 type Path = Array<string | number | {_key: string}>
 
@@ -188,24 +188,11 @@ export function parseLiteral<S extends SanityLiteral<any>>(
       }
 }
 
-let referenceBase: any
-function _getReferenceBase() {
-  if (!referenceBase) {
-    referenceBase = () =>
-      _object({
-        _type: literal("reference"),
-        _ref: string(),
-        _weak: boolean().optional(),
-      })
-  }
-  return referenceBase
-}
-
 export function parseReference<S extends SanityReference<any>>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const parsed = parseObject(_getReferenceBase(), input)
+  const parsed = parseObject(referenceBase, input)
   if (parsed.status === "fail") {
     return parsed
   }
