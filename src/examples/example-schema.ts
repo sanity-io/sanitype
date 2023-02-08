@@ -7,7 +7,7 @@ import {
   reference,
   string,
   union,
-} from "../factories.js"
+} from "../__deprecated_factories.js"
 import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 import {OutputOf} from "../defs.js"

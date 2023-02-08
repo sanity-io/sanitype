@@ -1,4 +1,4 @@
-import {lazy, literal, object, string} from "../factories.js"
+import {lazy, literal, object, string} from "../builders/index.js"
 import {OutputOf, SanityType} from "../defs.js"
 
 interface Person {

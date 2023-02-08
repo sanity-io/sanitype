@@ -9,7 +9,7 @@ import {
   object,
   reference,
   string,
-} from "../factories.js"
+} from "../builders/index.js"
 import {parse} from "../parse.js"
 import {test} from "vitest"
 import {SanityDocumentValue} from "../valueTypes.js"
