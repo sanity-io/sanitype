@@ -8,7 +8,7 @@ import {
   string,
 } from "../builders/index.js"
 import {parse} from "../parse.js"
-import {SanityDocumentValue} from "../valueTypes.js"
+import {SanityDocumentValue} from "../shapeDefs.js"
 
 interface Human extends SanityDocumentValue {
   name: string

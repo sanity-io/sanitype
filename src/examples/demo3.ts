@@ -14,7 +14,7 @@ import {
   SanityArrayValue,
   SanityDocumentValue,
   SanityReferenceValue,
-} from "../valueTypes.js"
+} from "../shapeDefs.js"
 
 // todo: define a "human" document schema with name: {first, last}
 interface Human extends SanityDocumentValue {

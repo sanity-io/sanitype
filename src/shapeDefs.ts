@@ -5,7 +5,9 @@ import {
   optional,
   boolean,
 } from "./__deprecated_factories.js"
-import {Infer, SanityLiteral, SanityString} from "./defs.js";
+import {Infer, SanityLiteral, SanityString} from "./defs.js"
+import {Conceal, OutputFromShape, SanityType} from "./defs.js"
+import {Combine, OutputFormatFix} from "./utils.js"
 
 export const documentBase = _object({
   _type: string(),
@@ -29,3 +31,17 @@ export type SanityDocumentShape = {
   _updatedAt: SanityString
   _rev: SanityString
 }
+
+export type SanityArrayValue<ElementType> = Array<
+  ElementType extends object
+    ? Combine<ElementType, {_key: string}>
+    : ElementType
+> &
+  OutputFormatFix
+
+export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
+
+export type SanityReferenceValue<RefType> = Combine<
+  ReferenceBase,
+  Conceal<SanityType<RefType>>
+>

@@ -19,8 +19,8 @@ import {
 } from "./defs.js"
 import {Combine, defineNonEnumerableGetter, ValidFieldName} from "./utils.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "./asserters.js"
-import {SanityDocumentValue} from "./valueTypes.js"
 import {GetShapeOf} from "./types.js"
+import {SanityDocumentValue} from "./shapeDefs.js"
 
 export function object<T extends SanityObjectShape>(shape: T) {
   return _object(shape)

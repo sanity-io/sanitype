@@ -1,6 +1,6 @@
 import {SanityType} from "./defs.js"
 import {ParseError, safeParse} from "./parse.js"
-import {SanityDocumentValue} from "./valueTypes.js"
+import {SanityDocumentValue} from "./shapeDefs.js"
 
 export function createSafeFetchDocument(fetch: (id: string) => Promise<any>) {
   return function safeFetchDocument<
