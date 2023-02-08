@@ -1,12 +1,5 @@
 import {SanityType} from "../defs.js"
-import {
-  array,
-  document,
-  lazy,
-  literal,
-  reference,
-  string,
-} from "../builders/index.js"
+import {array, document, lazy, literal, reference, string,} from "../builders/index.js"
 import {parse} from "../parse.js"
 import {SanityDocumentValue} from "../shapeDefs.js"
 

@@ -1,12 +1,5 @@
-import {
-  _object,
-  literal,
-  string,
-  optional,
-  boolean,
-} from "./__deprecated_factories.js"
-import {Infer, SanityLiteral, SanityString} from "./defs.js"
-import {Conceal, OutputFromShape, SanityType} from "./defs.js"
+import {_object, boolean, literal, optional, string,} from "./__deprecated_factories.js"
+import {Conceal, Infer, OutputFromShape, SanityLiteral, SanityString, SanityType,} from "./defs.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 
 export const documentBase = _object({

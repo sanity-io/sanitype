@@ -1,9 +1,4 @@
-import {
-  OutputOf,
-  SanityOptional,
-  SanityType,
-  UndefinedOptional,
-} from "../defs.js"
+import {OutputOf, SanityOptional, SanityType, UndefinedOptional,} from "../defs.js"
 import {parse} from "../parse.js"
 
 export class OptionalBuilder<

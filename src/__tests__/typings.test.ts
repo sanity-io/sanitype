@@ -2,17 +2,17 @@ import {test} from "vitest"
 import {Infer} from "../defs.js"
 
 import {
-  primitiveArray,
+  array,
   boolean,
+  document,
   literal,
   number,
   object,
   objectArray,
+  primitiveArray,
+  reference,
   string,
   union,
-  array,
-  reference,
-  document,
 } from "../builders/index.js"
 import {parse, safeParse} from "../parse.js"
 import {assertAssignable} from "./helpers.js"

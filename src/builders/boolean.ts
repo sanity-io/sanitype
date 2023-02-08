@@ -1,4 +1,4 @@
-import {SanityBoolean, SanityNumber, SanityString} from "../defs.js"
+import {SanityBoolean} from "../defs.js"
 import {Builder} from "./builder.js"
 
 class BooleanBuilder

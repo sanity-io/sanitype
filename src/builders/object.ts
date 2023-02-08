@@ -1,11 +1,5 @@
-import {
-  OutputFromShape,
-  SanityObject,
-  SanityObjectShape,
-  UndefinedOptional,
-} from "../defs.js"
+import {OutputFromShape, SanityObject, SanityObjectShape, UndefinedOptional,} from "../defs.js"
 import {Builder} from "./builder.js"
-import {string} from "./string.js"
 import {ValidFieldName} from "../utils.js"
 
 export type SafeObject<Type, Allowed extends string = never> = {

@@ -1,11 +1,4 @@
-import {
-  array,
-  document,
-  literal,
-  optional,
-  reference,
-  string,
-} from "../builders/index.js"
+import {array, document, literal, optional, reference, string,} from "../builders/index.js"
 import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 import {Infer} from "../defs.js"

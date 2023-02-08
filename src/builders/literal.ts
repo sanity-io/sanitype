@@ -1,4 +1,4 @@
-import {SanityLiteral, SanityNumber, SanityString} from "../defs.js"
+import {SanityLiteral} from "../defs.js"
 import {Builder} from "./builder.js"
 
 class LiteralBuilder<T extends string | number | boolean>
