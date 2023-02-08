@@ -13,7 +13,7 @@ import {
   array,
   reference,
   document,
-} from "../factories.js"
+} from "../builders/index.js"
 import {parse, safeParse} from "../parse.js"
 import {assertAssignable} from "./helpers.js"
 

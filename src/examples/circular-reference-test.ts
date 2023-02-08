@@ -6,7 +6,7 @@ import {
   literal,
   reference,
   string,
-} from "../factories.js"
+} from "../builders/index.js"
 import {parse} from "../parse.js"
 import {SanityDocumentValue} from "../valueTypes.js"
 

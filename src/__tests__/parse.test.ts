@@ -10,7 +10,7 @@ import {
   reference,
   string,
   union,
-} from "../factories.js"
+} from "../builders/index.js"
 import {INTERNAL_REF_TYPE_SCHEMA, SanityType} from "../defs.js"
 
 describe("string parsing", () => {

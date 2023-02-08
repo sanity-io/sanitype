@@ -5,7 +5,7 @@ import {
   object,
   reference,
   string,
-} from "../factories.js"
+} from "../__deprecated_factories"
 import {Infer, SanityObject, SanityType} from "../defs.js"
 // @ts-ignore
 import React, {useState} from "react"

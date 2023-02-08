@@ -6,7 +6,7 @@ import {
   object,
   optional,
   string,
-} from "./factories.js"
+} from "./builders/index.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 import {SanityDocumentValue} from "./valueTypes.js"
 
@@ -20,11 +20,20 @@ export interface SanityType<Output = any, Def = any> {
 }
 
 export type SanityAny = SanityType<any, any>
-export type SanityString = SanityType<string, string>
-export type SanityNumber = SanityType<number, number>
-export type SanityBoolean = SanityType<boolean, boolean>
+
+export interface SanityString extends SanityType<string, string> {
+  typeName: "string"
+}
+export interface SanityNumber extends SanityType<number, number> {
+  typeName: "number"
+}
+
+export interface SanityBoolean extends SanityType<boolean, boolean> {
+  typeName: "boolean"
+}
 
 export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
+
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
 > extends SanityType<Def, Def> {
@@ -52,10 +61,9 @@ export interface SanityLazy<T extends SanityType>
 
 export interface SanityReference<
   RefType extends SanityType<SanityDocumentValue>,
-  Output extends WithRefTypeDef<RefType> = WithRefTypeDef<RefType>,
-> extends SanityType<Output> {
+> extends SanityType<WithRefTypeDef<RefType>> {
   typeName: "reference"
-  referenceType: RefType
+  def: RefType
 }
 
 export interface SanityOptional<Def extends SanityType>
@@ -70,7 +78,10 @@ type NonUndefined<T> = {
   [K in keyof T as undefined extends T[K] ? never : K]: T[K]
 }
 
-type UndefinedOptional<T> = Combine<NonUndefined<T>, UndefinedToOptional<T>>
+export type UndefinedOptional<T> = Combine<
+  NonUndefined<T>,
+  UndefinedToOptional<T>
+>
 
 export type OutputFromShape<T extends SanityObjectShape> = {
   [Property in keyof T]: Infer<T[Property]>
@@ -100,7 +111,7 @@ export interface SanityPrimitiveArray<
 
 type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
-export const referenceBase = object({
+export const referenceBase = _object({
   _type: literal("reference"),
   _ref: string(),
   _weak: optional(boolean()),
@@ -126,7 +137,7 @@ export type SanityDocumentShape = {
 
 export interface SanityDocument<
   Def extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<Def>>,
+  Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Def>>,
 > extends SanityType<Output, Def> {
   typeName: "document"
 }
