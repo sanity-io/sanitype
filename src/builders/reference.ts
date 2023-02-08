@@ -1,6 +1,6 @@
 import {SanityReference, SanityType, WithRefTypeDef} from "../defs.js"
-import {SanityDocumentValue} from "../valueTypes.js"
 import {Builder} from "./builder.js"
+import {SanityDocumentValue} from "../shapeDefs.js"
 
 export class ReferenceBuilder<
     RefType extends SanityType<SanityDocumentValue>,

@@ -1,6 +1,9 @@
 import {Combine, OutputFormatFix} from "./utils.js"
-import {SanityDocumentValue} from "./valueTypes.js"
-import {ReferenceBase, SanityDocumentShape} from "./shapeDefs.js"
+import {
+  ReferenceBase,
+  SanityDocumentShape,
+  SanityDocumentValue,
+} from "./shapeDefs.js"
 
 export interface SanityType<Output = any, Def = any> {
   typeName: string

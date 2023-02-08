@@ -12,7 +12,7 @@ import {
 } from "../builders/index.js"
 import {parse} from "../parse.js"
 import {test} from "vitest"
-import {SanityDocumentValue} from "../valueTypes.js"
+import {SanityDocumentValue} from "../shapeDefs.js"
 
 interface Person {
   _type: "person"
