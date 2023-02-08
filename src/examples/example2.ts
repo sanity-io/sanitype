@@ -5,7 +5,7 @@ import {
   optional,
   reference,
   string,
-} from "../__deprecated_factories.js"
+} from "../builders/index.js"
 import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 import {Infer} from "../defs.js"

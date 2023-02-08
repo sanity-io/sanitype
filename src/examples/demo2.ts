@@ -8,7 +8,7 @@ import {
   object,
   reference,
   string,
-} from "../__deprecated_factories.js"
+} from "../builders/index.js"
 import {fetchDocument} from "../createFetchDocument.js"
 import {resolve} from "../createResolve.js"
 import {SanityType} from "../defs.js"

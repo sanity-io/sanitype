@@ -6,7 +6,7 @@ import {
   object,
   optional,
   string,
-} from "./builders/index.js"
+} from "./__deprecated_factories.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 import {SanityDocumentValue} from "./valueTypes.js"
 
