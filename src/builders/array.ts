@@ -1,22 +1,16 @@
 import {
   AddArrayKey,
   FlattenUnion,
-  OutputFromShape,
   OutputOf,
-  SanityAny,
-  SanityObject,
   SanityObjectArray,
   SanityObjectLike,
-  SanityObjectShape,
   SanityPrimitive,
   SanityPrimitiveArray,
   SanityUnion,
-  UndefinedOptional,
 } from "../defs.js"
 import {Builder} from "./builder.js"
 import {string} from "./string.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "../asserters.js"
-import {Combine} from "../utils.js"
 
 function addKeyProperty<
   T extends SanityObjectLike | SanityUnion<SanityObjectLike>,

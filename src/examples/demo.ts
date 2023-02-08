@@ -1,12 +1,5 @@
-import {
-  array,
-  document,
-  literal,
-  object,
-  reference,
-  string,
-} from "../builders/index.js"
-import {parse, safeParse} from "../parse.js"
+import {array, document, literal, object, reference, string,} from "../builders/index.js"
+import {parse} from "../parse.js"
 import {createResolve} from "../createResolve.js"
 
 const human = document({

@@ -1,7 +1,6 @@
 import {Conceal, Infer, INTERNAL_REF_TYPE_SCHEMA, SanityType} from "./defs.js"
 import {ParseError, ParseOk, ParseResult, safeParse} from "./parse.js"
-import {SanityDocumentValue} from "./shapeDefs.js"
-import {documentBase, referenceBase} from "./shapeDefs.js"
+import {documentBase, referenceBase, SanityDocumentValue} from "./shapeDefs.js"
 
 type DocumentLike = Infer<typeof documentBase>
 type ReferenceLike = Infer<typeof referenceBase>

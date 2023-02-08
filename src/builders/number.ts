@@ -1,4 +1,4 @@
-import {SanityNumber, SanityString} from "../defs.js"
+import {SanityNumber} from "../defs.js"
 import {Builder} from "./builder.js"
 
 class NumberBuilder extends Builder<number, number> implements SanityNumber {

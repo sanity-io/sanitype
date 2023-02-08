@@ -1,11 +1,4 @@
-import {
-  OutputOf,
-  SanityAny,
-  SanityLazy,
-  SanityLiteral,
-  SanityNumber,
-  SanityString,
-} from "../defs.js"
+import {OutputOf, SanityAny, SanityLazy,} from "../defs.js"
 import {Builder} from "./builder.js"
 
 class LazyBuilder<T extends SanityAny>
