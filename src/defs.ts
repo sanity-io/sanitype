@@ -1,14 +1,6 @@
-import {
-  _object,
-  boolean,
-  lazy,
-  literal,
-  object,
-  optional,
-  string,
-} from "./__deprecated_factories.js"
 import {Combine, OutputFormatFix} from "./utils.js"
 import {SanityDocumentValue} from "./valueTypes.js"
+import {ReferenceBase, SanityDocumentShape} from "./shapeDefs.js"
 
 export interface SanityType<Output = any, Def = any> {
   typeName: string
@@ -87,7 +79,7 @@ export type OutputFromShape<T extends SanityObjectShape> = {
   [Property in keyof T]: Infer<T[Property]>
 } & OutputFormatFix
 
-type AddArrayKey<T> = Combine<T, {_key: string}>
+export type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type SanityObjectLike = SanityObject | SanityReference<any>
 
@@ -109,31 +101,7 @@ export interface SanityPrimitiveArray<
   typeName: "primitiveArray"
 }
 
-type FlattenUnion<T extends SanityAny> = OutputOf<T>
-
-export const referenceBase = _object({
-  _type: literal("reference"),
-  _ref: string(),
-  _weak: optional(boolean()),
-})
-
-export type ReferenceBase = Infer<typeof referenceBase>
-
-export const documentBase = _object({
-  _type: string(),
-  _id: string(),
-  _createdAt: string(),
-  _updatedAt: string(),
-  _rev: string(),
-})
-
-export type SanityDocumentShape = {
-  _type: SanityLiteral<string>
-  _id: SanityString
-  _createdAt: SanityString
-  _updatedAt: SanityString
-  _rev: SanityString
-}
+export type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
 export interface SanityDocument<
   Def extends SanityObjectShape = SanityObjectShape,
@@ -149,10 +117,8 @@ export interface Conceal<T> {
   [INTERNAL_REF_TYPE_SCHEMA]: T
 }
 
-type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
-  ReferenceBase,
-  Conceal<RefType>
->
+export type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> =
+  Combine<ReferenceBase, Conceal<RefType>>
 
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
 

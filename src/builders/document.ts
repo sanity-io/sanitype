@@ -1,17 +1,14 @@
 import {
   OutputFromShape,
   SanityDocument,
-  SanityDocumentShape,
   SanityLiteral,
   SanityObjectShape,
   SanityString,
   UndefinedOptional,
 } from "../defs.js"
 import {Builder} from "./builder.js"
-import {string} from "./string.js"
-import {literal} from "./literal.js"
-import {ValidFieldName} from "../utils.js"
 import {SafeObject} from "./object.js"
+import {SanityDocumentShape} from "../shapeDefs.js"
 
 /**
  * @internal
