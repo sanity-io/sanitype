@@ -1,4 +1,6 @@
 import {
+  AddArrayKey,
+  FlattenUnion,
   OutputFromShape,
   OutputOf,
   SanityAny,
@@ -15,9 +17,6 @@ import {Builder} from "./builder.js"
 import {string} from "./string.js"
 import {isItemObjectArrayCompatible, isUnionSchema} from "../asserters.js"
 import {Combine} from "../utils.js"
-
-type AddArrayKey<T> = Combine<T, {_key: string}>
-type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
 function addKeyProperty<
   T extends SanityObjectLike | SanityUnion<SanityObjectLike>,

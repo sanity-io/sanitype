@@ -1,12 +1,6 @@
-import {Conceal, ReferenceBase, SanityReference, SanityType} from "../defs.js"
+import {SanityReference, SanityType, WithRefTypeDef} from "../defs.js"
 import {SanityDocumentValue} from "../valueTypes.js"
 import {Builder} from "./builder.js"
-import {Combine} from "../utils.js"
-
-type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> = Combine<
-  ReferenceBase,
-  Conceal<RefType>
->
 
 export class ReferenceBuilder<
     RefType extends SanityType<SanityDocumentValue>,

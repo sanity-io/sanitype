@@ -2,7 +2,6 @@ import {
   Infer,
   INTERNAL_REF_TYPE_SCHEMA,
   OutputOf,
-  referenceBase,
   SanityBoolean,
   SanityDocument,
   SanityLiteral,
@@ -27,6 +26,7 @@ import {
   isUnionSchema,
 } from "./asserters.js"
 import {defineNonEnumerableGetter} from "./utils.js"
+import {referenceBase} from "./shapeDefs.js"
 
 type Path = Array<string | number | {_key: string}>
 
