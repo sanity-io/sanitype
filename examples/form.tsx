@@ -1,5 +1,12 @@
-import {array, document, literal, object, reference, string,} from "../builders/index.js"
-import {Infer, SanityObject, SanityType} from "../defs.js"
+import {
+  array,
+  document,
+  literal,
+  object,
+  reference,
+  string,
+} from "../src/builders/index.js"
+import {Infer, SanityObject, SanityType} from "../src/defs.js"
 // @ts-ignore
 import React, {useState} from "react"
 

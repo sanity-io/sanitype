@@ -9,7 +9,8 @@ import {
   SanityString,
   SanityType,
 } from "./defs.js"
-import {Combine, defineNonEnumerableGetter, OutputFormatFix} from "./utils.js"
+import {Combine, OutputFormatFix} from "./utils/utilTypes.js"
+import {defineType as dt} from "./utils/defineType.js"
 
 const STRING: SanityString = dt({typeName: "string", def: ""})
 const BOOLEAN: SanityBoolean = dt({
@@ -71,13 +72,3 @@ export type SanityReferenceValue<RefType> = Combine<
   ReferenceBase,
   Conceal<SanityType<RefType>>
 >
-
-/**
- * defineType
- * @param target
- */
-function dt<T>(target: T): T & {output: never} {
-  return defineNonEnumerableGetter(target, "output", () => {
-    throw new Error("This method is not defined runtime")
-  }) as T & {output: never}
-}

@@ -2,6 +2,8 @@
  *  Generic utility types
  */
 
+import {SanityDocument, SanityObject} from "../defs.js"
+
 /**
  * Combines two object types into a single, uniform type instead of an intersection of the two
  */
@@ -27,18 +29,6 @@ export type GroupUnderscoreKeys<T> = Combine<
 >
 
 export type OutputFormatFix = {}
-
-export function defineNonEnumerableGetter<T, Prop extends keyof any>(
-  target: T,
-  name: Prop,
-  getter: () => any,
-): T & {[key in Prop]: any} {
-  return Object.defineProperty(target, name, {
-    get: getter,
-    enumerable: false,
-    configurable: false,
-  }) as any
-}
 
 type AZ =
   | "A"
@@ -126,3 +116,22 @@ export type ValidFieldChars<T extends string> = T extends ""
         `Invalid character in field name: '${First}'.`
       >
   : never
+
+type MaybeAddKey<T extends any> = T extends Array<infer E>
+  ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
+  : T
+
+export type MaybeAddKeyToArrayProps<T extends any> = T extends {
+  [key: string]: any
+}
+  ? {
+      [key in keyof T]: MaybeAddKey<T[key]>
+    }
+  : T
+
+export type GetShapeOf<T extends SanityObject | SanityDocument> =
+  T extends SanityObject<infer Def>
+    ? Def
+    : T extends SanityDocument<infer Def>
+    ? Def
+    : never
