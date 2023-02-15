@@ -1,6 +1,5 @@
 import {
   AddArrayKey,
-  FlattenUnion,
   OutputOf,
   SanityObjectArray,
   SanityObjectLike,
@@ -32,7 +31,7 @@ class PrimitiveArrayBuilder<
     ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
       | SanityPrimitive
       | SanityUnion<SanityPrimitive>,
-    Output = FlattenUnion<ElementType>[],
+    Output = OutputOf<ElementType>[],
   >
   extends Builder<ElementType, Output>
   implements SanityPrimitiveArray<ElementType, Output>

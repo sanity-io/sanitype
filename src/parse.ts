@@ -25,7 +25,7 @@ import {
   isStringSchema,
   isUnionSchema,
 } from "./asserters.js"
-import {defineNonEnumerableGetter} from "./utils.js"
+import {defineNonEnumerableGetter} from "./utils/defineNonEnumerableGetter.js"
 import {referenceBase} from "./shapeDefs.js"
 
 type Path = Array<string | number | {_key: string}>

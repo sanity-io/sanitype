@@ -1,7 +1,14 @@
-import {array, document, literal, optional, reference, string,} from "../builders/index.js"
-import {parse} from "../parse.js"
-import {createResolve} from "../createResolve.js"
-import {Infer} from "../defs.js"
+import {
+  array,
+  document,
+  literal,
+  optional,
+  reference,
+  string,
+} from "../src/builders/index.js"
+import {parse} from "../src/parse.js"
+import {createResolve} from "../src/createResolve.js"
+import {Infer} from "../src/defs.js"
 
 const pet = document({_type: literal("pet"), name: string()})
 

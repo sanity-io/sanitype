@@ -1,6 +1,13 @@
-import {Combine, OutputFormatFix} from "./utils.js"
-import {ReferenceBase, SanityDocumentShape, SanityDocumentValue,} from "./shapeDefs.js"
+import {Combine, OutputFormatFix} from "./utils/utilTypes.js"
+import {
+  ReferenceBase,
+  SanityDocumentShape,
+  SanityDocumentValue,
+} from "./shapeDefs.js"
 
+/**
+ * This file contains the core interfaces for various types. The builders defined in ./builder are implementations of these.
+ */
 export interface SanityType<Output = any, Def = any> {
   typeName: string
   def: Def
@@ -95,12 +102,10 @@ export interface SanityPrimitiveArray<
   ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
     | SanityPrimitive
     | SanityUnion<SanityPrimitive>,
-  Output = FlattenUnion<ElementType>[],
+  Output = OutputOf<ElementType>[],
 > extends SanityType<Output, ElementType> {
   typeName: "primitiveArray"
 }
-
-export type FlattenUnion<T extends SanityAny> = OutputOf<T>
 
 export interface SanityDocument<
   Def extends SanityObjectShape = SanityObjectShape,

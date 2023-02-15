@@ -1,7 +1,7 @@
 {
-  "include": ["src/*/**.ts"],
+  "include": ["examples/*/**.ts", "src/*/**.ts"],
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ESNext",
