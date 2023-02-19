@@ -64,6 +64,14 @@ export interface SanityReference<
   def: RefType
 }
 
+export type InitialValue<T> = T | Promise<T> | (() => Promise<T>)
+
+export interface SanityInitialValue<Def extends SanityType>
+  extends SanityType<OutputOf<Def>, Def> {
+  typeName: "initialValue"
+  _initialValue: InitialValue<OutputOf<Def>>
+}
+
 export interface SanityOptional<Def extends SanityType>
   extends SanityType<OutputOf<Def> | undefined, Def> {
   typeName: "optional"
