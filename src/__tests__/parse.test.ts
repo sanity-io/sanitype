@@ -72,14 +72,12 @@ describe("object parsing", () => {
   test("circular/lazy", () => {
     type Person = {
       name: string
-      parent: Person
+      parent?: Person
     }
-    const person: SanityType<Person> = lazy(() =>
-      object({
-        name: string(),
-        parent: person,
-      }),
-    )
+    const person: SanityType<Person> = object({
+      name: string(),
+      parent: lazy(() => person).optional(),
+    })
 
     const parsed = safeParse(person, {
       name: "Tester",
@@ -152,6 +150,11 @@ describe("object array parsing", () => {
           code: "INVALID_TYPE",
           message: 'Expected "bar" but got "\'foo\'"',
           path: ["key213s", "_type"],
+        },
+        {
+          code: "INVALID_TYPE",
+          message: 'Expected a string but got "undefined"',
+          path: ["key213s", "barProp"],
         },
       ],
       status: "fail",

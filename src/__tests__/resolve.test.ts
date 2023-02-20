@@ -28,6 +28,7 @@ test("resolve reference with schema", async () => {
   const fetch = vi.fn().mockResolvedValueOnce({
     _type: "country",
     _id: "usa",
+    name: "USA",
   })
   const resolve = createResolve(fetch)
 
@@ -42,6 +43,9 @@ test("resolve schemaless reference", async () => {
   const fetch = vi.fn().mockResolvedValueOnce({
     _type: "country",
     _id: "usa",
+    _createdAt: "2021-01-01 00:00:00",
+    _updatedAt: "2021-01-01 00:00:00",
+    _rev: "xyz",
   })
   const resolve = createResolve(fetch)
 
