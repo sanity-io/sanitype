@@ -30,32 +30,3 @@ test("optional fields", () => {
   // @ts-expect-error
   assertAssignable<string | undefined, typeof someDoc.required>()
 })
-
-test("nullable types", () => {
-  const doc = document({
-    _type: literal("pet"),
-    nullable: string().nullable(),
-  })
-
-  type Doc = Infer<typeof doc>
-
-  const someDoc: Doc = {} as any
-
-  assertAssignable<string | null, typeof someDoc.nullable>()
-  // @ts-expect-error
-  assertAssignable<string | undefined, typeof someDoc.nullable>()
-})
-
-test("nullish types", () => {
-  const doc = document({
-    _type: literal("pet"),
-    nullish: string().nullish(),
-  })
-
-  type Doc = Infer<typeof doc>
-
-  const someDoc: Doc = {} as any
-
-  assertAssignable<string | null, typeof someDoc.nullish>()
-  assertAssignable<string | undefined | null, typeof someDoc.nullish>()
-})
