@@ -23,10 +23,7 @@ class DocumentBuilder<
   typeName = "document" as const
 }
 
-export function document<
-  Shape extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<Shape>>,
->(
+export function document<Shape extends SanityObjectShape = SanityObjectShape>(
   def: SafeObject<Shape, "_id" | "_type"> & {
     _id?: SanityLiteral<string> | SanityString
     _type: SanityLiteral<string>
