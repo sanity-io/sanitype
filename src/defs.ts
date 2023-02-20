@@ -17,7 +17,7 @@ export interface SanityType<Output = any, Def = any> {
   output: Output
 }
 
-export type SanityAny = SanityType<any, any>
+export type SanityAny = SanityType
 
 export interface SanityString extends SanityType<string, string> {
   typeName: "string"
@@ -62,14 +62,6 @@ export interface SanityReference<
 > extends SanityType<WithRefTypeDef<RefType>> {
   typeName: "reference"
   def: RefType
-}
-
-export type InitialValue<T> = T | Promise<T> | (() => Promise<T>)
-
-export interface SanityInitialValue<Def extends SanityType>
-  extends SanityType<OutputOf<Def>, Def> {
-  typeName: "initialValue"
-  _initialValue: InitialValue<OutputOf<Def>>
 }
 
 export interface SanityOptional<Def extends SanityType>
@@ -133,5 +125,24 @@ export type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> =
   Combine<ReferenceBase, Conceal<RefType>>
 
 export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
+
+export type LiteralKeys<T extends SanityObjectShape> = {
+  [K in keyof T as T[K] extends SanityLiteral | SanityObject | SanityDocument
+    ? K
+    : never]: InferLiteralValue<T[K]>
+} & OutputFormatFix
+
+export type InferDeepLiteralValue<T extends SanityObjectShape> =
+  LiteralKeys<T> & OutputFormatFix
+
+export type InferLiteralValue<T extends SanityAny> = T extends SanityLiteral<
+  infer Literal
+>
+  ? Literal
+  : T extends SanityObject<infer Shape>
+  ? InferDeepLiteralValue<Shape>
+  : T extends SanityDocument<infer Shape>
+  ? InferDeepLiteralValue<Shape>
+  : never
 
 export type OutputOf<T extends SanityAny> = T["output"]
