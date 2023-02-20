@@ -42,8 +42,9 @@ describe("discriminated union", () => {
       object({status: literal("failed"), error: string()}),
     ])
 
-    expect(union.safeParse({status: "success", data: {num: "should be number"}}))
-      .toMatchInlineSnapshot(`
+    expect(
+      union.safeParse({status: "success", data: {num: "should be number"}}),
+    ).toMatchInlineSnapshot(`
         {
           "errors": [
             {
@@ -67,6 +68,12 @@ describe("discriminated union", () => {
 })
 
 test("discriminated union typings", () => {
+  // @ts-expect-error stats is not assignable to "status" or "ok" which are the possible discriminator (literal) properties on the object type
+  const union = discriminatedUnion("stats", [
+    object({status: literal("success"), ok: literal(true), data: string()}),
+    object({status: literal("failed"), ok: literal(false), error: string()}),
+  ])
+
   type Ok = SanityDiscriminatedUnion<
     | SanityObject<{type: SanityLiteral<"success">; successProp: SanityString}>
     | SanityObject<{type: SanityLiteral<"failure">; failureProp: SanityString}>,
