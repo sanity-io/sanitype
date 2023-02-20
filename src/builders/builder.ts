@@ -1,5 +1,10 @@
 import {parse} from "../parse.js"
-import {OutputOf, SanityOptional, SanityType, UndefinedOptional,} from "../defs.js"
+import {
+  OutputOf,
+  SanityOptional,
+  SanityType,
+  UndefinedOptional,
+} from "../defs.js"
 
 export abstract class Builder<Def, Output> implements SanityType {
   abstract typeName: string
@@ -14,32 +19,11 @@ export abstract class Builder<Def, Output> implements SanityType {
   optional() {
     return new OptionalBuilder(this)
   }
-
-  nullable() {
-    return new NullableBuilder(this)
-  }
-
-  nullish() {
-    return new NullableBuilder(this.optional())
-  }
 }
 
 export class OptionalBuilder<
     Def extends SanityType,
     Output = UndefinedOptional<OutputOf<Def>> | undefined,
-  >
-  extends Builder<Def, Output>
-  implements SanityOptional<Def>
-{
-  typeName = "optional" as const
-  constructor(public def: Def) {
-    super(def)
-  }
-}
-
-export class NullableBuilder<
-    Def extends SanityType,
-    Output = UndefinedOptional<OutputOf<Def>> | null,
   >
   extends Builder<Def, Output>
   implements SanityOptional<Def>
