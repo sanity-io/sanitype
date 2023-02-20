@@ -5,8 +5,11 @@
 - JSON only. Use zod for advanced parsing
 - Sanityisms built-in
   - Arrays can't have arrays
+  - Array of primitive values can't be mixed with array of object values
   - Objects inside arrays get assigned `_key`-s
   - `_type`-annotations
+  - No `record`-types
+  - No `null`-types
 
 ### Immutable
 
