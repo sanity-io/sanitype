@@ -45,7 +45,9 @@ export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
 
 export interface SanityDiscriminatedUnion<
   Def extends SanityObject = SanityObject,
-  Discriminator extends keyof LiteralKeys<Def["def"]> = keyof LiteralKeys<Def["def"]>,
+  Discriminator extends keyof LiteralKeyNames<Def["def"]> = keyof LiteralKeyNames<
+    Def["def"]
+  >,
   Output = OutputOf<Def>,
 > extends SanityType<Output, Def[]> {
   typeName: "discriminatedUnion"
@@ -140,6 +142,10 @@ export type LiteralKeys<T extends SanityObjectShape> = {
     ? K
     : never]: InferLiteralValue<T[K]>
 } & OutputFormatFix
+
+export type LiteralKeyNames<T extends SanityObjectShape> = {
+  [K in keyof T as T[K] extends SanityLiteral ? K : never]: string
+}
 
 export type InferDeepLiteralValue<T extends SanityObjectShape> =
   LiteralKeys<T> & OutputFormatFix
