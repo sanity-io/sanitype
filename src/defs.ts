@@ -43,6 +43,15 @@ export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
   typeName: "union"
 }
 
+export interface SanityDiscriminatedUnion<
+  Def extends SanityObject = SanityObject,
+  Discriminator extends keyof LiteralKeys<Def["def"]> = keyof LiteralKeys<Def["def"]>,
+  Output = OutputOf<Def>,
+> extends SanityType<Output, Def[]> {
+  typeName: "discriminatedUnion"
+  discriminator: Discriminator
+}
+
 export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
 
 export interface SanityObject<

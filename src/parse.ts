@@ -3,6 +3,7 @@ import {
   INTERNAL_REF_TYPE_SCHEMA,
   OutputOf,
   SanityBoolean,
+  SanityDiscriminatedUnion,
   SanityDocument,
   SanityLiteral,
   SanityNumber,
@@ -18,6 +19,7 @@ import {
 import {inspect} from "util"
 import {
   isBooleanSchema,
+  isDiscriminatedUnionSchema,
   isDocumentSchema,
   isLiteralSchema,
   isNumberSchema,
@@ -37,6 +39,7 @@ type Path = Array<string | number | {_key: string}>
 type ErrorCode =
   | "INVALID_TYPE"
   | "INVALID_UNION"
+  | "INVALID_DISCRIMINATED_UNION"
   | "ARRAY_ELEMENT_NOT_KEYED_OBJECT"
 interface ParseErrorDetails {
   path: Path
@@ -92,6 +95,9 @@ export function safeParse<T extends SanityType>(
   }
   if (isPrimitiveArraySchema(schema)) {
     return parsePrimitiveArray(schema, input) as any
+  }
+  if (isDiscriminatedUnionSchema(schema)) {
+    return parseDiscriminatedUnion(schema, input) as any
   }
   if (isUnionSchema(schema)) {
     return parseUnion(schema, input)
@@ -253,6 +259,58 @@ export function parseUnion<S extends SanityUnion<any>>(
         message: "Input doesn't match any of the valid union types",
       },
       ...errors,
+    ],
+  }
+}
+export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
+  schema: S,
+  input: unknown,
+): ParseResult<OutputOf<S>> {
+  const discriminator = schema.discriminator
+  if (!isPlainObject(input) || !(discriminator in input)) {
+    return {
+      status: "fail",
+      errors: [
+        {
+          code: "INVALID_DISCRIMINATED_UNION",
+          path: [],
+          message: `Input must be an object with a "${schema.discriminator}" property`,
+        },
+      ],
+    }
+  }
+  const discriminatorValue = input[discriminator]
+
+  const unionSchema = schema.def.find(
+    objectDef =>
+      isLiteralSchema(objectDef.def[discriminator]!) &&
+      objectDef.def[discriminator]!.def === discriminatorValue,
+  )
+  if (!unionSchema) {
+    return {
+      status: "fail",
+      errors: [
+        {
+          code: "INVALID_DISCRIMINATED_UNION",
+          path: [],
+          message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
+        },
+      ],
+    }
+  }
+  const result = safeParse(unionSchema, input)
+  if (result.status === "ok") {
+    return result
+  }
+  return {
+    status: "fail",
+    errors: [
+      {
+        code: "INVALID_DISCRIMINATED_UNION",
+        path: [],
+        message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
+      },
+      ...result.errors,
     ],
   }
 }

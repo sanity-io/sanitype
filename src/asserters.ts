@@ -1,6 +1,7 @@
 import {
   SanityAny,
   SanityBoolean,
+  SanityDiscriminatedUnion,
   SanityDocument,
   SanityLiteral,
   SanityNumber,
@@ -20,6 +21,11 @@ export function isUnionSchema(
   schema: SanityType,
 ): schema is SanityUnion<SanityAny> {
   return schema.typeName === "union"
+}
+export function isDiscriminatedUnionSchema(
+  schema: SanityType,
+): schema is SanityDiscriminatedUnion {
+  return schema.typeName === "discriminatedUnion"
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
   return schema.typeName === "object"
