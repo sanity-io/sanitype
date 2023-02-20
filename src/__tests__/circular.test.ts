@@ -24,7 +24,7 @@ const person: SanityType<Person> = lazy(() =>
   object({
     _type: literal("person"),
     name: string(),
-    parent: person,
+    parent: lazy(() => person).optional(),
   }),
 )
 
@@ -41,7 +41,7 @@ test("typings", () => {
   const r: Result = def
 })
 test("Schema types", () => {
-  const parsed = parse(person, {})
+  const parsed = parse(person, {_type: "person", name: "foo"})
 
   parsed?.parent?.name
   parsed?.parent?.parent?.name
@@ -56,14 +56,16 @@ test("Schema types", () => {
   interface Circular {
     foo: string
     bar: number
-    self: Circular
+    self?: Circular
   }
 
-  const shouldWork: SanityType<Circular> = lazy(() =>
-    object({foo: string(), self: shouldWork, bar: number()}),
-  )
+  const shouldWork: SanityType<Circular> = object({
+    foo: string(),
+    self: lazy(() => shouldWork).optional(),
+    bar: number(),
+  })
 
-  const r = parse(shouldWork, {})
+  const r = parse(shouldWork, {foo: "bar", bar: 1, self: {foo: "bar", bar: 1}})
   r.self?.self?.self
 })
 

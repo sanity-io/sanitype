@@ -8,6 +8,8 @@ import {
   SanityNumber,
   SanityObject,
   SanityObjectArray,
+  SanityOptional,
+  SanityPrimitiveArray,
   SanityReference,
   SanityString,
   SanityType,
@@ -21,6 +23,8 @@ import {
   isNumberSchema,
   isObjectArraySchema,
   isObjectSchema,
+  isOptionalSchema,
+  isPrimitiveArraySchema,
   isReferenceSchema,
   isStringSchema,
   isUnionSchema,
@@ -59,6 +63,9 @@ export function safeParse<T extends SanityType>(
   input: unknown,
 ): ParseResult<Infer<T>> {
   const schema = getLazySchema(_schema)
+  if (isOptionalSchema(schema)) {
+    return parseOptional(schema, input) as any
+  }
   if (isStringSchema(schema)) {
     return parseString(schema, input) as any
   }
@@ -83,6 +90,9 @@ export function safeParse<T extends SanityType>(
   if (isObjectArraySchema(schema)) {
     return parseObjectArray(schema, input) as any
   }
+  if (isPrimitiveArraySchema(schema)) {
+    return parsePrimitiveArray(schema, input) as any
+  }
   if (isUnionSchema(schema)) {
     return parseUnion(schema, input)
   }
@@ -99,11 +109,17 @@ export function safeParse<T extends SanityType>(
 }
 export class ParseError extends Error {
   constructor(public errors: ParseErrorDetails[]) {
-    super(
-      `Invalid input: ${errors[0]?.message || "<unknown>"} (+ ${
-        errors.length - 1
-      })`,
-    )
+    const firstError = errors[0]
+    const formattedError = [
+      "Invalid input",
+      firstError
+        ? ` at "${firstError.path.join(".") || "<root>"}": ${
+            firstError.message
+          }`
+        : ": <unknown>",
+      errors.length > 1 ? ` (+ ${errors.length - 1})` : "",
+    ]
+    super(formattedError.join(""))
   }
 }
 
@@ -168,6 +184,14 @@ export function parseBoolean(
           },
         ],
       }
+}
+export function parseOptional<T extends SanityType>(
+  schema: SanityOptional<T>,
+  input: unknown,
+): ParseResult<T | undefined> {
+  return input === undefined
+    ? {status: "ok", value: input}
+    : safeParse(schema.def, input)
 }
 
 export function parseLiteral<S extends SanityLiteral<any>>(
@@ -267,10 +291,6 @@ export function parseObject<S extends SanityObject | SanityDocument>(
   const errors: ParseErrorDetails[] = []
   const value: PlainObject = {}
   keys.forEach(key => {
-    // todo: figure out how to deal with null - should it be allowed? check what zod does
-    if (!(key in input) || input[key] === undefined) {
-      return
-    }
     const parsed = safeParse(schema.def[key]!, input[key])
     if (parsed.status === "fail") {
       errors.push(
@@ -279,7 +299,7 @@ export function parseObject<S extends SanityObject | SanityDocument>(
           path: [key, ...err.path],
         })),
       )
-    } else {
+    } else if (parsed.value !== undefined) {
       value[key] = parsed.value
     }
   })
@@ -332,6 +352,44 @@ export function parseObjectArray<S extends SanityObjectArray>(
       return parsed.value
     }
   }) as {_key: string}[]
+
+  if (errors.length > 0) {
+    return {status: "fail", errors}
+  }
+  return {status: "ok", value}
+}
+
+export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
+  schema: S,
+  input: unknown,
+): ParseResult<OutputOf<S>> {
+  if (!Array.isArray(input)) {
+    return {
+      status: "fail",
+      errors: [
+        {
+          path: [],
+          code: "INVALID_TYPE",
+          message: `Expected an array but got "${inspect(typeof input)}"`,
+        },
+      ],
+    }
+  }
+
+  const errors: ParseErrorDetails[] = []
+  const value = (input as unknown[]).map((item, index) => {
+    const parsed = safeParse(schema.def, item)
+    if (parsed.status === "fail") {
+      errors.push(
+        ...parsed.errors.map(err => ({
+          ...err,
+          path: [index, ...err.path],
+        })),
+      )
+    } else {
+      return parsed.value
+    }
+  }) as any[]
 
   if (errors.length > 0) {
     return {status: "fail", errors}

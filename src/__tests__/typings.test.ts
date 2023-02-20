@@ -47,7 +47,7 @@ test("Type assertions", () => {
     num,
     lit,
     stringOrNum,
-    polyArr: polyArr,
+    polyArr,
     polyObjectArr,
     bool,
     arr1,
@@ -79,7 +79,17 @@ test("Type assertions", () => {
   assertAssignable<string, MyObj["composed"]["otherField"]>()
 
   // test validation output type
-  const res = parse(myObj, {})
+  const res = parse(myObj, {
+    str: "string",
+    num: 2,
+    lit: "literal value",
+    stringOrNum: "str",
+    polyArr: [],
+    polyObjectArr: [],
+    bool: true,
+    arr1: [],
+    composed: {someField: "foo", otherField: "bar"},
+  })
   assertAssignable<string, typeof res.str>()
   assertAssignable<number, typeof res.num>()
   assertAssignable<boolean, typeof res.bool>()
@@ -130,7 +140,7 @@ test("Key's in arrays", () => {
 test("Key's in arrays of references", () => {
   const pet = document({_type: literal("pet"), name: string()})
   const o = objectArray(reference(pet))
-  const parsed = parse(o, [{_key: "someKey", name: "jara"}])
+  const parsed = parse(o, [{_type: "reference", _key: "someKey", _ref: "jara"}])
   const keys = parsed.map(item => item._key)
   assertAssignable<string[], typeof keys>()
 })

@@ -7,7 +7,9 @@ import {
   SanityObject,
   SanityObjectArray,
   SanityObjectLike,
+  SanityOptional,
   SanityPrimitive,
+  SanityPrimitiveArray,
   SanityReference,
   SanityString,
   SanityType,
@@ -56,8 +58,18 @@ export function isNumberSchema(schema: SanityType): schema is SanityNumber {
 export function isBooleanSchema(schema: SanityType): schema is SanityBoolean {
   return schema.typeName === "boolean"
 }
+export function isOptionalSchema(
+  schema: SanityType,
+): schema is SanityOptional<any> {
+  return schema.typeName === "optional"
+}
 export function isObjectArraySchema(
   schema: SanityType,
 ): schema is SanityObjectArray {
   return schema.typeName === "objectArray"
+}
+export function isPrimitiveArraySchema(
+  schema: SanityType,
+): schema is SanityPrimitiveArray {
+  return schema.typeName === "primitiveArray"
 }
