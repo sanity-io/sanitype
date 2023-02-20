@@ -1,4 +1,4 @@
-import {parse} from "../parse.js"
+import {parse, ParseResult, safeParse} from "../parse.js"
 import {
   OutputOf,
   SanityOptional,
@@ -14,6 +14,10 @@ export abstract class Builder<Def, Output> implements SanityType {
   }
   parse(input: unknown): Output {
     return parse(this, input)
+  }
+
+  safeParse(input: unknown): ParseResult<Output> {
+    return safeParse(this, input)
   }
 
   optional() {
