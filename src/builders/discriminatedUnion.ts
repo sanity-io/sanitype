@@ -8,27 +8,27 @@ import {
 import {Builder} from "./builder.js"
 
 export class DiscriminatedUnionBuilder<
-    Def extends SanityObject = SanityObject,
-    Discriminator extends keyof LiteralKeyNames<Def["def"]> = keyof LiteralKeyNames<
-      Def["def"]
-    >,
-    Output = OutputOf<Def>,
+    ObjectType extends SanityObject = SanityObject,
+    Discriminator extends keyof LiteralKeyNames<
+      ObjectType["shape"]
+    > = keyof LiteralKeyNames<ObjectType["shape"]>,
+    Output = OutputOf<ObjectType>,
   >
-  extends Builder<Def[], Output>
-  implements SanityDiscriminatedUnion<Def, Discriminator, Output>
+  extends Builder<Output>
+  implements SanityDiscriminatedUnion<ObjectType, Discriminator, Output>
 {
   typeName = "discriminatedUnion" as const
-  constructor(public discriminator: Discriminator, public def: Def[]) {
-    super(def)
+  constructor(public discriminator: Discriminator, public union: ObjectType[]) {
+    super()
   }
 }
 
 export function discriminatedUnion<
-  Def extends SanityObject = SanityObject,
-  Discriminator extends keyof LiteralKeyNames<Def["def"]> = keyof LiteralKeyNames<
-    Def["def"]
-  >,
-  Output = OutputOf<Def>,
->(discriminator: Discriminator, schemas: Def[]) {
+  ObjectType extends SanityObject = SanityObject,
+  Discriminator extends keyof LiteralKeyNames<
+    ObjectType["shape"]
+  > = keyof LiteralKeyNames<ObjectType["shape"]>,
+  Output = OutputOf<ObjectType>,
+>(discriminator: Discriminator, schemas: ObjectType[]) {
   return new DiscriminatedUnionBuilder(discriminator, schemas)
 }

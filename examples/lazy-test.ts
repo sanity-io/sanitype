@@ -4,14 +4,14 @@ import {OutputOf, SanityType} from "../src/defs.js"
 interface Person {
   _type: "person"
   name: string
-  parent: Person
+  parent?: Person
 }
 
 const lazyPerson: SanityType<Person> = lazy(() =>
   object({
     _type: literal("person"),
     name: lazy(() => string()),
-    parent: lazy(() => lazyPerson),
+    parent: lazy(() => lazyPerson).optional(),
   }),
 )
 

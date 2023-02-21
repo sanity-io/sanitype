@@ -17,10 +17,13 @@ class DocumentBuilder<
     Shape extends SanityObjectShape = SanityObjectShape,
     Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Shape>>,
   >
-  extends Builder<Shape, Output>
+  extends Builder<Output>
   implements SanityDocument<Shape, Output>
 {
   typeName = "document" as const
+  constructor(public shape: Shape) {
+    super()
+  }
 }
 
 export function document<Shape extends SanityObjectShape = SanityObjectShape>(

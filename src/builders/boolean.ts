@@ -1,14 +1,8 @@
 import {SanityBoolean} from "../defs.js"
 import {Builder} from "./builder.js"
 
-class BooleanBuilder
-  extends Builder<boolean, boolean>
-  implements SanityBoolean
-{
+class BooleanBuilder extends Builder<boolean> implements SanityBoolean {
   typeName = "boolean" as const
-  constructor() {
-    super(false)
-  }
 }
 
 const BOOLEAN_BUILDER = new BooleanBuilder()

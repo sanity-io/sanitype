@@ -28,17 +28,17 @@ export function createLiteralValue<T extends SanityType>(
     return createObject(schema) as any
   }
   if (isLiteralSchema(schema)) {
-    return schema.def as any
+    return schema.value as any
   }
   throw new Error(`Cannot create literal value from "${schema.typeName}"`)
 }
 function createObject<S extends SanityObject | SanityDocument>(
   schema: S,
 ): InferLiteralValue<S> | undefined {
-  const keys: string[] = Object.keys(schema.def)
+  const keys: string[] = Object.keys(schema.shape)
   const value: Record<string, any> = {}
   keys.forEach(key => {
-    const fieldSchema = schema.def[key]!
+    const fieldSchema = schema.shape[key]!
     if (canCreateLiteralFrom(fieldSchema)) {
       value[key] = createLiteralValue(fieldSchema)
     }

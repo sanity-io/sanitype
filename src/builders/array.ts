@@ -15,17 +15,20 @@ function addKeyProperty<
   T extends SanityObjectLike | SanityUnion<SanityObjectLike>,
 >(target: T): T {
   return isUnionSchema(target)
-    ? {...target, def: target.def.map(addKeyProperty)}
-    : {...target, def: {...target.def, _key: string()}}
+    ? {...target, union: target.union.map(addKeyProperty)}
+    : {...target, shape: {...target.shape, _key: string()}}
 }
 class ObjectArrayBuilder<
     ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>,
     Output = AddArrayKey<OutputOf<ElementType>>[],
   >
-  extends Builder<ElementType, Output>
+  extends Builder<Output>
   implements SanityObjectArray<ElementType, Output>
 {
   typeName = "objectArray" as const
+  constructor(public element: ElementType) {
+    super()
+  }
 }
 class PrimitiveArrayBuilder<
     ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
@@ -33,10 +36,13 @@ class PrimitiveArrayBuilder<
       | SanityUnion<SanityPrimitive>,
     Output = OutputOf<ElementType>[],
   >
-  extends Builder<ElementType, Output>
+  extends Builder<Output>
   implements SanityPrimitiveArray<ElementType, Output>
 {
   typeName = "primitiveArray" as const
+  constructor(public element: ElementType) {
+    super()
+  }
 }
 
 export function objectArray<

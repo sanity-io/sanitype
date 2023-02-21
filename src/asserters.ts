@@ -3,6 +3,7 @@ import {
   SanityBoolean,
   SanityDiscriminatedUnion,
   SanityDocument,
+  SanityLazy,
   SanityLiteral,
   SanityNumber,
   SanityObject,
@@ -38,6 +39,9 @@ export function isReferenceSchema(
 ): schema is SanityReference<any> {
   return schema.typeName === "reference"
 }
+export function isLazySchema(schema: SanityType): schema is SanityLazy<any> {
+  return schema.typeName === "lazy"
+}
 export function isLiteralSchema(schema: SanityType): schema is SanityLiteral {
   return schema.typeName === "literal"
 }
@@ -51,7 +55,7 @@ export function isItemObjectArrayCompatible(
   return (
     isObjectSchema(elementSchema) ||
     (isUnionSchema(elementSchema) &&
-      !elementSchema.def.some(def => !isObjectSchema(def)))
+      !elementSchema.union.some(def => !isObjectSchema(def)))
   )
 }
 

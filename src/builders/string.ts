@@ -1,11 +1,8 @@
 import {SanityString} from "../defs.js"
 import {Builder} from "./builder.js"
 
-class StringBuilder extends Builder<string, string> implements SanityString {
+class StringBuilder extends Builder<string> implements SanityString {
   typeName = "string" as const
-  constructor() {
-    super("")
-  }
 }
 
 const STRING_BUILDER = new StringBuilder()
