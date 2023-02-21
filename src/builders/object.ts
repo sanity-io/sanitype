@@ -14,16 +14,19 @@ export type SafeObject<Type, Allowed extends string = never> = {
 }
 
 class ObjectBuilder<
-    Def extends SanityObjectShape = SanityObjectShape,
-    Output = UndefinedOptional<OutputFromShape<Def>>,
+    Shape extends SanityObjectShape = SanityObjectShape,
+    Output = UndefinedOptional<OutputFromShape<Shape>>,
   >
-  extends Builder<Def, Output>
-  implements SanityObject<Def, Output>
+  extends Builder<Output>
+  implements SanityObject<Shape, Output>
 {
   typeName = "object" as const
+  constructor(public shape: Shape) {
+    super()
+  }
 
-  extend<Def2 extends SanityObjectShape>(def2: Def2) {
-    return new ObjectBuilder({...this.def, ...def2})
+  extend<Shape2 extends SanityObjectShape>(shape2: Shape2) {
+    return new ObjectBuilder({...this.shape, ...shape2})
   }
 }
 

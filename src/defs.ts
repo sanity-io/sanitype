@@ -3,14 +3,14 @@ import {
   ReferenceBase,
   SanityDocumentShape,
   SanityDocumentValue,
+  SanityReferenceShape,
 } from "./shapeDefs.js"
 
 /**
  * This file contains the core interfaces for various types. The builders defined in ./builder are implementations of these.
  */
-export interface SanityType<Output = any, Def = any> {
+export interface SanityType<Output = any> {
   typeName: string
-  def: Def
   /**
    * @deprecated ** DO NOT USE ** This will throw an error if you try to access it at runtime
    */
@@ -19,14 +19,14 @@ export interface SanityType<Output = any, Def = any> {
 
 export type SanityAny = SanityType
 
-export interface SanityString extends SanityType<string, string> {
+export interface SanityString extends SanityType<string> {
   typeName: "string"
 }
-export interface SanityNumber extends SanityType<number, number> {
+export interface SanityNumber extends SanityType<number> {
   typeName: "number"
 }
 
-export interface SanityBoolean extends SanityType<boolean, boolean> {
+export interface SanityBoolean extends SanityType<boolean> {
   typeName: "boolean"
 }
 
@@ -34,50 +34,58 @@ export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
 
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
-> extends SanityType<Def, Def> {
+> extends SanityType<Def> {
   typeName: "literal"
+  value: Def
 }
 
 export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
-  extends SanityType<Output, Def[]> {
+  extends SanityType<Output> {
   typeName: "union"
+  union: Def[]
 }
 
 export interface SanityDiscriminatedUnion<
   Def extends SanityObject = SanityObject,
-  Discriminator extends keyof LiteralKeyNames<Def["def"]> = keyof LiteralKeyNames<
-    Def["def"]
-  >,
+  Discriminator extends keyof LiteralKeyNames<
+    Def["shape"]
+  > = keyof LiteralKeyNames<Def["shape"]>,
   Output = OutputOf<Def>,
-> extends SanityType<Output, Def[]> {
+> extends SanityType<Output> {
   typeName: "discriminatedUnion"
   discriminator: Discriminator
+  union: Def[]
 }
 
 export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
 
 export interface SanityObject<
-  Def extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<Def>>,
-> extends SanityType<Output, Def> {
+  Shape extends SanityObjectShape = SanityObjectShape,
+  Output = UndefinedOptional<OutputFromShape<Shape>>,
+> extends SanityType<Output> {
   typeName: "object"
+  shape: Shape
 }
 
 export interface SanityLazy<T extends SanityType>
   extends SanityType<OutputOf<T>> {
   typeName: "lazy"
+  get: () => T
 }
 
 export interface SanityReference<
   RefType extends SanityType<SanityDocumentValue>,
 > extends SanityType<WithRefTypeDef<RefType>> {
   typeName: "reference"
-  def: RefType
+  referenceType: RefType
+
+  shape: SanityReferenceShape
 }
 
-export interface SanityOptional<Def extends SanityType>
-  extends SanityType<OutputOf<Def> | undefined, Def> {
+export interface SanityOptional<Type extends SanityType>
+  extends SanityType<OutputOf<Type> | undefined> {
   typeName: "optional"
+  type: Type
 }
 
 type UndefinedToOptional<T> = {
@@ -105,8 +113,9 @@ export interface SanityObjectArray<
     | SanityObjectLike
     | SanityUnion<SanityObjectLike>,
   Output = AddArrayKey<OutputOf<ElementType>>[],
-> extends SanityType<Output, ElementType> {
+> extends SanityType<Output> {
   typeName: "objectArray"
+  element: ElementType
 }
 
 export interface SanityPrimitiveArray<
@@ -114,15 +123,17 @@ export interface SanityPrimitiveArray<
     | SanityPrimitive
     | SanityUnion<SanityPrimitive>,
   Output = OutputOf<ElementType>[],
-> extends SanityType<Output, ElementType> {
+> extends SanityType<Output> {
   typeName: "primitiveArray"
+  element: ElementType
 }
 
 export interface SanityDocument<
-  Def extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Def>>,
-> extends SanityType<Output, Def> {
+  Shape extends SanityObjectShape = SanityObjectShape,
+  Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Shape>>,
+> extends SanityType<Output> {
   typeName: "document"
+  shape: Shape
 }
 
 export const INTERNAL_REF_TYPE_SCHEMA = "__schema__" as const

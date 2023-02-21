@@ -148,7 +148,7 @@ describe("object array parsing", () => {
         },
         {
           code: "INVALID_TYPE",
-          message: 'Expected "bar" but got "\'foo\'"',
+          message: 'Expected literal value "bar" but got "\'foo\'"',
           path: ["key213s", "_type"],
         },
         {

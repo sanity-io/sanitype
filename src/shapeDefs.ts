@@ -28,7 +28,7 @@ export type SanityDocumentShape = {
 
 export const documentBase: SanityObject<SanityDocumentShape> = dt({
   typeName: "object",
-  def: {
+  shape: {
     _type: STRING,
     _id: STRING,
     _createdAt: STRING,
@@ -45,15 +45,15 @@ export type SanityReferenceShape = {
 
 const REFERENCE_LITERAL: SanityLiteral<"reference"> = dt({
   typeName: "literal",
-  def: "reference",
+  value: "reference",
 })
 
 export const referenceBase: SanityObject<SanityReferenceShape> = dt({
   typeName: "object",
-  def: {
+  shape: {
     _type: REFERENCE_LITERAL,
     _ref: STRING,
-    _weak: dt({typeName: "optional" as const, def: BOOLEAN}),
+    _weak: dt({typeName: "optional" as const, type: BOOLEAN}),
   },
 })
 

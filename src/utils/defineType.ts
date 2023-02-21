@@ -1,6 +1,7 @@
 import {defineNonEnumerableGetter} from "./defineNonEnumerableGetter.js"
 
 /**
+ *@internal
  * defineType
  * @param target
  */

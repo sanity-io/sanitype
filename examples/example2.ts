@@ -2,7 +2,6 @@ import {
   array,
   document,
   literal,
-  optional,
   reference,
   string,
 } from "../src/builders/index.js"
@@ -17,7 +16,7 @@ declare const petOutput: Infer<typeof pet>
 const person = document({
   _type: literal("person"),
   firstName: string(),
-  lastName: optional(string()),
+  lastName: string().optional(),
   favoritePet: reference(pet),
   pets: array(reference(pet)),
 })
