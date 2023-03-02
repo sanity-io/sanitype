@@ -1,16 +1,7 @@
-import {
-  array,
-  document,
-  literal,
-  number,
-  object,
-  reference,
-  string,
-  union,
-} from "../src/builders/index.js"
-import {parse} from "../src/parse.js"
-import {createResolve} from "../src/createResolve.js"
-import {OutputOf} from "../src/defs.js"
+import {array, document, literal, number, object, reference, string, union,} from "../src/builders"
+import {parse} from "../src/parse"
+import {createResolve} from "../src/createResolve"
+import {OutputOf} from "../src/defs"
 
 function assertAssignable<A extends B, B>() {}
 

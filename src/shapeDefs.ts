@@ -8,9 +8,9 @@ import {
   SanityOptional,
   SanityString,
   SanityType,
-} from "./defs.js"
-import {Combine, OutputFormatFix} from "./utils/utilTypes.js"
-import {defineType as dt} from "./utils/defineType.js"
+} from "./defs"
+import {Combine, OutputFormatFix} from "./utils/utilTypes"
+import {defineType as dt} from "./utils/defineType"
 
 const STRING: SanityString = dt({typeName: "string", def: ""})
 const BOOLEAN: SanityBoolean = dt({

@@ -1,5 +1,5 @@
-import {SanityString} from "../defs.js"
-import {Builder} from "./builder.js"
+import {SanityString} from "../defs"
+import {Builder} from "./builder"
 
 class StringBuilder extends Builder<string> implements SanityString {
   typeName = "string" as const

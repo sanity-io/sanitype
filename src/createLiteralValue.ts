@@ -1,13 +1,7 @@
-import {
-  InferLiteralValue,
-  SanityDocument,
-  SanityLiteral,
-  SanityObject,
-  SanityType,
-} from "./defs.js"
-import {isDocumentSchema, isLiteralSchema, isObjectSchema} from "./asserters.js"
-import {getLazySchema} from "./utils/getLazySchema.js"
-import {isEmpty} from "./utils/isEmpty.js"
+import {InferLiteralValue, SanityDocument, SanityLiteral, SanityObject, SanityType,} from "./defs"
+import {isDocumentSchema, isLiteralSchema, isObjectSchema} from "./asserters"
+import {getLazySchema} from "./utils/getLazySchema"
+import {isEmpty} from "./utils/isEmpty"
 
 function canCreateLiteralFrom(
   schema: SanityType,

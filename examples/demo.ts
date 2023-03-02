@@ -1,13 +1,6 @@
-import {
-  array,
-  document,
-  literal,
-  object,
-  reference,
-  string,
-} from "../src/builders/index.js"
-import {parse} from "../src/parse.js"
-import {createResolve} from "../src/createResolve.js"
+import {array, document, literal, object, reference, string,} from "../src/builders"
+import {parse} from "../src/parse"
+import {createResolve} from "../src/createResolve"
 
 const human = document({
   _type: literal("human"),

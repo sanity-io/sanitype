@@ -1,7 +1,7 @@
 import {test} from "vitest"
-import {Infer} from "../defs.js"
-import {document, literal, string} from "../builders/index.js"
-import {assertAssignable} from "./helpers.js"
+import {Infer} from "../defs"
+import {document, literal, string} from "../builders"
+import {assertAssignable} from "./helpers"
 
 test("optional fields", () => {
   const doc = document({

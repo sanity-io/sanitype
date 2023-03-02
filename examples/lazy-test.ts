@@ -1,5 +1,5 @@
-import {lazy, literal, object, string} from "../src/builders/index.js"
-import {OutputOf, SanityType} from "../src/defs.js"
+import {lazy, literal, object, string} from "../src/builders"
+import {OutputOf, SanityType} from "../src/defs"
 
 interface Person {
   _type: "person"

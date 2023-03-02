@@ -5,10 +5,10 @@ import {
   SanityObjectShape,
   SanityString,
   UndefinedOptional,
-} from "../defs.js"
-import {Builder} from "./builder.js"
-import {SafeObject} from "./object.js"
-import {SanityDocumentShape} from "../shapeDefs.js"
+} from "../defs"
+import {Builder} from "./builder"
+import {SafeObject} from "./object"
+import {SanityDocumentShape} from "../shapeDefs"
 
 /**
  * @internal

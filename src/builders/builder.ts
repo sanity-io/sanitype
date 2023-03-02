@@ -1,10 +1,5 @@
-import {parse, ParseResult, safeParse} from "../parse.js"
-import {
-  OutputOf,
-  SanityOptional,
-  SanityType,
-  UndefinedOptional,
-} from "../defs.js"
+import {parse, ParseResult, safeParse} from "../parse"
+import {OutputOf, SanityOptional, SanityType, UndefinedOptional} from "../defs"
 
 export abstract class Builder<Output> implements SanityType {
   abstract typeName: string

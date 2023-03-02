@@ -1,18 +1,9 @@
-import type {Infer, SanityType} from "../defs.js"
-import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs.js"
-import {
-  array,
-  document,
-  lazy,
-  literal,
-  number,
-  object,
-  reference,
-  string,
-} from "../builders/index.js"
-import {parse} from "../parse.js"
+import type {Infer, SanityType} from "../defs"
+import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs"
+import {array, document, lazy, literal, number, object, reference, string,} from "../builders"
+import {parse} from "../parse"
 import {test} from "vitest"
-import {SanityDocumentValue} from "../shapeDefs.js"
+import {SanityDocumentValue} from "../shapeDefs"
 
 interface Person {
   _type: "person"
