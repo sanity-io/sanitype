@@ -1,5 +1,5 @@
-import {OutputOf, SanityAny, SanityLazy} from "../defs.js"
-import {Builder} from "./builder.js"
+import {OutputOf, SanityAny, SanityLazy} from "../defs"
+import {Builder} from "./builder"
 
 class LazyBuilder<T extends SanityAny>
   extends Builder<OutputOf<T>>

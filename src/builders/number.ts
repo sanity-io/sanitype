@@ -1,5 +1,5 @@
-import {SanityNumber} from "../defs.js"
-import {Builder} from "./builder.js"
+import {SanityNumber} from "../defs"
+import {Builder} from "./builder"
 
 class NumberBuilder extends Builder<number> implements SanityNumber {
   typeName = "number" as const

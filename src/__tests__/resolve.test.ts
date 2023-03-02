@@ -1,8 +1,8 @@
 import {expect, test, vi} from "vitest"
-import {document, literal, reference, string} from "../builders/index.js"
-import {parse} from "../parse.js"
-import {createResolve} from "../createResolve.js"
-import {assertAssignable} from "./helpers.js"
+import {document, literal, reference, string} from "../builders"
+import {parse} from "../parse"
+import {createResolve} from "../createResolve"
+import {assertAssignable} from "./helpers"
 
 const country = document({
   _type: literal("country"),

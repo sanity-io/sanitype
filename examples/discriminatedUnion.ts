@@ -1,5 +1,5 @@
-import {literal, object, string,} from "../src/builders/index.js"
-import {discriminatedUnion} from "../src/builders/discriminatedUnion.js"
+import {literal, object, string,} from "../src/builders"
+import {discriminatedUnion} from "../src/builders/discriminatedUnion"
 
 const myUnion = discriminatedUnion("status", [
   object({status: literal("success"), successProp: string()}),

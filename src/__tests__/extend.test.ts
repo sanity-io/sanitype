@@ -1,6 +1,6 @@
 import {test} from "vitest"
-import {number, object, string} from "../builders/index.js"
-import {assertAssignable} from "./helpers.js"
+import {number, object, string} from "../builders"
+import {assertAssignable} from "./helpers"
 
 test("extends", () => {
   const o1 = object({a: string(), b: number()})

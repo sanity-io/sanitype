@@ -1,5 +1,5 @@
-import {SanityBoolean} from "../defs.js"
-import {Builder} from "./builder.js"
+import {SanityBoolean} from "../defs"
+import {Builder} from "./builder"
 
 class BooleanBuilder extends Builder<boolean> implements SanityBoolean {
   typeName = "boolean" as const

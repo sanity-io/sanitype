@@ -1,14 +1,7 @@
-import {SanityType} from "../src/defs.js"
-import {
-  array,
-  document,
-  lazy,
-  literal,
-  reference,
-  string,
-} from "../src/builders/index.js"
-import {parse} from "../src/parse.js"
-import {SanityDocumentValue} from "../src/shapeDefs.js"
+import {SanityType} from "../src/defs"
+import {array, document, lazy, literal, reference, string,} from "../src/builders"
+import {parse} from "../src/parse"
+import {SanityDocumentValue} from "../src/shapeDefs"
 
 interface Human extends SanityDocumentValue {
   name: string

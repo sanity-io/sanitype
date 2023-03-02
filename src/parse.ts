@@ -15,13 +15,12 @@ import {
   SanityString,
   SanityType,
   SanityUnion,
-} from "./defs.js"
+} from "./defs"
 import {inspect} from "util"
 import {
   isBooleanSchema,
   isDiscriminatedUnionSchema,
   isDocumentSchema,
-  isLazySchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
@@ -31,10 +30,10 @@ import {
   isReferenceSchema,
   isStringSchema,
   isUnionSchema,
-} from "./asserters.js"
-import {defineNonEnumerableGetter} from "./utils/defineNonEnumerableGetter.js"
-import {referenceBase} from "./shapeDefs.js"
-import {getLazySchema} from "./utils/getLazySchema.js"
+} from "./asserters"
+import {defineNonEnumerableGetter} from "./utils/defineNonEnumerableGetter"
+import {referenceBase} from "./shapeDefs"
+import {getLazySchema} from "./utils/getLazySchema"
 
 type Path = Array<string | number | {_key: string}>
 

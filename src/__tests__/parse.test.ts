@@ -1,17 +1,8 @@
 import {describe, expect, test} from "vitest"
-import {parse, safeParse} from "../parse.js"
+import {parse, safeParse} from "../parse"
 
-import {
-  array,
-  document,
-  lazy,
-  literal,
-  object,
-  reference,
-  string,
-  union,
-} from "../builders/index.js"
-import {INTERNAL_REF_TYPE_SCHEMA, SanityType} from "../defs.js"
+import {array, document, lazy, literal, object, reference, string, union,} from "../builders"
+import {INTERNAL_REF_TYPE_SCHEMA, SanityType} from "../defs"
 
 describe("string parsing", () => {
   test("successful parsing", () => {

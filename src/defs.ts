@@ -1,10 +1,5 @@
-import {Combine, OutputFormatFix} from "./utils/utilTypes.js"
-import {
-  ReferenceBase,
-  SanityDocumentShape,
-  SanityDocumentValue,
-  SanityReferenceShape,
-} from "./shapeDefs.js"
+import {Combine, OutputFormatFix} from "./utils/utilTypes"
+import {ReferenceBase, SanityDocumentShape, SanityDocumentValue, SanityReferenceShape,} from "./shapeDefs"
 
 /**
  * This file contains the core interfaces for various types. The builders defined in ./builder are implementations of these.

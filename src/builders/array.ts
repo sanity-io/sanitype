@@ -6,10 +6,10 @@ import {
   SanityPrimitive,
   SanityPrimitiveArray,
   SanityUnion,
-} from "../defs.js"
-import {Builder} from "./builder.js"
-import {string} from "./string.js"
-import {isItemObjectArrayCompatible, isUnionSchema} from "../asserters.js"
+} from "../defs"
+import {Builder} from "./builder"
+import {string} from "./string"
+import {isItemObjectArrayCompatible, isUnionSchema} from "../asserters"
 
 function addKeyProperty<
   T extends SanityObjectLike | SanityUnion<SanityObjectLike>,

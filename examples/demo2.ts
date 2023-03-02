@@ -1,22 +1,10 @@
 // todo: make a human with firstname, lastname
 
-import {
-  array,
-  document,
-  lazy,
-  literal,
-  object,
-  reference,
-  string,
-} from "../src/builders/index.js"
-import {fetchDocument} from "../src/createFetchDocument.js"
-import {resolve} from "../src/createResolve.js"
-import {SanityType} from "../src/defs.js"
-import {
-  SanityArrayValue,
-  SanityDocumentValue,
-  SanityReferenceValue,
-} from "../src/shapeDefs.js"
+import {array, document, lazy, literal, object, reference, string,} from "../src/builders"
+import {fetchDocument} from "../src/createFetchDocument"
+import {resolve} from "../src/createResolve"
+import {SanityType} from "../src/defs"
+import {SanityArrayValue, SanityDocumentValue, SanityReferenceValue,} from "../src/shapeDefs"
 
 // todo: define a "human" document schema with name: {first, last}
 

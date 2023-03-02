@@ -1,6 +1,6 @@
-import {document, literal, object, string} from "../builders/index.js"
-import {createLiteralValue} from "../createLiteralValue.js"
-import {test, expect} from "vitest"
+import {document, literal, object, string} from "../builders"
+import {createLiteralValue} from "../createLiteralValue"
+import {expect, test} from "vitest"
 
 test("create literal value from document schema", () => {
   const catSchema = document({

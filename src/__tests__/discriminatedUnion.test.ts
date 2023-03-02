@@ -1,12 +1,7 @@
-import {test, describe, expect} from "vitest"
-import {literal, number, object, string} from "../builders/index.js"
-import {discriminatedUnion} from "../builders/discriminatedUnion.js"
-import {
-  SanityDiscriminatedUnion,
-  SanityLiteral,
-  SanityObject,
-  SanityString,
-} from "../defs.js"
+import {describe, expect, test} from "vitest"
+import {literal, number, object, string} from "../builders"
+import {discriminatedUnion} from "../builders/discriminatedUnion"
+import {SanityDiscriminatedUnion, SanityLiteral, SanityObject, SanityString,} from "../defs"
 
 describe("discriminated union", () => {
   test("successful parsing", () => {

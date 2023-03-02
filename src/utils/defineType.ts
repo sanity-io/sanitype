@@ -1,4 +1,4 @@
-import {defineNonEnumerableGetter} from "./defineNonEnumerableGetter.js"
+import {defineNonEnumerableGetter} from "./defineNonEnumerableGetter"
 
 /**
  *@internal

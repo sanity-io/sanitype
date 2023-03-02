@@ -1,11 +1,5 @@
-import {
-  LiteralKeyNames,
-  LiteralKeys,
-  OutputOf,
-  SanityDiscriminatedUnion,
-  SanityObject,
-} from "../defs.js"
-import {Builder} from "./builder.js"
+import {LiteralKeyNames, OutputOf, SanityDiscriminatedUnion, SanityObject,} from "../defs"
+import {Builder} from "./builder"
 
 export class DiscriminatedUnionBuilder<
     ObjectType extends SanityObject = SanityObject,

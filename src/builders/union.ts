@@ -1,5 +1,5 @@
-import {OutputOf, SanityType, SanityUnion} from "../defs.js"
-import {Builder} from "./builder.js"
+import {OutputOf, SanityType, SanityUnion} from "../defs"
+import {Builder} from "./builder"
 
 export class UnionBuilder<Def extends SanityType, Output = OutputOf<Def>>
   extends Builder<Output>

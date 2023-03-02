@@ -16,7 +16,7 @@ import {
   SanityString,
   SanityType,
   SanityUnion,
-} from "./defs.js"
+} from "./defs"
 
 export function isUnionSchema(
   schema: SanityType,

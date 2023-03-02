@@ -1,5 +1,5 @@
-import {SanityLiteral} from "../defs.js"
-import {Builder} from "./builder.js"
+import {SanityLiteral} from "../defs"
+import {Builder} from "./builder"
 
 class LiteralBuilder<T extends string | number | boolean>
   extends Builder<T>

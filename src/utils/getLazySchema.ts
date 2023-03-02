@@ -1,5 +1,5 @@
-import {SanityType} from "../defs.js"
-import {isLazySchema} from "../asserters.js"
+import {SanityType} from "../defs"
+import {isLazySchema} from "../asserters"
 
 export function getLazySchema(schema: SanityType): SanityType {
   if (isLazySchema(schema)) {
