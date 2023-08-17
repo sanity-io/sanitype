@@ -29,6 +29,8 @@ const pet = document({
 })
 const jara = await fetchDocument("jara", pet)
 
+jara.human
+
 const jarasHuman = await resolve(jara.human)
 
 const jarasHumansCoworkers = await Promise.all(
