@@ -1,8 +1,6 @@
-import {array, document, lazy, literal, object, reference, string,} from "../src/builders"
+import {array, document, lazy, literal, object, reference, resolve, SanityType, string,} from "sanitype"
 import {fetchDocument} from "../src/createFetchDocument"
-import {resolve} from "../src/createResolve"
-import {SanityType} from "../src/defs"
-import {SanityArrayValue, SanityDocumentValue, SanityReferenceValue,} from "../src/shapeDefs"
+import {SanityArrayValue, SanityDocumentValue, SanityReferenceValue,} from "sanitype"
 
 // todo: define a "human" document schema with name: {first, last}
 interface Human extends SanityDocumentValue {

@@ -1,8 +1,8 @@
-# zani*ty*
+# sani***ty***pe
 
 ------
 
-# Experimenting with TypeScript-first schemas for Sanity
+# Experimental TypeScript-first schemas for Sanity
 
 Runtime validation & static type inference
 
@@ -18,7 +18,7 @@ Create base types that can be extended in different contexts.
 
 ### End to end type safety with runtime validation
 
-Use zschema definitions to validate JSON data coming from the Sanity API or other external data sources
+You can use sanitype definitions to validate JSON data coming from the Sanity API or other external data sources
 
 ### Immutable API
 

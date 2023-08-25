@@ -1,4 +1,4 @@
-import {document, literal, object, string} from "../src/builders";
+import {document, literal, object, string} from "sanitype";
 
 const muxPluginVideo = document({
   _type: literal("mux.video"),

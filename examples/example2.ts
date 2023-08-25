@@ -1,7 +1,4 @@
-import {array, document, literal, reference, string,} from "../src/builders"
-import {parse} from "../src/parse"
-import {createResolve} from "../src/createResolve"
-import {Infer} from "../src/defs"
+import {array, createResolve, document, Infer, literal, parse, reference, string,} from "sanitype"
 
 const pet = document({_type: literal("pet"), name: string()})
 
