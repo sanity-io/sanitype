@@ -1,6 +1,4 @@
-import {array, document, literal, object, reference, string,} from "../src/builders"
-import {Infer, SanityObject, SanityType} from "../src/defs"
-// @ts-ignore
+import {array, document, Infer, literal, object, reference, SanityObject, SanityType, string} from "sanitype"
 import React, {useState} from "react"
 
 const pet = document({_type: literal("pet"), name: string()})

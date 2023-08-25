@@ -1,5 +1,4 @@
-import {lazy, literal, object, string} from "../src/builders"
-import {OutputOf, SanityType} from "../src/defs"
+import {lazy, literal, object, OutputOf, SanityType, string} from "sanitype"
 
 interface Person {
   _type: "person"

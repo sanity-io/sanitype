@@ -1,6 +1,4 @@
-import {array, document, literal, object, reference, string,} from "../src/builders"
-import {parse} from "../src/parse"
-import {createResolve} from "../src/createResolve"
+import {array, createResolve, document, literal, object, parse, reference, string,} from "sanitype"
 
 const human = document({
   _type: literal("human"),

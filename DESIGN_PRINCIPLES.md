@@ -15,7 +15,7 @@
 
 ### Explicit composition over inheritance/extending
 
-Instead of `baseType.extend({extra: string()})` which only has the capacity add fields at the end of the type, zschema only supports
+Instead of `baseType.extend({extra: string()})` which only has the capacity add fields at the end of the type, sanitype only supports
 explicit composition, meaning the above example has to be composed explicitly from the type records
 
 ```js

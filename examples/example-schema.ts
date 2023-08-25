@@ -1,7 +1,16 @@
-import {array, document, literal, number, object, reference, string, union,} from "../src/builders"
-import {parse} from "../src/parse"
-import {createResolve} from "../src/createResolve"
-import {OutputOf} from "../src/defs"
+import {
+  array,
+  createResolve,
+  document,
+  literal,
+  number,
+  object,
+  OutputOf,
+  parse,
+  reference,
+  string,
+  union,
+} from "sanitype"
 
 function assertAssignable<A extends B, B>() {}
 

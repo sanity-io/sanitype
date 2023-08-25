@@ -1,15 +1,4 @@
-import {
-  document,
-  literal,
-  object,
-  array,
-  reference,
-  string,
-  union,
-  number,
-} from "../src/builders"
-import {resolve} from "../src/createResolve"
-import {Infer} from "../src/defs"
+import {array, document, Infer, literal, number, object, reference, string, union,} from "sanitype"
 
 const human = document({
   _type: literal("human"),
@@ -21,7 +10,7 @@ const pet = document({
   _type: literal("pet"),
   name: string(),
   union: union([string(), number()]),
-  humans: array(union([reference(human), string()])),
+  humans: array(union([reference(human)])),
 })
 
 const somePet = pet.parse({})
