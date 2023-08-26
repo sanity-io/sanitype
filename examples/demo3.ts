@@ -48,8 +48,8 @@ const jarasHuman = await resolve(jara.human)
 const jarasHumansCoworkers = await Promise.all(
   jarasHuman.coworkers.map(async coworker => await resolve(coworker)),
 )
-jarasHumansCoworkers.forEach(human => {
-  console.log(human._id)
+jarasHumansCoworkers.forEach(hum => {
+  console.log(hum._id)
 })
 
 // todo: make the pet have a reference to it's human

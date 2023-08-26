@@ -28,7 +28,9 @@ type Person = Infer<typeof person>
 const aPerson = parse(person, {})
 const resolve = createResolve(async () => {})
 console.log(aPerson.favoritePet.__schema__)
-const allPets = await Promise.all(aPerson.pets.map(pet => resolve(pet)))
+const allPets = await Promise.all(
+  aPerson.pets.map(aPersonsPet => resolve(aPersonsPet)),
+)
 
 const fetchedPet = await resolve(aPerson.favoritePet)
 

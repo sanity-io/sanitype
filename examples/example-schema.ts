@@ -63,12 +63,12 @@ console.log(somePerson.address.country)
 const resolve = createResolve(() => Promise.resolve())
 const somePersonCountry = await resolve(somePerson.address.country)
 
-const keys = somePerson.pets.map(pet => pet._key)
+const keys = somePerson.pets.map(somePersonsPet => somePersonsPet._key)
 
 assertAssignable<string[], typeof keys>()
 somePerson.visitedCountries[0]!
-const references = somePerson.visitedCountries.map(country => [
-  country._ref,
-  country._key,
+const references = somePerson.visitedCountries.map(visitedCountry => [
+  visitedCountry._ref,
+  visitedCountry._key,
 ])
 assertAssignable<[string, string][], typeof references>()

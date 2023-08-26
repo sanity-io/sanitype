@@ -24,8 +24,10 @@ declare function stringForm<T extends SanityType = SanityType>(
 ): void
 
 // legacy schema-like
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const PetSelect = () => <input type="text" />
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const DwellingMap = () => <input type="text" />
 
@@ -54,6 +56,7 @@ const legacyPersonSchema = {
 
 function App() {
   const [value, setValue] = useState<Infer<typeof person>>()
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return <form>{/*<MyForm value={value} onChange={setValue} />*/}</form>
 }

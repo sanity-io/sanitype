@@ -58,7 +58,7 @@ test('Type assertions', () => {
 
   assertAssignable<'literal value', MyObj['lit']>()
 
-  // @ts-expect-error
+  // @ts-expect-error - should be the literal
   assertAssignable<string, MyObj['lit']>()
 
   // test inferred type
