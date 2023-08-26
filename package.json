@@ -28,14 +28,15 @@
     "pkg:check": "pkg check --strict",
     "pkg:watch": "pkg watch --strict",
     "prepublishOnly": "npm run build",
-    "lint": "eslint . --ext .cjs,.js,.ts,.tsx",
+    "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
     "test": "vitest run",
-    "typecheck": "tsc --build",
+    "typecheck": "tsc",
     "test:types": "vitest typecheck --no-watch",
     "test:types:watch": "vitest typecheck",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
+    "check": "npm-run-all --serial clean --parallel typecheck lint test test:types",
     "dev": "run-p pkg:watch test:watch test:types:watch"
   },
   "devDependencies": {
