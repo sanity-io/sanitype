@@ -36,7 +36,7 @@ test('resolve reference with schema', async () => {
   expect(fetch.mock.calls).toEqual([['usa']])
 
   assertAssignable<typeof personCountry._type, 'country'>()
-  // @ts-expect-error
+  // @ts-expect-error - type should be literal 'country'
   assertAssignable<typeof personCountry._type, 'not-this'>()
 })
 test('resolve schemaless reference', async () => {

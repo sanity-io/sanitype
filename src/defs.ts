@@ -146,7 +146,7 @@ export interface Conceal<T> {
 export type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> =
   Combine<ReferenceBase, Conceal<RefType>>
 
-export type Infer<T extends any> = T extends () => infer R
+export type Infer<T> = T extends () => infer R
   ? Infer<R>
   : T extends SanityAny
   ? OutputOf<T>

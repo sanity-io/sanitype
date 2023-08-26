@@ -17,16 +17,16 @@ test('optional fields', () => {
 
   // this extracts only the optional keys from the type
   type OptionalKeys<T> = {
-    [K in keyof T]-?: {} extends {[P in K]: T[K]} ? K : never
+    [K in keyof T]-?: object extends {[P in K]: T[K]} ? K : never
   }[keyof T]
 
   assertAssignable<'optional', OptionalKeys<Doc>>()
   assertAssignable<'otherOptional', OptionalKeys<Doc>>()
 
-  // @ts-expect-error
+  // @ts-expect-error - 'required' should not be among optional keys
   assertAssignable<OptionalKeys<Doc>, 'required'>()
 
   assertAssignable<string | undefined, typeof someDoc.optional>()
-  // @ts-expect-error
+  // @ts-expect-error undefined not assignable to someDoc.require
   assertAssignable<string | undefined, typeof someDoc.required>()
 })

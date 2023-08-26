@@ -5,7 +5,7 @@
     "./src/**/**.ts",
     "./test/**/*.ts",
     "./examples/**/*.ts",
-    "./experimental/**/*.ts"
+    "./examples/**/*.tsx"
   ],
   "compilerOptions": {
     "rootDir": ".",

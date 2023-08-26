@@ -23,8 +23,8 @@ export function createSafeResolve(fetch: (ref: string) => Promise<any>) {
     reference: T,
   ): Promise<
     ParseResult<
-      T extends Conceal<infer RefTypeDef>
-        ? RefTypeDef extends SanityType<infer Output>
+      T extends Conceal<infer Ref>
+        ? Ref extends SanityType<infer Output>
           ? Output
           : T extends {_weak: true}
           ? undefined | DocumentLike

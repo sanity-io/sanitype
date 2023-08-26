@@ -1,6 +1,6 @@
 export function isEmpty(obj: any) {
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) return false
+    if (Object.hasOwn(obj, key)) return false
   }
   return true
 }

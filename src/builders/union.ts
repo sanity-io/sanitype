@@ -7,6 +7,7 @@ export class UnionBuilder<Def extends SanityType, Output = OutputOf<Def>>
 {
   typeName = 'union' as const
 
+  // eslint-disable-next-line no-shadow
   constructor(public union: Def[]) {
     super()
   }

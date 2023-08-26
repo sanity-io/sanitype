@@ -28,6 +28,7 @@ export type GroupUnderscoreKeys<T> = Combine<
   Omit<T, UnderscoreKeys<T>>
 >
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type OutputFormatFix = {}
 
 export type AZ =
@@ -118,11 +119,11 @@ export type ValidFieldChars<T extends string> = T extends ''
       >
   : never
 
-type MaybeAddKey<T extends any> = T extends Array<infer E>
+type MaybeAddKey<T> = T extends Array<infer E>
   ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
   : T
 
-export type MaybeAddKeyToArrayProps<T extends any> = T extends {
+export type MaybeAddKeyToArrayProps<T> = T extends {
   [key: string]: any
 }
   ? {

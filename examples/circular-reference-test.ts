@@ -27,5 +27,5 @@ const pet = document({
 })
 
 const myPet = parse(pet, {name: 'fido', owner: {_type: 'human', name: 'bob'}})
-// @ts-expect-error
+// @ts-expect-error - should not have _foo property
 myPet._foo
