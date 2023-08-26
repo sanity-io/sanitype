@@ -1,41 +1,61 @@
 {
   "name": "sanitype",
   "version": "0.0.0",
-  "description": "",
-  "type": "module",
-  "typesVersions": {
-    "*": {
-      ".": [
-        "dist/esm/index.d.ts"
-      ]
-    }
-  },
-  "main": "dist/cjs/index.js",
-  "types": "dist/esm/index.d.ts",
-  "scripts": {
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc --module es2020 --outDir dist/esm",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "clean": "rimraf dist",
-    "prepublishOnly": "npm run clean && npm run build",
-    "postpublish": "npm run clean",
-    "watch": "run-p \"build:* -- --watch\"",
-    "test": "vitest --watch",
-    "typecheck": "tsc --noEmit"
-  },
+  "description": "Experimental TypeScript-first schemas for Sanity",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "author": "Bjørge Næss <bjoerge@gmail.com>",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "source": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "run-s clean pkg:build pkg:check",
+    "clean": "rimraf dist",
+    "format": "prettier --write --cache --ignore-unknown .",
+    "pkg:build": "pkg build --strict",
+    "pkg:check": "pkg check --strict",
+    "pkg:watch": "pkg watch --strict",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext .cjs,.js,.ts,.tsx",
+    "test": "vitest run",
+    "typecheck": "tsc --build",
+    "test:types": "vitest typecheck --no-watch",
+    "test:types:watch": "vitest typecheck",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "coverage": "vitest run --coverage",
+    "dev": "run-p pkg:watch test:watch test:types:watch"
+  },
   "devDependencies": {
-    "@types/lodash": "^4.14.185",
-    "eslint": "^8.24.0",
-    "eslint-plugin-import": "^2.26.0",
-    "lodash": "^4.17.21",
+    "@sanity/pkg-utils": "^2.4.8",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vitest/ui": "^0.34.3",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.7.1",
-    "ts-node": "^10.9.1",
+    "prettier": "^3.0.2",
+    "prettier-plugin-packagejson": "^2.4.5",
+    "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.3",
-    "zod": "^3.19.1"
+    "vitest": "^0.34.3"
+  },
+  "engines": {
+    "node": ">= 18"
   }
 }

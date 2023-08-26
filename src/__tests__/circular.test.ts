@@ -1,25 +1,34 @@
-import type {Infer, SanityType} from "../defs"
-import {OutputOf, SanityLazy, SanityObject, SanityString} from "../defs"
-import {array, document, lazy, literal, number, object, reference, string,} from "../builders"
-import {parse} from "../parse"
-import {test} from "vitest"
-import {SanityDocumentValue} from "../shapeDefs"
+import {test} from 'vitest'
+import {
+  array,
+  document,
+  lazy,
+  literal,
+  number,
+  object,
+  reference,
+  string,
+} from '../builders'
+import {parse} from '../parse'
+import type {OutputOf, SanityLazy, SanityObject, SanityString} from '../defs'
+import type {SanityDocumentValue} from '../shapeDefs'
+import type {Infer, SanityType} from '../defs'
 
 interface Person {
-  _type: "person"
+  _type: 'person'
   name: string
   parent?: Person
 }
 
 const person: SanityType<Person> = lazy(() =>
   object({
-    _type: literal("person"),
+    _type: literal('person'),
     name: string(),
     parent: lazy(() => person).optional(),
   }),
 )
 
-test("typings", () => {
+test('typings', () => {
   type Obj = SanityType<{foo: string}>
 
   const obj: Obj = {} as any
@@ -31,8 +40,8 @@ test("typings", () => {
   const def: LazyDef = {} as any
   const r: Result = def
 })
-test("Schema types", () => {
-  const parsed = parse(person, {_type: "person", name: "foo"})
+test('Schema types', () => {
+  const parsed = parse(person, {_type: 'person', name: 'foo'})
 
   parsed?.parent?.name
   parsed?.parent?.parent?.name
@@ -42,7 +51,7 @@ test("Schema types", () => {
 
   type Simple = Infer<typeof simple>
 
-  const p = parse(simple, {foo: "bar"})
+  const p = parse(simple, {foo: 'bar'})
 
   interface Circular {
     foo: string
@@ -56,23 +65,23 @@ test("Schema types", () => {
     bar: number(),
   })
 
-  const r = parse(shouldWork, {foo: "bar", bar: 1, self: {foo: "bar", bar: 1}})
+  const r = parse(shouldWork, {foo: 'bar', bar: 1, self: {foo: 'bar', bar: 1}})
   r.self?.self?.self
 })
 
-test("circular/lazy references", () => {
+test('circular/lazy references', () => {
   interface Human extends SanityDocumentValue {
     name: string
   }
 
   const human: SanityType<Human> = document({
-    _type: literal("human"),
+    _type: literal('human'),
     name: string(),
     pets: lazy(() => array(reference(pet))),
   })
 
   const pet = document({
-    _type: literal("human"),
+    _type: literal('human'),
     name: string(),
     owner: reference(human),
   })

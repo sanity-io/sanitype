@@ -1,4 +1,5 @@
-import {
+import {defineType as dt} from './utils/defineType'
+import type {
   Conceal,
   Infer,
   OutputFromShape,
@@ -8,13 +9,12 @@ import {
   SanityOptional,
   SanityString,
   SanityType,
-} from "./defs"
-import {Combine, OutputFormatFix} from "./utils/utilTypes"
-import {defineType as dt} from "./utils/defineType"
+} from './defs'
+import type {Combine, OutputFormatFix} from './utils/utilTypes'
 
-const STRING: SanityString = dt({typeName: "string", def: ""})
+const STRING: SanityString = dt({typeName: 'string', def: ''})
 const BOOLEAN: SanityBoolean = dt({
-  typeName: "boolean",
+  typeName: 'boolean',
   def: true,
 })
 
@@ -27,7 +27,7 @@ export type SanityDocumentShape = {
 }
 
 export const documentBase: SanityObject<SanityDocumentShape> = dt({
-  typeName: "object",
+  typeName: 'object',
   shape: {
     _type: STRING,
     _id: STRING,
@@ -38,22 +38,22 @@ export const documentBase: SanityObject<SanityDocumentShape> = dt({
 })
 
 export type SanityReferenceShape = {
-  _type: SanityString | SanityLiteral<"reference">
+  _type: SanityString | SanityLiteral<'reference'>
   _ref: SanityString
   _weak: SanityOptional<SanityBoolean>
 }
 
-const REFERENCE_LITERAL: SanityLiteral<"reference"> = dt({
-  typeName: "literal",
-  value: "reference",
+const REFERENCE_LITERAL: SanityLiteral<'reference'> = dt({
+  typeName: 'literal',
+  value: 'reference',
 })
 
 export const referenceBase: SanityObject<SanityReferenceShape> = dt({
-  typeName: "object",
+  typeName: 'object',
   shape: {
     _type: REFERENCE_LITERAL,
     _ref: STRING,
-    _weak: dt({typeName: "optional" as const, type: BOOLEAN}),
+    _weak: dt({typeName: 'optional' as const, type: BOOLEAN}),
   },
 })
 

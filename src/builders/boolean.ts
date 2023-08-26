@@ -1,8 +1,8 @@
-import {SanityBoolean} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {SanityBoolean} from '../defs'
 
-class BooleanBuilder extends Builder<boolean> implements SanityBoolean {
-  typeName = "boolean" as const
+export class BooleanBuilder extends Builder<boolean> implements SanityBoolean {
+  typeName = 'boolean' as const
 }
 
 const BOOLEAN_BUILDER = new BooleanBuilder()

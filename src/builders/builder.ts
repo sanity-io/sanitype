@@ -1,10 +1,16 @@
-import {parse, ParseResult, safeParse} from "../parse"
-import {OutputOf, SanityOptional, SanityType, UndefinedOptional} from "../defs"
+import {parse, safeParse} from '../parse'
+import type {ParseResult} from '../parse'
+import type {
+  OutputOf,
+  SanityOptional,
+  SanityType,
+  UndefinedOptional,
+} from '../defs'
 
 export abstract class Builder<Output> implements SanityType {
   abstract typeName: string
   get output(): Output {
-    throw new Error("This method is not defined runtime")
+    throw new Error('This method is not defined runtime')
   }
   parse(input: unknown): Output {
     return parse(this, input)
@@ -26,7 +32,7 @@ export class OptionalBuilder<
   extends Builder<Output>
   implements SanityOptional<Type>
 {
-  typeName = "optional" as const
+  typeName = 'optional' as const
   constructor(public type: Type) {
     super()
   }

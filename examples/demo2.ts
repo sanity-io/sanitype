@@ -1,21 +1,20 @@
-// todo: make a human with firstname, lastname
-
 import {
   array,
   document,
+  fetchDocument,
   lazy,
   literal,
   object,
   reference,
   resolve,
+  string,
+} from 'sanitype'
+import type {
   SanityArrayValue,
   SanityDocumentValue,
   SanityReferenceValue,
-  createFetchDocument,
   SanityType,
-  string,
-} from "sanitype"
-import {fetchDocument} from "../src/createFetchDocument"
+} from 'sanitype'
 
 // todo: define a "human" document schema with name: {first, last}
 
@@ -28,23 +27,23 @@ interface Human extends SanityDocumentValue {
 }
 
 const human: SanityType<Human> = document({
-  _type: literal("human"),
+  _type: literal('human'),
   name: object({first: string(), last: string()}),
   coworkers: lazy(() => array(reference(human))),
 })
 
 // todo: fetch a human
-const knut = await fetchDocument("knut", human)
+const knut = await fetchDocument('knut', human)
 
 // todo: make a "pet" document schema
 // todo: make the pet have a reference to it's human
 const pet = document({
-  _type: literal("pet"),
+  _type: literal('pet'),
   name: string(),
   human: reference(human),
 })
 // todo: fetch a pet
-const jara = await fetchDocument("jara", pet)
+const jara = await fetchDocument('jara', pet)
 
 // todo: resolve the pet's human
 const jarasHuman = resolve(jara.human)

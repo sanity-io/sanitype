@@ -5,23 +5,23 @@ import {
   literal,
   number,
   object,
-  OutputOf,
   parse,
   reference,
   string,
   union,
-} from "sanitype"
+} from 'sanitype'
+import type {OutputOf} from 'sanitype'
 
 function assertAssignable<A extends B, B>() {}
 
 const country = document({
-  _type: literal("country"),
+  _type: literal('country'),
   name: string(),
 })
 
 const pet = object({
-  _type: literal("pet"),
-  species: union([literal("dog"), literal("cat")]),
+  _type: literal('pet'),
+  species: union([literal('dog'), literal('cat')]),
   name: string(),
 })
 declare const petOutput: OutputOf<typeof pet>
@@ -31,11 +31,11 @@ const list = array(object({test: string()}))
 declare const listOutput: OutputOf<typeof list>
 
 const person = document({
-  _type: literal("person"),
+  _type: literal('person'),
   firstName: string(),
   lastName: string(),
   address: object({
-    _type: literal("address"),
+    _type: literal('address'),
     street: string(),
     zip: string(),
     country: reference(country),
@@ -48,8 +48,8 @@ declare const personOutput: OutputOf<typeof person>
 
 const polyObjectArr = array(
   union([
-    object({_type: literal("foo"), foo: string()}),
-    object({_type: literal("two"), age: number()}),
+    object({_type: literal('foo'), foo: string()}),
+    object({_type: literal('two'), age: number()}),
   ]),
 )
 declare const stringOrNumOut: OutputOf<typeof polyObjectArr>

@@ -1,10 +1,11 @@
-import {array, document, Infer, literal, object, reference, SanityObject, SanityType, string} from "sanitype"
-import React, {useState} from "react"
+import {array, document, literal, object, reference, string} from 'sanitype'
+import React, {useState} from 'react'
+import type {Infer, SanityObject, SanityType} from 'sanitype'
 
-const pet = document({_type: literal("pet"), name: string()})
+const pet = document({_type: literal('pet'), name: string()})
 
 const person = document({
-  _type: literal("person"),
+  _type: literal('person'),
   firstName: string(),
   lastName: string(),
   favoritePet: reference(pet),
@@ -16,6 +17,7 @@ declare function objectForm<T extends SanityObject = SanityObject>(
   type: T,
   args: any,
 ): void
+
 declare function stringForm<T extends SanityType = SanityType>(
   type: T,
   args: any,
@@ -30,15 +32,15 @@ const DwellingMap = () => <input type="text" />
 const legacyPersonSchema = {
   type: person,
   fields: {
-    firstName: {title: "First name"},
-    lastName: {title: "Last name"},
-    favoritePet: {title: "Favorite pet", component: PetSelect},
+    firstName: {title: 'First name'},
+    lastName: {title: 'Last name'},
+    favoritePet: {title: 'Favorite pet', component: PetSelect},
     dwelling: {
-      title: "Dwelling",
+      title: 'Dwelling',
       fields: {
-        street: {title: "Street"},
-        city: {title: "City"},
-        country: {title: "Country"},
+        street: {title: 'Street'},
+        city: {title: 'City'},
+        country: {title: 'Country'},
       },
       input: DwellingMap,
     },

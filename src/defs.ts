@@ -1,5 +1,10 @@
-import {Combine, OutputFormatFix} from "./utils/utilTypes"
-import {ReferenceBase, SanityDocumentShape, SanityDocumentValue, SanityReferenceShape,} from "./shapeDefs"
+import type {Combine, OutputFormatFix} from './utils/utilTypes'
+import type {
+  ReferenceBase,
+  SanityDocumentShape,
+  SanityDocumentValue,
+  SanityReferenceShape,
+} from './shapeDefs'
 
 /**
  * This file contains the core interfaces for various types. The builders defined in ./builder are implementations of these.
@@ -15,14 +20,14 @@ export interface SanityType<Output = any> {
 export type SanityAny = SanityType
 
 export interface SanityString extends SanityType<string> {
-  typeName: "string"
+  typeName: 'string'
 }
 export interface SanityNumber extends SanityType<number> {
-  typeName: "number"
+  typeName: 'number'
 }
 
 export interface SanityBoolean extends SanityType<boolean> {
-  typeName: "boolean"
+  typeName: 'boolean'
 }
 
 export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
@@ -30,24 +35,24 @@ export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
 > extends SanityType<Def> {
-  typeName: "literal"
+  typeName: 'literal'
   value: Def
 }
 
 export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
   extends SanityType<Output> {
-  typeName: "union"
+  typeName: 'union'
   union: Def[]
 }
 
 export interface SanityDiscriminatedUnion<
   Def extends SanityObject = SanityObject,
   Discriminator extends keyof LiteralKeyNames<
-    Def["shape"]
-  > = keyof LiteralKeyNames<Def["shape"]>,
+    Def['shape']
+  > = keyof LiteralKeyNames<Def['shape']>,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
-  typeName: "discriminatedUnion"
+  typeName: 'discriminatedUnion'
   discriminator: Discriminator
   union: Def[]
 }
@@ -58,20 +63,20 @@ export interface SanityObject<
   Shape extends SanityObjectShape = SanityObjectShape,
   Output = UndefinedOptional<OutputFromShape<Shape>>,
 > extends SanityType<Output> {
-  typeName: "object"
+  typeName: 'object'
   shape: Shape
 }
 
 export interface SanityLazy<T extends SanityType>
   extends SanityType<OutputOf<T>> {
-  typeName: "lazy"
+  typeName: 'lazy'
   get: () => T
 }
 
 export interface SanityReference<
   RefType extends SanityType<SanityDocumentValue>,
 > extends SanityType<WithRefTypeDef<RefType>> {
-  typeName: "reference"
+  typeName: 'reference'
   referenceType: RefType
 
   shape: SanityReferenceShape
@@ -79,14 +84,14 @@ export interface SanityReference<
 
 export interface SanityOptional<Type extends SanityType>
   extends SanityType<OutputOf<Type> | undefined> {
-  typeName: "optional"
+  typeName: 'optional'
   type: Type
 }
 
-type UndefinedToOptional<T> = {
+export type UndefinedToOptional<T> = {
   [K in keyof T as undefined extends T[K] ? K : never]?: T[K]
 }
-type NonUndefined<T> = {
+export type NonUndefined<T> = {
   [K in keyof T as undefined extends T[K] ? never : K]: T[K]
 }
 
@@ -109,7 +114,7 @@ export interface SanityObjectArray<
     | SanityUnion<SanityObjectLike>,
   Output = AddArrayKey<OutputOf<ElementType>>[],
 > extends SanityType<Output> {
-  typeName: "objectArray"
+  typeName: 'objectArray'
   element: ElementType
 }
 
@@ -119,7 +124,7 @@ export interface SanityPrimitiveArray<
     | SanityUnion<SanityPrimitive>,
   Output = OutputOf<ElementType>[],
 > extends SanityType<Output> {
-  typeName: "primitiveArray"
+  typeName: 'primitiveArray'
   element: ElementType
 }
 
@@ -127,11 +132,11 @@ export interface SanityDocument<
   Shape extends SanityObjectShape = SanityObjectShape,
   Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Shape>>,
 > extends SanityType<Output> {
-  typeName: "document"
+  typeName: 'document'
   shape: Shape
 }
 
-export const INTERNAL_REF_TYPE_SCHEMA = "__schema__" as const
+export const INTERNAL_REF_TYPE_SCHEMA = '__schema__' as const
 
 export interface Conceal<T> {
   /** @deprecated - Do not use. Only exists in the type system and will throw an error if accessed at runtime. */
@@ -141,7 +146,11 @@ export interface Conceal<T> {
 export type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> =
   Combine<ReferenceBase, Conceal<RefType>>
 
-export type Infer<T extends any> = T extends SanityAny ? OutputOf<T> : T
+export type Infer<T extends any> = T extends () => infer R
+  ? Infer<R>
+  : T extends SanityAny
+  ? OutputOf<T>
+  : T
 
 export type LiteralKeys<T extends SanityObjectShape> = {
   [K in keyof T as T[K] extends SanityLiteral | SanityObject | SanityDocument
@@ -166,4 +175,4 @@ export type InferLiteralValue<T extends SanityAny> = T extends SanityLiteral<
   ? InferDeepLiteralValue<Shape>
   : never
 
-export type OutputOf<T extends SanityAny> = T["output"]
+export type OutputOf<T extends SanityAny> = T['output']

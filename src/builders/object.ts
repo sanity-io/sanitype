@@ -1,6 +1,11 @@
-import {OutputFromShape, SanityObject, SanityObjectShape, UndefinedOptional,} from "../defs"
-import {Builder} from "./builder"
-import {ValidFieldName} from "../utils/utilTypes"
+import {Builder} from './builder'
+import type {ValidFieldName} from '../utils/utilTypes'
+import type {
+  OutputFromShape,
+  SanityObject,
+  SanityObjectShape,
+  UndefinedOptional,
+} from '../defs'
 
 export type SafeObject<Type, Allowed extends string = never> = {
   [Property in keyof Type]: Property extends Allowed
@@ -8,14 +13,14 @@ export type SafeObject<Type, Allowed extends string = never> = {
     : Type[ValidFieldName<Property>]
 }
 
-class ObjectBuilder<
+export class ObjectBuilder<
     Shape extends SanityObjectShape = SanityObjectShape,
     Output = UndefinedOptional<OutputFromShape<Shape>>,
   >
   extends Builder<Output>
   implements SanityObject<Shape, Output>
 {
-  typeName = "object" as const
+  typeName = 'object' as const
   constructor(public shape: Shape) {
     super()
   }
@@ -28,7 +33,7 @@ class ObjectBuilder<
 export function object<
   Def extends SanityObjectShape = SanityObjectShape,
   Output = UndefinedOptional<OutputFromShape<Def>>,
->(shape: SafeObject<Def, "_type">) {
+>(shape: SafeObject<Def, '_type'>) {
   return new ObjectBuilder(shape)
 }
 

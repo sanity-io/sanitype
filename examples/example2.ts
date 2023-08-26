@@ -1,11 +1,20 @@
-import {array, createResolve, document, Infer, literal, parse, reference, string,} from "sanitype"
+import {
+  array,
+  createResolve,
+  document,
+  literal,
+  parse,
+  reference,
+  string,
+} from 'sanitype'
+import type {Infer} from 'sanitype'
 
-const pet = document({_type: literal("pet"), name: string()})
+const pet = document({_type: literal('pet'), name: string()})
 
 declare const petOutput: Infer<typeof pet>
 
 const person = document({
-  _type: literal("person"),
+  _type: literal('person'),
   firstName: string(),
   lastName: string().optional(),
   favoritePet: reference(pet),

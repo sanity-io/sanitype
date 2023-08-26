@@ -1,8 +1,8 @@
-import {SanityNumber} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {SanityNumber} from '../defs'
 
-class NumberBuilder extends Builder<number> implements SanityNumber {
-  typeName = "number" as const
+export class NumberBuilder extends Builder<number> implements SanityNumber {
+  typeName = 'number' as const
 }
 
 const NUMBER_BUILDER = new NumberBuilder()

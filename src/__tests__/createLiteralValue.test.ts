@@ -1,35 +1,35 @@
-import {document, literal, object, string} from "../builders"
-import {createLiteralValue} from "../createLiteralValue"
-import {expect, test} from "vitest"
+import {expect, test} from 'vitest'
+import {document, literal, object, string} from '../builders'
+import {createLiteralValue} from '../createLiteralValue'
 
-test("create literal value from document schema", () => {
+test('create literal value from document schema', () => {
   const catSchema = document({
-    _type: literal("cat"),
-    sound: literal("miau"),
+    _type: literal('cat'),
+    sound: literal('miau'),
     breed: string(),
     metadata: object({
-      tag: literal("xyz"),
+      tag: literal('xyz'),
     }),
     name: string(),
   })
   const myCat = createLiteralValue(catSchema)
   expect(myCat).toEqual({
-    _type: "cat",
+    _type: 'cat',
     metadata: {
-      tag: "xyz",
+      tag: 'xyz',
     },
-    sound: "miau",
+    sound: 'miau',
   })
 })
 
-test("create literal value from literal schema", () => {
-  const someLiteral = literal("lit")
+test('create literal value from literal schema', () => {
+  const someLiteral = literal('lit')
   const myLit = createLiteralValue(someLiteral)
-  expect(myLit).toEqual("lit")
+  expect(myLit).toEqual('lit')
 })
 
-test("create literal value from object schema", () => {
-  const schema = object({foo: literal("bar"), someString: string()})
+test('create literal value from object schema', () => {
+  const schema = object({foo: literal('bar'), someString: string()})
   const value = createLiteralValue(schema)
   expect(value).toEqual({foo: 'bar'})
 })

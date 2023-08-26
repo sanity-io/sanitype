@@ -1,6 +1,20 @@
-import {array, document, lazy, literal, object, reference, resolve, SanityType, string,} from "sanitype"
-import {fetchDocument} from "../src/createFetchDocument"
-import {SanityArrayValue, SanityDocumentValue, SanityReferenceValue,} from "sanitype"
+import {
+  array,
+  document,
+  fetchDocument,
+  lazy,
+  literal,
+  object,
+  reference,
+  resolve,
+  string,
+} from 'sanitype'
+import type {
+  SanityArrayValue,
+  SanityDocumentValue,
+  SanityReferenceValue,
+  SanityType,
+} from 'sanitype'
 
 // todo: define a "human" document schema with name: {first, last}
 interface Human extends SanityDocumentValue {
@@ -10,22 +24,22 @@ interface Human extends SanityDocumentValue {
 
 const human: SanityType<Human> = lazy(() =>
   document({
-    _type: literal("human"),
+    _type: literal('human'),
     name: object({first: string(), last: string()}),
     coworkers: array(reference(human)),
   }),
 )
 
 // todo: fetch a human
-const knut = await fetchDocument("knut", human)
+const knut = await fetchDocument('knut', human)
 
 // todo: make a "pet" document schema
 const pet = document({
-  _type: literal("pet"),
+  _type: literal('pet'),
   name: string(),
   human: reference(human),
 })
-const jara = await fetchDocument("jara", pet)
+const jara = await fetchDocument('jara', pet)
 
 jara.human
 

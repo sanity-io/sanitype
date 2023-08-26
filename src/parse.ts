@@ -1,6 +1,24 @@
+import {inspect} from 'util'
+import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
+  isBooleanSchema,
+  isDiscriminatedUnionSchema,
+  isDocumentSchema,
+  isLiteralSchema,
+  isNumberSchema,
+  isObjectArraySchema,
+  isObjectSchema,
+  isOptionalSchema,
+  isPrimitiveArraySchema,
+  isReferenceSchema,
+  isStringSchema,
+  isUnionSchema,
+} from './asserters'
+import {defineNonEnumerableGetter} from './utils/defineNonEnumerableGetter'
+import {referenceBase} from './shapeDefs'
+import {getLazySchema} from './utils/getLazySchema'
+import type {
   Infer,
-  INTERNAL_REF_TYPE_SCHEMA,
   OutputOf,
   SanityBoolean,
   SanityDiscriminatedUnion,
@@ -15,40 +33,22 @@ import {
   SanityString,
   SanityType,
   SanityUnion,
-} from "./defs"
-import {inspect} from "util"
-import {
-  isBooleanSchema,
-  isDiscriminatedUnionSchema,
-  isDocumentSchema,
-  isLiteralSchema,
-  isNumberSchema,
-  isObjectArraySchema,
-  isObjectSchema,
-  isOptionalSchema,
-  isPrimitiveArraySchema,
-  isReferenceSchema,
-  isStringSchema,
-  isUnionSchema,
-} from "./asserters"
-import {defineNonEnumerableGetter} from "./utils/defineNonEnumerableGetter"
-import {referenceBase} from "./shapeDefs"
-import {getLazySchema} from "./utils/getLazySchema"
+} from './defs'
 
-type Path = Array<string | number | {_key: string}>
+export type Path = Array<string | number | {_key: string}>
 
-type ErrorCode =
-  | "INVALID_TYPE"
-  | "INVALID_UNION"
-  | "INVALID_DISCRIMINATED_UNION"
-  | "ARRAY_ELEMENT_NOT_KEYED_OBJECT"
-interface ParseErrorDetails {
+export type ErrorCode =
+  | 'INVALID_TYPE'
+  | 'INVALID_UNION'
+  | 'INVALID_DISCRIMINATED_UNION'
+  | 'ARRAY_ELEMENT_NOT_KEYED_OBJECT'
+export interface ParseErrorDetails {
   path: Path
   code: ErrorCode
   message: string
 }
-export type ParseOk<T> = {status: "ok"; value: T}
-export type ParseFail = {status: "fail"; errors: ParseErrorDetails[]}
+export type ParseOk<T> = {status: 'ok'; value: T}
+export type ParseFail = {status: 'fail'; errors: ParseErrorDetails[]}
 
 export type ParseResult<T> = ParseOk<T> | ParseFail
 
@@ -94,11 +94,11 @@ export function safeParse<T extends SanityType>(
     return parseUnion(schema, input)
   }
   return {
-    status: "fail",
+    status: 'fail',
     errors: [
       {
         path: [],
-        code: "INVALID_TYPE",
+        code: 'INVALID_TYPE',
         message: `Invalid input: ${inspect(input)}`,
       },
     ],
@@ -108,15 +108,15 @@ export class ParseError extends Error {
   constructor(public errors: ParseErrorDetails[]) {
     const firstError = errors[0]
     const formattedError = [
-      "Invalid input",
+      'Invalid input',
       firstError
-        ? ` at "${firstError.path.join(".") || "<root>"}": ${
+        ? ` at "${firstError.path.join('.') || '<root>'}": ${
             firstError.message
           }`
-        : ": <unknown>",
-      errors.length > 1 ? ` (+ ${errors.length - 1})` : "",
+        : ': <unknown>',
+      errors.length > 1 ? ` (+ ${errors.length - 1})` : '',
     ]
-    super(formattedError.join(""))
+    super(formattedError.join(''))
   }
 }
 
@@ -125,7 +125,7 @@ export function parse<T extends SanityType>(
   input: unknown,
 ): Infer<T> {
   const safeResult = safeParse(schema, input)
-  if (safeResult.status === "fail") {
+  if (safeResult.status === 'fail') {
     throw new ParseError(safeResult.errors)
   }
   return safeResult.value
@@ -134,14 +134,14 @@ export function parseString(
   schema: SanityString,
   input: unknown,
 ): ParseResult<string> {
-  return typeof input === "string"
-    ? {status: "ok", value: input}
+  return typeof input === 'string'
+    ? {status: 'ok', value: input}
     : {
-        status: "fail",
+        status: 'fail',
         errors: [
           {
             path: [],
-            code: "INVALID_TYPE",
+            code: 'INVALID_TYPE',
             message: `Expected a string but got "${inspect(input)}"`,
           },
         ],
@@ -152,14 +152,14 @@ export function parseNumber(
   schema: SanityNumber,
   input: unknown,
 ): ParseResult<number> {
-  return typeof input === "number"
-    ? {status: "ok", value: input}
+  return typeof input === 'number'
+    ? {status: 'ok', value: input}
     : {
-        status: "fail",
+        status: 'fail',
         errors: [
           {
             path: [],
-            code: "INVALID_TYPE",
+            code: 'INVALID_TYPE',
             message: `Expected a number but got "${inspect(input)}"`,
           },
         ],
@@ -169,14 +169,14 @@ export function parseBoolean(
   schema: SanityBoolean,
   input: unknown,
 ): ParseResult<boolean> {
-  return typeof input === "boolean"
-    ? {status: "ok", value: input}
+  return typeof input === 'boolean'
+    ? {status: 'ok', value: input}
     : {
-        status: "fail",
+        status: 'fail',
         errors: [
           {
             path: [],
-            code: "INVALID_TYPE",
+            code: 'INVALID_TYPE',
             message: `Expected a boolean but got "${inspect(input)}"`,
           },
         ],
@@ -187,7 +187,7 @@ export function parseOptional<T extends SanityType>(
   input: unknown,
 ): ParseResult<T | undefined> {
   return input === undefined
-    ? {status: "ok", value: input}
+    ? {status: 'ok', value: input}
     : safeParse(schema.type, input)
 }
 
@@ -196,13 +196,13 @@ export function parseLiteral<S extends SanityLiteral<any>>(
   input: unknown,
 ): ParseResult<OutputOf<S>> {
   return input === schema.value
-    ? {status: "ok", value: input}
+    ? {status: 'ok', value: input}
     : {
-        status: "fail",
+        status: 'fail',
         errors: [
           {
             path: [],
-            code: "INVALID_TYPE",
+            code: 'INVALID_TYPE',
             message: `Expected literal value "${
               schema.value
             }" but got "${inspect(input)}"`,
@@ -216,7 +216,7 @@ export function parseReference<S extends SanityReference<any>>(
   input: unknown,
 ): ParseResult<OutputOf<S>> {
   const parsed = parseObject(referenceBase, input)
-  if (parsed.status === "fail") {
+  if (parsed.status === 'fail') {
     return parsed
   }
   return {
@@ -238,16 +238,16 @@ export function parseUnion<S extends SanityUnion<any>>(
     // todo: optimize this by looking at the value and excluding the ones that can't match structurally
     //  e.g. introduce a "shallow fast parse" that fails fast
     const result = safeParse(unionTypeDef, input)
-    if (result.status === "ok") {
+    if (result.status === 'ok') {
       return result
     }
     errors.push(...result.errors)
   }
   return {
-    status: "fail",
+    status: 'fail',
     errors: [
       {
-        code: "INVALID_UNION",
+        code: 'INVALID_UNION',
         path: [],
         message: "Input doesn't match any of the valid union types",
       },
@@ -262,10 +262,10 @@ export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
   const discriminator = schema.discriminator
   if (!isPlainObject(input) || !(discriminator in input)) {
     return {
-      status: "fail",
+      status: 'fail',
       errors: [
         {
-          code: "INVALID_DISCRIMINATED_UNION",
+          code: 'INVALID_DISCRIMINATED_UNION',
           path: [],
           message: `Input must be an object with a "${schema.discriminator}" property`,
         },
@@ -283,10 +283,10 @@ export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
   })
   if (!unionSchema) {
     return {
-      status: "fail",
+      status: 'fail',
       errors: [
         {
-          code: "INVALID_DISCRIMINATED_UNION",
+          code: 'INVALID_DISCRIMINATED_UNION',
           path: [],
           message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
         },
@@ -294,14 +294,14 @@ export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
     }
   }
   const result = safeParse(unionSchema, input)
-  if (result.status === "ok") {
+  if (result.status === 'ok') {
     return result
   }
   return {
-    status: "fail",
+    status: 'fail',
     errors: [
       {
-        code: "INVALID_DISCRIMINATED_UNION",
+        code: 'INVALID_DISCRIMINATED_UNION',
         path: [],
         message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
       },
@@ -312,7 +312,7 @@ export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
 
 type PlainObject = {[key: string]: unknown}
 const isPlainObject = (value: unknown): value is {[key: string]: unknown} => {
-  return value !== null && typeof value === "object" && !Array.isArray(value)
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 export function parseDocument<S extends SanityDocument>(
   schema: S,
@@ -329,13 +329,13 @@ export function parseObject<S extends SanityObject | SanityDocument>(
 
   if (!isPlainObject(input)) {
     return {
-      status: "fail",
+      status: 'fail',
       errors: [
         {
           path: [],
-          code: "INVALID_TYPE",
+          code: 'INVALID_TYPE',
           message: `Expected an object with keys {${keys.join(
-            ", ",
+            ', ',
           )}} but got "${inspect(input)}"`,
         },
       ],
@@ -345,7 +345,7 @@ export function parseObject<S extends SanityObject | SanityDocument>(
   const value: PlainObject = {}
   keys.forEach(key => {
     const parsed = safeParse(schema.shape[key]!, input[key])
-    if (parsed.status === "fail") {
+    if (parsed.status === 'fail') {
       errors.push(
         ...parsed.errors.map(err => ({
           ...err,
@@ -357,13 +357,13 @@ export function parseObject<S extends SanityObject | SanityDocument>(
     }
   })
   if (errors.length > 0) {
-    return {status: "fail", errors}
+    return {status: 'fail', errors}
   }
-  return {status: "ok", value}
+  return {status: 'ok', value}
 }
 
 function isKeyedObject(value: unknown): value is {_key: string} {
-  return isPlainObject(value) && typeof value._key === "string"
+  return isPlainObject(value) && typeof value._key === 'string'
 }
 
 export function parseObjectArray<S extends SanityObjectArray>(
@@ -372,11 +372,11 @@ export function parseObjectArray<S extends SanityObjectArray>(
 ): ParseResult<OutputOf<S>> {
   if (!Array.isArray(input)) {
     return {
-      status: "fail",
+      status: 'fail',
       errors: [
         {
           path: [],
-          code: "INVALID_TYPE",
+          code: 'INVALID_TYPE',
           message: `Expected an array but got "${inspect(typeof input)}"`,
         },
       ],
@@ -387,29 +387,29 @@ export function parseObjectArray<S extends SanityObjectArray>(
   const value = (input as unknown[]).map((item, index) => {
     if (!isKeyedObject(item)) {
       errors.push({
-        code: "ARRAY_ELEMENT_NOT_KEYED_OBJECT",
+        code: 'ARRAY_ELEMENT_NOT_KEYED_OBJECT',
         path: [index],
         message: 'Expected an object with a "_key" property',
       })
       return
     }
     const parsed = safeParse(schema.element, item)
-    if (parsed.status === "fail") {
+    if (parsed.status === 'fail') {
       errors.push(
         ...parsed.errors.map(err => ({
           ...err,
           path: [item._key, ...err.path],
         })),
       )
-    } else {
-      return parsed.value
+      return undefined
     }
+    return parsed.value
   }) as {_key: string}[]
 
   if (errors.length > 0) {
-    return {status: "fail", errors}
+    return {status: 'fail', errors}
   }
-  return {status: "ok", value}
+  return {status: 'ok', value}
 }
 
 export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
@@ -418,11 +418,11 @@ export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
 ): ParseResult<OutputOf<S>> {
   if (!Array.isArray(input)) {
     return {
-      status: "fail",
+      status: 'fail',
       errors: [
         {
           path: [],
-          code: "INVALID_TYPE",
+          code: 'INVALID_TYPE',
           message: `Expected an array but got "${inspect(typeof input)}"`,
         },
       ],
@@ -432,7 +432,7 @@ export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
   const errors: ParseErrorDetails[] = []
   const value = (input as unknown[]).map((item, index) => {
     const parsed = safeParse(schema.element, item)
-    if (parsed.status === "fail") {
+    if (parsed.status === 'fail') {
       errors.push(
         ...parsed.errors.map(err => ({
           ...err,
@@ -442,10 +442,11 @@ export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
     } else {
       return parsed.value
     }
+    throw new Error("Parse result is neither 'fail' nor 'ok'")
   }) as any[]
 
   if (errors.length > 0) {
-    return {status: "fail", errors}
+    return {status: 'fail', errors}
   }
-  return {status: "ok", value}
+  return {status: 'ok', value}
 }
