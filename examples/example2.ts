@@ -3,6 +3,7 @@ import {
   createResolve,
   document,
   literal,
+  optional,
   parse,
   reference,
   string,
@@ -16,7 +17,7 @@ declare const petOutput: Infer<typeof pet>
 const person = document({
   _type: literal('person'),
   firstName: string(),
-  lastName: string().optional(),
+  lastName: optional(string()),
   favoritePet: reference(pet),
   pets: array(reference(pet)),
 })

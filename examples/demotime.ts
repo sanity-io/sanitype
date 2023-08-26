@@ -4,6 +4,7 @@ import {
   literal,
   number,
   object,
+  parse,
   reference,
   string,
   union,
@@ -22,7 +23,7 @@ const pet = document({
   humans: array(union([reference(human)])),
 })
 
-const somePet = pet.parse({})
+const somePet = parse(pet, {})
 
 type Pet = Infer<typeof pet>
 

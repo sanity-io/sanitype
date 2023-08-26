@@ -10,8 +10,9 @@ import {
   reference,
   string,
   union,
-} from '../builders'
+} from '../creators'
 import {INTERNAL_REF_TYPE_SCHEMA} from '../defs'
+import {optional} from '../creators/optional'
 import type {SanityType} from '../defs'
 
 describe('string parsing', () => {
@@ -77,7 +78,7 @@ describe('object parsing', () => {
     }
     const person: SanityType<Person> = object({
       name: string(),
-      parent: lazy(() => person).optional(),
+      parent: optional(lazy(() => person)),
     })
 
     const parsed = safeParse(person, {

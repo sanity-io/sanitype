@@ -1,5 +1,7 @@
 import {describe, expect, test} from 'vitest'
-import {discriminatedUnion, literal, number, object, string} from '../builders'
+import {literal, number, object, string} from '../creators'
+import {discriminatedUnion} from '../creators/discriminatedUnion'
+import {parse, safeParse} from '../parse'
 import type {
   SanityDiscriminatedUnion,
   SanityLiteral,
@@ -14,7 +16,7 @@ describe('discriminated union', () => {
       object({status: literal('failed'), error: string()}),
     ])
 
-    union.parse({status: 'success', data: 'it succeeded'})
+    parse(union, {status: 'success', data: 'it succeeded'})
   })
   test('failed parsing when invalid literal value for discriminator', () => {
     const union = discriminatedUnion('status', [
@@ -22,7 +24,7 @@ describe('discriminated union', () => {
       object({status: literal('failed'), error: string()}),
     ])
 
-    expect(union.safeParse({status: 'neither'})).toMatchInlineSnapshot(`
+    expect(safeParse(union, {status: 'neither'})).toMatchInlineSnapshot(`
       {
         "errors": [
           {
@@ -42,7 +44,7 @@ describe('discriminated union', () => {
     ])
 
     expect(
-      union.safeParse({status: 'success', data: {num: 'should be number'}}),
+      safeParse(union, {status: 'success', data: {num: 'should be number'}}),
     ).toMatchInlineSnapshot(`
         {
           "errors": [

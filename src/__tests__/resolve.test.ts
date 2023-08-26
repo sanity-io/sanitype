@@ -1,5 +1,5 @@
 import {expect, test, vi} from 'vitest'
-import {document, literal, reference, string} from '../builders'
+import {document, literal, reference, string} from '../creators'
 import {parse} from '../parse'
 import {createResolve} from '../createResolve'
 import {assertAssignable} from './helpers'
