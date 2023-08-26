@@ -1,9 +1,7 @@
 import {isItemObjectArrayCompatible, isUnionSchema} from '../asserters'
-import {Builder} from './builder'
+import {defineType} from '../utils/defineType'
 import {string} from './string'
 import type {
-  AddArrayKey,
-  OutputOf,
   SanityObjectArray,
   SanityObjectLike,
   SanityPrimitive,
@@ -18,43 +16,20 @@ function addKeyProperty<
     ? {...target, union: target.union.map(addKeyProperty)}
     : {...target, shape: {...target.shape, _key: string()}}
 }
-export class ObjectArrayBuilder<
-    ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>,
-    Output = AddArrayKey<OutputOf<ElementType>>[],
-  >
-  extends Builder<Output>
-  implements SanityObjectArray<ElementType, Output>
-{
-  typeName = 'objectArray' as const
-  constructor(public element: ElementType) {
-    super()
-  }
-}
-class PrimitiveArrayBuilder<
-    ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
-      | SanityPrimitive
-      | SanityUnion<SanityPrimitive>,
-    Output = OutputOf<ElementType>[],
-  >
-  extends Builder<Output>
-  implements SanityPrimitiveArray<ElementType, Output>
-{
-  typeName = 'primitiveArray' as const
-  constructor(public element: ElementType) {
-    super()
-  }
-}
 
 export function objectArray<
   ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
-  return new ObjectArrayBuilder(addKeyProperty(elementSchema))
+  return defineType({
+    typeName: 'objectArray',
+    element: addKeyProperty(elementSchema),
+  })
 }
 
 export function primitiveArray<
   ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>,
 >(elementSchema: ElementType): SanityPrimitiveArray<ElementType> {
-  return new PrimitiveArrayBuilder(elementSchema)
+  return defineType({typeName: 'primitiveArray', element: elementSchema})
 }
 
 export function array<

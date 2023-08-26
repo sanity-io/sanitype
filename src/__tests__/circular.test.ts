@@ -8,8 +8,9 @@ import {
   object,
   reference,
   string,
-} from '../builders'
+} from '../creators'
 import {parse} from '../parse'
+import {optional} from '../creators/optional'
 import type {OutputOf, SanityLazy, SanityObject, SanityString} from '../defs'
 import type {SanityDocumentValue} from '../shapeDefs'
 import type {Infer, SanityType} from '../defs'
@@ -24,7 +25,7 @@ const person: SanityType<Person> = lazy(() =>
   object({
     _type: literal('person'),
     name: string(),
-    parent: lazy(() => person).optional(),
+    parent: optional(lazy(() => person)),
   }),
 )
 
@@ -61,7 +62,7 @@ test('Schema types', () => {
 
   const shouldWork: SanityType<Circular> = object({
     foo: string(),
-    self: lazy(() => shouldWork).optional(),
+    self: optional(lazy(() => shouldWork)),
     bar: number(),
   })
 

@@ -1,4 +1,4 @@
-import {lazy, literal, object, string} from 'sanitype'
+import {lazy, literal, object, optional, string} from 'sanitype'
 import type {OutputOf, SanityType} from 'sanitype'
 
 interface Person {
@@ -11,7 +11,7 @@ const lazyPerson: SanityType<Person> = lazy(() =>
   object({
     _type: literal('person'),
     name: lazy(() => string()),
-    parent: lazy(() => lazyPerson).optional(),
+    parent: optional(lazy(() => lazyPerson)),
   }),
 )
 

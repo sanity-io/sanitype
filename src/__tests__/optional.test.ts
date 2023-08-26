@@ -1,14 +1,14 @@
 import {test} from 'vitest'
-import {document, literal, string} from '../builders'
+import {document, literal, optional, string} from '../creators'
 import {assertAssignable} from './helpers'
 import type {Infer} from '../defs'
 
 test('optional fields', () => {
   const doc = document({
     _type: literal('pet'),
-    optional: string().optional(),
+    optional: optional(string()),
     required: string(),
-    otherOptional: string().optional(),
+    otherOptional: optional(string()),
   })
 
   type Doc = Infer<typeof doc>

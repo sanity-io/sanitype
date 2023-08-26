@@ -12,7 +12,7 @@ import {
   reference,
   string,
   union,
-} from '../builders'
+} from '../creators'
 import {parse, safeParse} from '../parse'
 import {assertAssignable} from './helpers'
 import type {Infer} from '../defs'
