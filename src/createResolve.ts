@@ -1,15 +1,18 @@
-import {Conceal, Infer, INTERNAL_REF_TYPE_SCHEMA, SanityType} from "./defs"
-import {ParseError, ParseOk, ParseResult, safeParse} from "./parse"
-import {documentBase, referenceBase, SanityDocumentValue} from "./shapeDefs"
+import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
+import {ParseError, safeParse} from './parse'
+import {documentBase} from './shapeDefs'
+import type {Conceal, Infer, SanityType} from './defs'
+import type {ParseOk, ParseResult} from './parse'
+import type {referenceBase, SanityDocumentValue} from './shapeDefs'
 
-type DocumentLike = Infer<typeof documentBase>
-type ReferenceLike = Infer<typeof referenceBase>
+export type DocumentLike = Infer<typeof documentBase>
+export type ReferenceLike = Infer<typeof referenceBase>
 
-type ReferenceWithOptionalRefType<RefTypeDef> = ReferenceLike &
+export type ReferenceWithOptionalRefType<RefTypeDef> = ReferenceLike &
   Partial<Conceal<RefTypeDef>>
 
 const NO_REF: Promise<ParseOk<any>> = Promise.resolve({
-  status: "ok",
+  status: 'ok',
   value: undefined,
 })
 export function createSafeResolve(fetch: (ref: string) => Promise<any>) {
@@ -47,7 +50,7 @@ export function createResolve(fetch: (ref: string) => Promise<any>) {
     RefTypeDef extends SanityType<SanityDocumentValue>,
   >(reference: T) {
     return safeResolve(reference).then(result =>
-      result.status === "ok"
+      result.status === 'ok'
         ? result.value
         : Promise.reject(new ParseError(result.errors)),
     )
@@ -56,6 +59,6 @@ export function createResolve(fetch: (ref: string) => Promise<any>) {
 
 export const resolve = createResolve(() =>
   Promise.reject(
-    new Error("This is a stubbed `resolve` for demo purposes only"),
+    new Error('This is a stubbed `resolve` for demo purposes only'),
   ),
 )

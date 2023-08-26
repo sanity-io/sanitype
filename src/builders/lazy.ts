@@ -1,11 +1,11 @@
-import {OutputOf, SanityAny, SanityLazy} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {OutputOf, SanityAny, SanityLazy} from '../defs'
 
-class LazyBuilder<T extends SanityAny>
+export class LazyBuilder<T extends SanityAny>
   extends Builder<OutputOf<T>>
   implements SanityLazy<T>
 {
-  typeName = "lazy" as const
+  typeName = 'lazy' as const
 
   constructor(public get: () => T) {
     super()

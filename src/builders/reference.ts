@@ -1,6 +1,7 @@
-import {SanityReference, SanityType, WithRefTypeDef} from "../defs"
-import {Builder} from "./builder"
-import {referenceBase, SanityDocumentValue} from "../shapeDefs"
+import {referenceBase} from '../shapeDefs'
+import {Builder} from './builder'
+import type {SanityDocumentValue} from '../shapeDefs'
+import type {SanityReference, SanityType, WithRefTypeDef} from '../defs'
 
 export class ReferenceBuilder<
     RefType extends SanityType<SanityDocumentValue>,
@@ -9,14 +10,14 @@ export class ReferenceBuilder<
   extends Builder<Output>
   implements SanityReference<RefType>
 {
-  typeName = "reference" as const
+  typeName = 'reference' as const
   shape = referenceBase.shape
 
   constructor(public referenceType: RefType) {
     super()
   }
   get output(): Output {
-    throw new Error("This method is not defined runtime")
+    throw new Error('This method is not defined runtime')
   }
 }
 

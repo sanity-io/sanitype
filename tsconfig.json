@@ -1,20 +1,17 @@
 {
-  "include": ["examples/*/**.ts", "src/*/**.ts"],
+  "extends": "./tsconfig.settings",
+  "include": [
+    "**.ts",
+    "./src/**/**.ts",
+    "./test/**/*.ts",
+    "./examples/**/*.ts",
+    "./experimental/**/*.ts"
+  ],
   "compilerOptions": {
     "rootDir": ".",
-    "module": "NodeNext",
-    "moduleResolution": "Node",
-    "target": "ESNext",
-    "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "lib": ["es2019"],
-    "outDir": "dist",
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "skipLibCheck": true
-  }
+    "noEmit": true,
+    "paths": {
+      "sanitype": ["./src"]
+    }
+  },
 }

@@ -1,11 +1,11 @@
-import {OutputOf, SanityType, SanityUnion} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {OutputOf, SanityType, SanityUnion} from '../defs'
 
 export class UnionBuilder<Def extends SanityType, Output = OutputOf<Def>>
   extends Builder<Output>
   implements SanityUnion<Def>
 {
-  typeName = "union" as const
+  typeName = 'union' as const
 
   constructor(public union: Def[]) {
     super()

@@ -2,7 +2,7 @@
  *  Generic utility types
  */
 
-import {SanityDocument, SanityObject} from "../defs"
+import type {SanityDocument, SanityObject} from '../defs'
 
 /**
  * Combines two object types into a single, uniform type instead of an intersection of the two
@@ -30,46 +30,47 @@ export type GroupUnderscoreKeys<T> = Combine<
 
 export type OutputFormatFix = {}
 
-type AZ =
-  | "A"
-  | "B"
-  | "C"
-  | "D"
-  | "E"
-  | "F"
-  | "G"
-  | "H"
-  | "I"
-  | "J"
-  | "K"
-  | "L"
-  | "M"
-  | "N"
-  | "O"
-  | "P"
-  | "Q"
-  | "R"
-  | "S"
-  | "T"
-  | "U"
-  | "V"
-  | "W"
-  | "X"
-  | "Y"
-  | "Z"
+export type AZ =
+  | 'A'
+  | 'B'
+  | 'C'
+  | 'D'
+  | 'E'
+  | 'F'
+  | 'G'
+  | 'H'
+  | 'I'
+  | 'J'
+  | 'K'
+  | 'L'
+  | 'M'
+  | 'N'
+  | 'O'
+  | 'P'
+  | 'Q'
+  | 'R'
+  | 'S'
+  | 'T'
+  | 'U'
+  | 'V'
+  | 'W'
+  | 'X'
+  | 'Y'
+  | 'Z'
 
-type Digits = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+export type Digits = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
-export type ValidFieldChar = AZ | "_" | "-" | Digits
-export type ValidFirsChar = AZ
+export type ValidFieldChar = AZ | '_' | '-' | Digits
+export type ValidFirstChar = AZ
 
-type GetFirstChar<T extends string> =
+export type GetFirstChar<T extends string> =
   T extends `${infer First}${infer Remainder}` ? First : T
 
-type FieldErrorCode =
-  | "FIELD_NAME_CANNOT_CONTAIN_CHARACTER"
-  | "FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE"
-type FieldError<Code extends FieldErrorCode, Message extends string> = {
+export type FieldErrorCode =
+  | 'FIELD_NAME_CANNOT_CONTAIN_CHARACTER'
+  | 'FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE'
+
+export type FieldError<Code extends FieldErrorCode, Message extends string> = {
   code: Code
   message: Message
 }
@@ -80,39 +81,39 @@ export type ValidateKeyOf<T extends keyof any> = T extends string
 
 export type ValidateFieldName<T extends string> = Uppercase<
   GetFirstChar<T>
-> extends ValidFirsChar
+> extends ValidFirstChar
   ? ValidateFieldChars<T>
   : FieldError<
-      "FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE",
+      'FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE',
       `Invalid field name ${T}: Underscore field names are reserved for system fields`
     >
 
-export type ValidateFieldChars<T extends string> = T extends ""
+export type ValidateFieldChars<T extends string> = T extends ''
   ? true
   : T extends `${infer First}${infer Remainder}`
   ? Uppercase<First> extends ValidFieldChar
     ? ValidateFieldChars<Remainder>
     : FieldError<
-        "FIELD_NAME_CANNOT_CONTAIN_CHARACTER",
+        'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
         `Invalid character in field name: '${First}'.`
       >
   : never
 
 export type ValidFieldName<T extends keyof any> = T extends string
-  ? Uppercase<GetFirstChar<T>> extends ValidFirsChar
+  ? Uppercase<GetFirstChar<T>> extends ValidFirstChar
     ? ValidFieldChars<T> extends true
       ? T
       : never
     : never
   : never
 
-export type ValidFieldChars<T extends string> = T extends ""
+export type ValidFieldChars<T extends string> = T extends ''
   ? true
   : T extends `${infer First}${infer Remainder}`
   ? Uppercase<First> extends ValidFieldChar
     ? ValidateFieldChars<Remainder>
     : FieldError<
-        "FIELD_NAME_CANNOT_CONTAIN_CHARACTER",
+        'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
         `Invalid character in field name: '${First}'.`
       >
   : never

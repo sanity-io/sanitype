@@ -1,11 +1,11 @@
-import {SanityLiteral} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {SanityLiteral} from '../defs'
 
-class LiteralBuilder<T extends string | number | boolean>
+export class LiteralBuilder<T extends string | number | boolean>
   extends Builder<T>
   implements SanityLiteral
 {
-  typeName = "literal" as const
+  typeName = 'literal' as const
   constructor(public value: T) {
     super()
   }

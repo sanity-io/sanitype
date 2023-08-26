@@ -1,11 +1,11 @@
-import {test} from "vitest"
-import {Infer} from "../defs"
-import {document, literal, string} from "../builders"
-import {assertAssignable} from "./helpers"
+import {test} from 'vitest'
+import {document, literal, string} from '../builders'
+import {assertAssignable} from './helpers'
+import type {Infer} from '../defs'
 
-test("optional fields", () => {
+test('optional fields', () => {
   const doc = document({
-    _type: literal("pet"),
+    _type: literal('pet'),
     optional: string().optional(),
     required: string(),
     otherOptional: string().optional(),
@@ -20,11 +20,11 @@ test("optional fields", () => {
     [K in keyof T]-?: {} extends {[P in K]: T[K]} ? K : never
   }[keyof T]
 
-  assertAssignable<"optional", OptionalKeys<Doc>>()
-  assertAssignable<"otherOptional", OptionalKeys<Doc>>()
+  assertAssignable<'optional', OptionalKeys<Doc>>()
+  assertAssignable<'otherOptional', OptionalKeys<Doc>>()
 
   // @ts-expect-error
-  assertAssignable<OptionalKeys<Doc>, "required">()
+  assertAssignable<OptionalKeys<Doc>, 'required'>()
 
   assertAssignable<string | undefined, typeof someDoc.optional>()
   // @ts-expect-error

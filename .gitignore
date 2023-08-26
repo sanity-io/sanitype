@@ -1,4 +1,3 @@
 dist
 node_modules
-tmp
-.vitest-result.json
+tsconfig.vitest-temp.json

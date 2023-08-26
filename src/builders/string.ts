@@ -1,8 +1,8 @@
-import {SanityString} from "../defs"
-import {Builder} from "./builder"
+import {Builder} from './builder'
+import type {SanityString} from '../defs'
 
-class StringBuilder extends Builder<string> implements SanityString {
-  typeName = "string" as const
+export class StringBuilder extends Builder<string> implements SanityString {
+  typeName = 'string' as const
 }
 
 const STRING_BUILDER = new StringBuilder()

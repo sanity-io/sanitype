@@ -1,4 +1,4 @@
-import {
+import type {
   SanityAny,
   SanityBoolean,
   SanityDiscriminatedUnion,
@@ -16,34 +16,34 @@ import {
   SanityString,
   SanityType,
   SanityUnion,
-} from "./defs"
+} from './defs'
 
 export function isUnionSchema(
   schema: SanityType,
 ): schema is SanityUnion<SanityAny> {
-  return schema.typeName === "union"
+  return schema.typeName === 'union'
 }
 export function isDiscriminatedUnionSchema(
   schema: SanityType,
 ): schema is SanityDiscriminatedUnion {
-  return schema.typeName === "discriminatedUnion"
+  return schema.typeName === 'discriminatedUnion'
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
-  return schema.typeName === "object"
+  return schema.typeName === 'object'
 }
 export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
-  return schema.typeName === "document"
+  return schema.typeName === 'document'
 }
 export function isReferenceSchema(
   schema: SanityType,
 ): schema is SanityReference<any> {
-  return schema.typeName === "reference"
+  return schema.typeName === 'reference'
 }
 export function isLazySchema(schema: SanityType): schema is SanityLazy<any> {
-  return schema.typeName === "lazy"
+  return schema.typeName === 'lazy'
 }
 export function isLiteralSchema(schema: SanityType): schema is SanityLiteral {
-  return schema.typeName === "literal"
+  return schema.typeName === 'literal'
 }
 export function isItemObjectArrayCompatible(
   elementSchema:
@@ -60,26 +60,26 @@ export function isItemObjectArrayCompatible(
 }
 
 export function isStringSchema(schema: SanityType): schema is SanityString {
-  return schema.typeName === "string"
+  return schema.typeName === 'string'
 }
 export function isNumberSchema(schema: SanityType): schema is SanityNumber {
-  return schema.typeName === "number"
+  return schema.typeName === 'number'
 }
 export function isBooleanSchema(schema: SanityType): schema is SanityBoolean {
-  return schema.typeName === "boolean"
+  return schema.typeName === 'boolean'
 }
 export function isOptionalSchema(
   schema: SanityType,
 ): schema is SanityOptional<any> {
-  return schema.typeName === "optional"
+  return schema.typeName === 'optional'
 }
 export function isObjectArraySchema(
   schema: SanityType,
 ): schema is SanityObjectArray {
-  return schema.typeName === "objectArray"
+  return schema.typeName === 'objectArray'
 }
 export function isPrimitiveArraySchema(
   schema: SanityType,
 ): schema is SanityPrimitiveArray {
-  return schema.typeName === "primitiveArray"
+  return schema.typeName === 'primitiveArray'
 }

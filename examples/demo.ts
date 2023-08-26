@@ -1,7 +1,16 @@
-import {array, createResolve, document, literal, object, parse, reference, string,} from "sanitype"
+import {
+  array,
+  createResolve,
+  document,
+  literal,
+  object,
+  parse,
+  reference,
+  string,
+} from 'sanitype'
 
 const human = document({
-  _type: literal("human"),
+  _type: literal('human'),
   name: string(),
 })
 
@@ -11,7 +20,7 @@ const address = object({
 })
 
 const pet = document({
-  _type: literal("pet"),
+  _type: literal('pet'),
   name: string(),
   owners: array(reference(human)),
 })

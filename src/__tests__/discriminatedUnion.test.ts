@@ -1,24 +1,28 @@
-import {describe, expect, test} from "vitest"
-import {literal, number, object, string} from "../builders"
-import {discriminatedUnion} from "../builders/discriminatedUnion"
-import {SanityDiscriminatedUnion, SanityLiteral, SanityObject, SanityString,} from "../defs"
+import {describe, expect, test} from 'vitest'
+import {discriminatedUnion, literal, number, object, string} from '../builders'
+import type {
+  SanityDiscriminatedUnion,
+  SanityLiteral,
+  SanityObject,
+  SanityString,
+} from '../defs'
 
-describe("discriminated union", () => {
-  test("successful parsing", () => {
-    const union = discriminatedUnion("status", [
-      object({status: literal("success"), data: string()}),
-      object({status: literal("failed"), error: string()}),
+describe('discriminated union', () => {
+  test('successful parsing', () => {
+    const union = discriminatedUnion('status', [
+      object({status: literal('success'), data: string()}),
+      object({status: literal('failed'), error: string()}),
     ])
 
-    union.parse({status: "success", data: "it succeeded"})
+    union.parse({status: 'success', data: 'it succeeded'})
   })
-  test("failed parsing when invalid literal value for discriminator", () => {
-    const union = discriminatedUnion("status", [
-      object({status: literal("success"), data: string()}),
-      object({status: literal("failed"), error: string()}),
+  test('failed parsing when invalid literal value for discriminator', () => {
+    const union = discriminatedUnion('status', [
+      object({status: literal('success'), data: string()}),
+      object({status: literal('failed'), error: string()}),
     ])
 
-    expect(union.safeParse({status: "neither"})).toMatchInlineSnapshot(`
+    expect(union.safeParse({status: 'neither'})).toMatchInlineSnapshot(`
       {
         "errors": [
           {
@@ -32,13 +36,13 @@ describe("discriminated union", () => {
     `)
   })
   test("failed parsing when schema doesn't match discriminated union type", () => {
-    const union = discriminatedUnion("status", [
-      object({status: literal("success"), data: object({num: number()})}),
-      object({status: literal("failed"), error: string()}),
+    const union = discriminatedUnion('status', [
+      object({status: literal('success'), data: object({num: number()})}),
+      object({status: literal('failed'), error: string()}),
     ])
 
     expect(
-      union.safeParse({status: "success", data: {num: "should be number"}}),
+      union.safeParse({status: 'success', data: {num: 'should be number'}}),
     ).toMatchInlineSnapshot(`
         {
           "errors": [
@@ -62,30 +66,30 @@ describe("discriminated union", () => {
   })
 })
 
-test("discriminated union typings", () => {
+test('discriminated union typings', () => {
   // @ts-expect-error stats is not assignable to "status" or "ok" which are the possible discriminator (literal) properties on the object type
-  const union = discriminatedUnion("stats", [
-    object({status: literal("success"), ok: literal(true), data: string()}),
-    object({status: literal("failed"), ok: literal(false), error: string()}),
+  const union = discriminatedUnion('stats', [
+    object({status: literal('success'), ok: literal(true), data: string()}),
+    object({status: literal('failed'), ok: literal(false), error: string()}),
   ])
 
   type Ok = SanityDiscriminatedUnion<
-    | SanityObject<{type: SanityLiteral<"success">; successProp: SanityString}>
-    | SanityObject<{type: SanityLiteral<"failure">; failureProp: SanityString}>,
-    "type"
+    | SanityObject<{type: SanityLiteral<'success'>; successProp: SanityString}>
+    | SanityObject<{type: SanityLiteral<'failure'>; failureProp: SanityString}>,
+    'type'
   >
 
   type Err1 = SanityDiscriminatedUnion<
     | SanityObject<{type: SanityString; successProp: SanityString}>
-    | SanityObject<{type: SanityLiteral<"failure">; failureProp: SanityString}>,
+    | SanityObject<{type: SanityLiteral<'failure'>; failureProp: SanityString}>,
     //@ts-expect-error Discriminator must be a literal value
-    "type"
+    'type'
   >
 
   type Err2 = SanityDiscriminatedUnion<
-    | SanityObject<{type: SanityLiteral<"success">; successProp: SanityString}>
-    | SanityObject<{type: SanityLiteral<"failure">; failureProp: SanityString}>,
+    | SanityObject<{type: SanityLiteral<'success'>; successProp: SanityString}>
+    | SanityObject<{type: SanityLiteral<'failure'>; failureProp: SanityString}>,
     //@ts-expect-error Discriminator must be a literal value
-    "nonexistent"
+    'nonexistent'
   >
 })
