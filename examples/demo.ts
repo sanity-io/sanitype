@@ -31,3 +31,5 @@ const resolve = createResolve(async () => {})
 
 const petData = parse(pet, JSON.parse(input))
 const o = Promise.all(petData.owners.map(owner => resolve(owner)))
+
+const first = (await o)[0]

@@ -102,13 +102,13 @@ test('circular/lazy references', () => {
 test('SanityType', () => {
   interface Human extends SanityDocumentValue {
     _type: 'human'
-    name?: string
+    name: string
     age: number
   }
 
+  //@ts-expect-error - should fail because name is not optional in the Human type, so they are not compatible
   const humanDoc: SanityType<Human> = document({
     _type: literal('human'),
-    // todo: this should fail since name is not optional
     name: optional(string()),
     age: number(),
   })
@@ -127,12 +127,6 @@ test('circular types', () => {
     age: number(),
     parent: optional(lazy(() => extend(human, {foo: optional(string())}))),
   })
-
-  const z = extend(human, {
-    foo: string(),
-  })
-
-  const f = parse(human, {})
 
   type H = MergeObject<OutputOf<typeof human>>
 })
