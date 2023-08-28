@@ -1,6 +1,7 @@
 import {test} from 'vitest'
 import {
   array,
+  boolean,
   document,
   lazy,
   literal,
@@ -11,9 +12,19 @@ import {
 } from '../creators'
 import {parse} from '../parse'
 import {optional} from '../creators/optional'
-import type {OutputOf, SanityLazy, SanityObject, SanityString} from '../defs'
+import {extend} from '../extend'
+import type {
+  Infer,
+  OutputOf,
+  SanityLazy,
+  SanityObject,
+  SanityObjectType,
+  SanityString,
+  SanityType,
+} from '../defs'
+
 import type {SanityDocumentValue} from '../shapeDefs'
-import type {Infer, SanityType} from '../defs'
+import type {MergeObject} from '../utils/utilTypes'
 
 interface Person {
   _type: 'person'
@@ -62,8 +73,8 @@ test('Schema types', () => {
 
   const shouldWork: SanityType<Circular> = object({
     foo: string(),
-    self: optional(lazy(() => shouldWork)),
     bar: number(),
+    self: optional(lazy(() => shouldWork)),
   })
 
   const r = parse(shouldWork, {foo: 'bar', bar: 1, self: {foo: 'bar', bar: 1}})
@@ -86,4 +97,42 @@ test('circular/lazy references', () => {
     name: string(),
     owner: reference(human),
   })
+})
+
+test('SanityType', () => {
+  interface Human extends SanityDocumentValue {
+    _type: 'human'
+    name?: string
+    age: number
+  }
+
+  const humanDoc: SanityType<Human> = document({
+    _type: literal('human'),
+    // todo: this should fail since name is not optional
+    name: optional(string()),
+    age: number(),
+  })
+})
+test('circular types', () => {
+  interface Human {
+    _type: 'human'
+    name?: string
+    age: number
+    parent?: Human & {foo?: string}
+  }
+
+  const human: SanityObjectType<Human> = object({
+    _type: literal('human'),
+    name: optional(string()),
+    age: number(),
+    parent: optional(lazy(() => extend(human, {foo: optional(string())}))),
+  })
+
+  const z = extend(human, {
+    foo: string(),
+  })
+
+  const f = parse(human, {})
+
+  type H = MergeObject<OutputOf<typeof human>>
 })
