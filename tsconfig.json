@@ -1,15 +1,10 @@
 {
   "extends": "./tsconfig.settings",
   "include": [
-    "**.ts",
-    "./src/**/**.ts",
-    "./test/**/*.ts",
-    "./examples/**/*.ts",
-    "./tmp/**/*.ts",
-    "./examples/**/*.tsx"
+    "./src/**/**.ts"
   ],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true
-  },
+  }
 }

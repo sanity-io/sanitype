@@ -1,8 +1,7 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["../src/**/*.ts", "./**/*.ts", "./**/*.tsx"],
+  "include": [ "./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
-    "rootDir": "../",
     "noEmit": true,
     "paths": {
       "sanitype": ["../src"]
