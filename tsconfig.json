@@ -5,13 +5,11 @@
     "./src/**/**.ts",
     "./test/**/*.ts",
     "./examples/**/*.ts",
+    "./tmp/**/*.ts",
     "./examples/**/*.tsx"
   ],
   "compilerOptions": {
     "rootDir": ".",
-    "noEmit": true,
-    "paths": {
-      "sanitype": ["./src"]
-    }
+    "noEmit": true
   },
 }

@@ -9,8 +9,7 @@ export type SafeObject<Type, Allowed extends string = never> = {
 }
 
 export function object<
-  Shape extends SanityObjectShape = SanityObjectShape,
-  Output = OutputFromShape<Shape>,
->(shape: SafeObject<Shape, '_type'>): SanityObject<Shape, Output> {
+  Shape extends SafeObject<Shape, '_type'> = SanityObjectShape,
+>(shape: Shape): SanityObject<Shape, OutputFromShape<Shape>> {
   return defineType({typeName: 'object', shape})
 }
