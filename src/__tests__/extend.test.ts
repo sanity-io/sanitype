@@ -1,19 +1,66 @@
-import {test} from 'vitest'
-import {number, object, string} from '../creators'
+import {assertType, describe, expectTypeOf, test} from 'vitest'
+import {literal, number, object, string} from '../creators'
 import {extend} from '../extend'
 import {parse} from '../parse'
-import {assertAssignable} from './helpers'
 
-test('extends', () => {
-  const o1 = object({a: string(), b: number()})
+describe('extends helper', () => {
+  test('simple extends', () => {
+    const obj = object({str: string(), num: number()})
+    const extended = extend(obj, {extendedStr: string(), extendedNum: number()})
 
-  const o2 = extend(o1, {c: string(), d: number()})
+    const parsed = parse(extended, {
+      str: 'foo',
+      num: 1,
+      extendedStr: 'bar',
+      extendedNum: 1,
+    })
 
-  const f = parse(o2, {a: 'a', b: 1, c: 'c', d: 1})
+    assertType<{
+      str: string
+      num: number
+      extendedStr: string
+      extendedNum: number
+    }>(parsed)
 
-  assertAssignable<{a: string; b: number; c: string; d: number}, typeof f>()
-  assertAssignable<{a: 'foo'; b: 22; c: 'bar'; d: 42}, typeof f>()
+    assertType<{
+      str: string
+      num: string
+      extendedStr: string
+      extendedNum: number
+    }>(
+      //@ts-expect-error num should be number
+      parsed,
+    )
+  })
 
-  //@ts-expect-error not assignable
-  assertAssignable<{a: 22; b: '22'; c: 42; d: '42'}, typeof f>()
+  test('extends w/override', () => {
+    const obj = object({
+      changedFromStringToLiteralString: string(),
+      changedFromNumberToString: number(),
+    })
+
+    const extended = extend(obj, {
+      changedFromStringToLiteralString: literal('literally this'),
+      changedFromNumberToString: string(),
+    })
+
+    const parsed = parse(extended, {
+      changedFromStringToLiteralString: 'literally this',
+      changedFromNumberToString: 'a string',
+    })
+
+    assertType<'literally this'>(parsed.changedFromStringToLiteralString)
+    assertType<{
+      changedFromStringToLiteralString: 'literally this'
+      changedFromNumberToString: string
+    }>(parsed)
+
+    assertType<string>(parsed.changedFromNumberToString)
+
+    // @ts-expect-error extended type has been refined to literal and is no longer compatible with string
+    assertType<typeof parsed.changedFromStringToLiteralString>('' as string)
+
+    // @ts-expect-error extended type has been changed from number to string
+    assertType<number>(parsed.changedFromNumberToString)
+  })
 })

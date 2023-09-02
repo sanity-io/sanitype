@@ -67,6 +67,19 @@ const value = schema.parse({
 
 ```
 
+# Todo
+- **Error formatters**:
+  - Terminal (w/colors)
+  - React
+  - Plain HTML(?)
+- **Form specs**
+  - Like today's sanity schema but without types
+- **Serializers/Deserializers**
+  - JSON <=> TypeScript
+- **Validation**
+    - W/custom error messages
+
+
 ### Acknowledgements
 
 Heavily inspired by zod

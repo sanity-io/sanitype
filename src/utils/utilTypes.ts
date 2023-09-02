@@ -2,6 +2,7 @@
  *  Generic utility types
  */
 
+import {any} from 'zod'
 import type {SanityDocument, SanityObject} from '../defs'
 
 /**
@@ -144,3 +145,5 @@ export type GetShapeOf<T extends SanityObject | SanityDocument> =
     : T extends SanityDocument<infer Def>
     ? Def
     : never
+
+export type ElementType<T extends any[]> = T extends (infer E)[] ? E : never

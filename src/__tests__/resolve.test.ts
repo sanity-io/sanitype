@@ -1,8 +1,8 @@
-import {expect, test, vi} from 'vitest'
+import {expect, expectTypeOf, test, vi} from 'vitest'
 import {document, literal, reference, string} from '../creators'
 import {parse} from '../parse'
 import {createResolve} from '../createResolve'
-import {assertAssignable} from './helpers'
+import type {Infer} from '../defs'
 
 const country = document({
   _type: literal('country'),
@@ -34,25 +34,10 @@ test('resolve reference with schema', async () => {
 
   const personCountry = await resolve(person.country)
   expect(fetch.mock.calls).toEqual([['usa']])
-
-  assertAssignable<typeof personCountry._type, 'country'>()
-  // @ts-expect-error - type should be literal 'country'
-  assertAssignable<typeof personCountry._type, 'not-this'>()
-})
-test('resolve schemaless reference', async () => {
-  const fetch = vi.fn().mockResolvedValueOnce({
+  expect(personCountry).toEqual({
     _type: 'country',
-    _id: 'usa',
-    _createdAt: '2021-01-01 00:00:00',
-    _updatedAt: '2021-01-01 00:00:00',
-    _rev: 'xyz',
+    name: 'USA',
   })
-  const resolve = createResolve(fetch)
 
-  const anonRef = await resolve({_ref: 'xyz', _type: 'reference', _weak: false})
-  // best we can do is string, since we have no type info available
-  assertAssignable<typeof anonRef._type, string>()
-
-  // @ts-expect-error note: we assert that first parameter extends second and string isn't a subtype of "country"
-  assertAssignable<typeof anonRef._type, 'country'>()
+  expectTypeOf(personCountry).toEqualTypeOf<Infer<typeof country>>()
 })

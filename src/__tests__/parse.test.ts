@@ -1,4 +1,4 @@
-import {describe, expect, test} from 'vitest'
+import {assertType, describe, expect, test} from 'vitest'
 import {parse, safeParse} from '../parse'
 
 import {
@@ -7,13 +7,14 @@ import {
   lazy,
   literal,
   object,
+  optional,
   reference,
   string,
   union,
 } from '../creators'
 import {INTERNAL_REF_TYPE_SCHEMA} from '../defs'
-import {optional} from '../creators/optional'
-import type {SanityType} from '../defs'
+import type {SanityObjectType, SanityType} from '../defs'
+import type {SanityDocumentValue} from '../shapeDefs'
 
 describe('string parsing', () => {
   test('successful parsing', () => {
@@ -71,25 +72,85 @@ describe('object parsing', () => {
       ],
     })
   })
-  test('circular/lazy', () => {
-    type Person = {
+  describe('circular/lazy types', () => {
+    test('circular/lazy', () => {
+      type Person = {
+        name: string
+        parent?: Person
+      }
+      const person: SanityType<Person> = object({
+        name: string(),
+        parent: optional(lazy(() => person)),
+      })
+
+      const parsed = safeParse(person, {
+        name: 'Tester',
+        parent: {name: "Tester's parent"},
+      })
+
+      expect(parsed).toEqual({
+        status: 'ok',
+        value: {name: 'Tester', parent: {name: "Tester's parent"}},
+      })
+    })
+  })
+  test('Circular object types', () => {
+    interface Person {
+      _type: 'person'
       name: string
       parent?: Person
     }
-    const person: SanityType<Person> = object({
+
+    const person: SanityObjectType<Person> = object({
+      _type: literal('person'),
       name: string(),
       parent: optional(lazy(() => person)),
     })
 
-    const parsed = safeParse(person, {
-      name: 'Tester',
-      parent: {name: "Tester's parent"},
+    const parsed = parse(person, {
+      _type: 'person',
+      name: 'foo',
+      parent: {_type: 'person', name: 'another'},
     })
 
     expect(parsed).toEqual({
-      status: 'ok',
-      value: {name: 'Tester', parent: {name: "Tester's parent"}},
+      _type: 'person',
+      name: 'foo',
+      parent: {_type: 'person', name: 'another'},
     })
+  })
+
+  test('circular/lazy references', () => {
+    interface Human extends SanityDocumentValue {
+      name: string
+    }
+
+    const human: SanityType<Human> = document({
+      _type: literal('human'),
+      name: string(),
+      pets: lazy(() => array(reference(pet))),
+    })
+
+    const pet = document({
+      _type: literal('pet'),
+      name: string(),
+      owner: reference(human),
+    })
+
+    const parsed = parse(pet, {
+      _type: 'pet',
+      name: 'Jara',
+      owner: {_type: 'reference', _ref: 'knut'},
+    })
+    expect(parsed).toEqual({
+      _type: 'pet',
+      name: 'Jara',
+      owner: {
+        _ref: 'knut',
+        _type: 'reference',
+      },
+    })
+    assertType<SanityType<Human>>(parsed.owner.__schema__)
   })
 })
 
