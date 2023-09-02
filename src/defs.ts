@@ -23,6 +23,13 @@ export interface SanityObjectType<
   shape: SanityObjectShape
 }
 
+export interface SanityDocumentType<
+  Output = UndefinedOptional<OutputFromShape<SanityObjectShape>>,
+> extends SanityType<Output> {
+  typeName: 'document'
+  shape: SanityObjectShape
+}
+
 export type SanityAny = SanityType
 
 export interface SanityString extends SanityType<string> {
@@ -67,7 +74,10 @@ export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
 
 export interface SanityObject<
   Shape extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<Shape>>,
+  // @verify!
+  Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
+    OutputFromShape<Shape>
+  >,
 > extends SanityType<Output> {
   typeName: 'object'
   shape: Shape
@@ -114,6 +124,15 @@ export type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type SanityObjectLike = SanityObject | SanityReference<any>
 
+export type SanityArray<
+  ElementType extends
+    | (SanityObjectLike | SanityUnion<SanityObjectLike>)
+    | (SanityPrimitive | SanityUnion<SanityPrimitive>),
+> = ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>
+  ? SanityObjectArray<ElementType>
+  : ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>
+  ? SanityPrimitiveArray<ElementType>
+  : never
 export interface SanityObjectArray<
   ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike> =
     | SanityObjectLike

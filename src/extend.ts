@@ -1,19 +1,33 @@
-import {object} from './creators'
+import type {Combine} from './utils/utilTypes'
+import type {MergeObject} from './utils/utilTypes'
 import type {SafeObject} from './creators'
 import type {
   OutputFromShape,
   OutputOf,
+  SanityDocument,
+  SanityDocumentType,
   SanityObject,
   SanityObjectShape,
   SanityObjectType,
 } from './defs'
 
 export function extend<
-  O1 extends SanityObject,
-  Shape extends SafeObject<Shape, '_type'> = SanityObjectShape,
+  Doc extends SanityDocument,
+  Shape extends SafeObject<SanityObjectShape>,
 >(
-  source: O1,
-  shape2: Shape,
-): SanityObjectType<OutputOf<O1> & OutputFromShape<Shape>> {
-  return object({...source.shape, ...shape2}) as any
+  source: Doc,
+  shape: Shape,
+): SanityDocumentType<Combine<OutputOf<Doc>, OutputFromShape<Shape>>>
+export function extend<
+  Obj extends SanityObject,
+  Shape extends SafeObject<SanityObjectShape>,
+>(
+  source: Obj,
+  shape: Shape,
+): SanityObjectType<Combine<OutputOf<Obj>, OutputFromShape<Shape>>>
+export function extend<
+  Obj extends SanityObject | SanityDocument,
+  Shape extends SafeObject<SanityObjectShape>,
+>(source: Obj, shape: Shape) {
+  return {...source, shape: {...source.shape, ...shape}}
 }
