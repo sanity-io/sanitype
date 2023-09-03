@@ -79,6 +79,11 @@ const value = schema.parse({
 - **Validation**
     - W/custom error messages
 
+TWO MODES:
+- defineFormStrict(schema) - compile errors if type info is embedded in schema
+
+- defineForm(schema) - compile errors if type info in form is incompatible with schema
+
 
 ### Acknowledgements
 
