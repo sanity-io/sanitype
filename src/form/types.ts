@@ -1,5 +1,6 @@
 import type {
   Infer,
+  SanityAny,
   SanityArray,
   SanityBoolean,
   SanityDocument,
@@ -16,17 +17,18 @@ import type {
 export type CommonFieldOptions = {
   readonly?: boolean
   title?: string
+  form: SanityFormDef<SanityAny>
 }
 export type StringFieldOptions = CommonFieldOptions
 export type FieldsetsDef = Todo
 
 export type ObjectFieldOptions<T extends SanityObject> = CommonFieldOptions & {
-  form?: ObjectFormDef<T>
+  form: ObjectFormDef<T>
 }
 
 export type ArrayFieldOptions<T extends SanityArray<any>> =
   CommonFieldOptions & {
-    form?: ArrayFormDef<T>
+    form: ArrayFormDef<T>
   }
 
 export type FieldOptions<T extends SanityType> = T extends SanityObject
@@ -35,7 +37,7 @@ export type FieldOptions<T extends SanityType> = T extends SanityObject
   ? ArrayFieldOptions<T>
   : T extends SanityString
   ? StringFieldOptions
-  : unknown
+  : CommonFieldOptions
 
 export type ItemOptions<T extends SanityType> = T extends SanityObject
   ? ObjectFieldOptions<T>
@@ -151,6 +153,14 @@ export type ArrayFormDef<T extends SanityArray<any>> =
     : never
 
 type Todo = unknown
+
+export type ObjectFormDef<T extends SanityObject> = {
+  fieldsets?: FieldsetsDef
+  fields: Omit<
+    {[Key in keyof T['shape']]: FieldOptions<T['shape'][Key]>},
+    SystemFields
+  >
+}
 
 export type DocumentFormDef<T extends SanityDocument> = {
   liveEdit?: boolean
