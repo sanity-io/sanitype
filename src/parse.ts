@@ -1,4 +1,4 @@
-import {inspect} from 'util'
+import inspect from 'object-inspect'
 import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
