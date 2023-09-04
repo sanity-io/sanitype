@@ -1,7 +1,7 @@
 import {Stack, Text} from '@sanity/ui'
 import {at} from '@bjoerge/mutiny'
 import {useCallback} from 'react'
-import type {InputProps, PatchEvent} from './types'
+import type {InputProps, PatchEvent} from '../types'
 import type {SanityDocument} from 'sanitype'
 
 export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {

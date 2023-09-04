@@ -1,9 +1,9 @@
 import {Card, Stack, Text} from '@sanity/ui'
 import {useCallback} from 'react'
 import {at, setIfMissing} from '@bjoerge/mutiny'
-import {isLiteralSchema} from '../../../../src/asserters'
-import type {InputProps, PatchEvent} from '../types'
+import {isLiteralSchema} from 'sanitype'
 import type {SanityObject} from 'sanitype'
+import type {InputProps, PatchEvent} from '../types'
 
 function getTypeAnnotation(schema: SanityObject) {
   const typeLiteral = schema.shape?._type

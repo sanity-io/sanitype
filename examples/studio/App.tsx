@@ -3,15 +3,13 @@ import {Card, Code, Stack} from '@sanity/ui'
 import {tap} from 'rxjs'
 import {createIfNotExists, patch} from '@bjoerge/mutiny'
 import {isObjectSchema, isStringSchema} from '../../src/asserters'
-import {DocumentInput} from './form/DocumentInput'
+import {DocumentInput, ObjectInput, StringInput} from './lib/form'
 import {person} from './schema/person'
-import {StringInput} from './form/inputs/StringInput'
-import {ObjectInput} from './form/inputs/ObjectInput'
 import {personForm} from './forms/person'
-import {createStore} from './form/mock-store'
+import {createStore} from './lib/mock-store'
+import type {InputProps, PatchEvent} from './lib/form'
 import type {ComponentType} from 'react'
 import type {Infer, SanityAny, SanityType} from 'sanitype'
-import type {InputProps, PatchEvent} from './form/types'
 
 function Unresolved<Schema extends SanityAny>(props: InputProps<Schema>) {
   return <div>Unresolved input for type {props.schema.typeName}</div>
