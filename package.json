@@ -36,7 +36,7 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "example:react": "vite --config examples/studio/vite.config.ts examples/studio",
+    "example:studio": "vite --config examples/studio/vite.config.ts examples/studio",
     "examples": "run-p example:*",
     "check": "npm-run-all --serial clean --parallel typecheck lint test test:types",
     "dev": "run-p pkg:watch test:watch test:types:watch"
