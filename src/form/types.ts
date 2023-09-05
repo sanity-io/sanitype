@@ -49,14 +49,6 @@ export type ItemOptions<T extends SanityType> = T extends SanityObject
 
 export type SystemFields = '_type' | '_id' | '_createdAt' | '_updatedAt'
 
-export type ObjectFormDef<T extends SanityObject> = {
-  fieldsets?: FieldsetsDef
-  fields: Omit<
-    {[k in keyof T['shape']]: FieldOptions<T['shape'][k]>},
-    SystemFields
-  >
-}
-
 export type FindTypeByName<
   Type extends SanityObjectLike | SanityUnion<SanityObjectLike>,
   SearchName extends string,
@@ -152,7 +144,7 @@ export type ArrayFormDef<T extends SanityArray<any>> =
     ? PrimitiveArrayFormDef<T>
     : never
 
-type Todo = unknown
+export type Todo = unknown
 
 export type ObjectFormDef<T extends SanityObject> = {
   fieldsets?: FieldsetsDef
