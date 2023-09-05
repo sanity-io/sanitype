@@ -9,8 +9,18 @@
 
 ## How to play around
 
-1. Clone this repo
-2. Run `npm install`
+### 1. Get the code
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sanity-io/sanitype)
+
+Or clone the repo
+```
+git clone git@github.com:sanity-io/sanitype.git
+```
+
+### 2. Install dependencies
+```
+npm install
+```
 
 Now you can take a look at the examples in the `examples` folder (feel free to create your own example and push to a branch, e.g. to illustrate a bug, lacking feature, or something that's hard to solve with this approach compared to current day schemas)
 
