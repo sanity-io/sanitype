@@ -1,5 +1,5 @@
 import {document, literal, object, string} from 'sanitype'
-import {form} from '../src/form/creators'
+import {form} from 'sanitype'
 
 const pet = document({
   _type: literal('pet'),

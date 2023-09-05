@@ -1,17 +1,22 @@
 import {form} from 'sanitype'
 import type {person} from '../schema/person'
 
+/**
+ * Define a form for the person type. TypeScript will yell at you if you don't declare a field for all properties defined
+ * for the schema type
+ */
 export const personForm = form<typeof person>({
   fields: {
     name: {
       title: 'Name',
-      form: {},
+      form: {}, // Note: will make this optional (kept required and explicit for now)
     },
     address: {
       title: 'Address',
       form: {
         fields: {
           street: {
+            readonly: true,
             title: 'Street',
             form: {},
           },

@@ -1,35 +1,41 @@
 import {
   array,
-  createResolve,
   document,
   literal,
   object,
   parse,
   reference,
   string,
+  resolve,
 } from 'sanitype'
 
-const human = document({
-  _type: literal('human'),
-  name: string(),
-})
+import type {SanityClient} from '@sanity/client'
+
+declare const client: SanityClient
 
 const address = object({
   city: string(),
   country: string(),
 })
 
+const human = document({
+  _type: literal('human'),
+  name: string(),
+  address: array(address),
+})
+
 const pet = document({
   _type: literal('pet'),
   name: string(),
-  owners: array(reference(human)),
+  humans: array(reference(human)),
 })
 
-const input = `{"_type": "pet", "name": "fido"}`
+const jaraAsJson = client.fetch('*[_type == "pet" && _id=="jara"][0]')
 
-const resolve = createResolve(async () => {})
+const jaraTheDog = parse(pet, jaraAsJson)
 
-const petData = parse(pet, JSON.parse(input))
-const o = Promise.all(petData.owners.map(owner => resolve(owner)))
+const humansOfJara = await Promise.all(
+  jaraTheDog.humans.map(humanReference => resolve(humanReference)),
+)
 
-const first = (await o)[0]
+humansOfJara.forEach(humanOfJara => console.log(humanOfJara))
