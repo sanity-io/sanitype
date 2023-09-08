@@ -1,5 +1,5 @@
 {
-  "name": "sanitype",
+  "name": "@sanity/sanitype",
   "version": "0.0.0",
   "description": "Experimental TypeScript-first schemas for Sanity",
   "keywords": [],
@@ -40,6 +40,9 @@
     "examples": "run-p example:*",
     "check": "npm-run-all --serial clean --parallel typecheck lint test test:types",
     "dev": "run-p pkg:watch test:watch test:types:watch"
+  },
+  "publishConfig": {
+    "access": "restricted"
   },
   "dependencies": {
     "object-inspect": "^1.12.3"
