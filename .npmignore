@@ -1,4 +1,3 @@
-src
 .idea
 test
 examples
@@ -9,4 +8,6 @@ tsconfig.*
 .prettierignore
 .prettierrc
 package.config.ts
-ts
+DESIGN_PRINCIPLES.md
+vitest.config.ts
+tmp
