@@ -1,4 +1,4 @@
-# sani**_ty_**pe
+# sani*type*
 
 > Exploration of TypeScript-first Sanity schemas with static type inference and runtime validation
 
@@ -10,9 +10,17 @@
 
 ### 1. Get the code
 
+#### Alternative 1: install from npm
+NOTE: It's a private package, so this it requires you to be logged in to npm as a user with access to the @sanity-io organization
+```
+npm i -S @sanity/sanitype
+```
+Check out the [examples](./examples) folder for how to use it.
+
+#### Alternative 2: use GitHub Codespaces
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sanity-io/sanitype)
 
-Or clone the repo
+#### Alternative 3: Clone this repository
 
 ```
 git clone git@github.com:sanity-io/sanitype.git
