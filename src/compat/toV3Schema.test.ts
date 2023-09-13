@@ -23,7 +23,7 @@ export const human = document({
   pets: array(
     union([
       extend(pet, {
-        _type: literal('bird'),
+        _type: literal('avine'),
         squeaks: boolean(),
       }),
       extend(pet, {
@@ -59,7 +59,7 @@ test('toV3Schema', () => {
           type: 'array',
           of: [
             {
-              name: 'bird',
+              name: 'avine',
               type: 'object',
               fields: [
                 {name: 'name', type: 'string'},

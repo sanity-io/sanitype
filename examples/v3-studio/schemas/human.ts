@@ -21,7 +21,7 @@ export const human = document({
   pets: array(
     union([
       extend(pet, {
-        _type: literal('bird'),
+        _type: literal('avine'),
         squeaks: boolean(),
       }),
       extend(pet, {
