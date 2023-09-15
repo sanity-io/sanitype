@@ -9,7 +9,7 @@ import {
   string,
   union,
 } from '../creators'
-import {form} from './creators'
+import {defineForm} from './creators'
 
 const person = document({
   _type: literal('person'),
@@ -34,7 +34,7 @@ const person = document({
 })
 
 test('define a basic nested form', () => {
-  const personForm = form<typeof person>({
+  const personForm = defineForm<typeof person>({
     fields: {
       firstName: {
         title: 'Name',

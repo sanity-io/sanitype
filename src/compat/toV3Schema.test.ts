@@ -20,6 +20,7 @@ export const human = document({
     city: string(),
     country: string(),
   }),
+
   pets: array(
     union([
       extend(pet, {

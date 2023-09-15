@@ -1,5 +1,5 @@
 import {document, literal, object, string} from 'sanitype'
-import {form} from 'sanitype'
+import {defineForm} from 'sanitype'
 
 const pet = document({
   _type: literal('pet'),
@@ -27,7 +27,7 @@ const tagForm = {
   },
 }
 
-const petForm = form<typeof pet>({
+const petForm = defineForm<typeof pet>({
   fields: {
     name: {
       title: 'Name',
