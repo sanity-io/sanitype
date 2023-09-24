@@ -1,5 +1,5 @@
 import {referenceBase} from '../shapeDefs'
-import {defineType} from '../utils/defineType'
+import {defineType} from '../helpers/defineType'
 import type {SanityReference, SanityType} from '../defs'
 import type {SanityDocumentValue} from '../shapeDefs'
 

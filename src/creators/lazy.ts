@@ -1,4 +1,4 @@
-import {defineType} from '../utils/defineType'
+import {defineType} from '../helpers/defineType'
 import type {SanityAny, SanityLazy} from '../defs'
 
 export function lazy<T extends SanityAny>(getter: () => T): SanityLazy<T> {

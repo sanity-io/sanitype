@@ -1,7 +1,7 @@
-import {defineType} from '../utils/defineType'
+import {defineType} from '../helpers/defineType'
 import {documentBase} from '../shapeDefs'
 import type {SanityDocumentShape} from '../shapeDefs'
-import type {MergeObject} from '../utils/utilTypes'
+import type {MergeObject} from '../helpers/utilTypes'
 import type {SafeObject} from './object'
 import type {
   OutputFromShape,

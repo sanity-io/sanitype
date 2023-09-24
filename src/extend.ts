@@ -1,5 +1,5 @@
-import type {Combine} from './utils/utilTypes'
-import type {MergeObject} from './utils/utilTypes'
+import type {Combine} from './helpers/utilTypes'
+import type {MergeObject} from './helpers/utilTypes'
 import type {SafeObject} from './creators'
 import type {
   OutputFromShape,

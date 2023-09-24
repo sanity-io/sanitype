@@ -1,4 +1,4 @@
-import {defineType} from '../utils/defineType'
+import {defineType} from '../helpers/defineType'
 import type {SanityNumber} from '../defs'
 
 export function number(): SanityNumber {

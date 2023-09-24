@@ -1,5 +1,5 @@
 import {isItemObjectArrayCompatible, isUnionSchema} from '../asserters'
-import {defineType} from '../utils/defineType'
+import {defineType} from '../helpers/defineType'
 import {string} from './string'
 import type {
   SanityObjectArray,

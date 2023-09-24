@@ -1,6 +1,6 @@
 import {isDocumentSchema, isLiteralSchema, isObjectSchema} from './asserters'
-import {getLazySchema} from './utils/getLazySchema'
-import {isEmpty} from './utils/isEmpty'
+import {getLazySchema} from './helpers/getLazySchema'
+import {isEmpty} from './helpers/isEmpty'
 import type {
   InferLiteralValue,
   SanityDocument,

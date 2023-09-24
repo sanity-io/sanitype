@@ -19,7 +19,7 @@ export type {
   FieldError,
   FieldErrorCode,
   MergeObject,
-} from './utils/utilTypes'
+} from './helpers/utilTypes'
 
 export * from './form/types'
 export * from './form/creators'

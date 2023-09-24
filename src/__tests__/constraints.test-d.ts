@@ -1,5 +1,5 @@
 import {describe, test} from 'vitest'
-import type {ElementType} from '../utils/utilTypes'
+import type {ElementType} from '../helpers/utilTypes'
 import type {
   Infer,
   SanityArray,

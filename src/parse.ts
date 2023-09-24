@@ -14,9 +14,9 @@ import {
   isStringSchema,
   isUnionSchema,
 } from './asserters'
-import {defineNonEnumerableGetter} from './utils/defineNonEnumerableGetter'
+import {defineNonEnumerableGetter} from './helpers/defineNonEnumerableGetter'
 import {referenceBase} from './shapeDefs'
-import {getLazySchema} from './utils/getLazySchema'
+import {getLazySchema} from './helpers/getLazySchema'
 import type {
   Infer,
   OutputOf,
