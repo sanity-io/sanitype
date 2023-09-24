@@ -124,11 +124,15 @@ export type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type SanityObjectLike = SanityObject | SanityReference<any>
 
+export type SanityTypedObject = SanityObject<{_type: SanityLiteral<string>}>
+
 export type SanityArray<
   ElementType extends
     | (SanityObjectLike | SanityUnion<SanityObjectLike>)
     | (SanityPrimitive | SanityUnion<SanityPrimitive>),
-> = ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>
+> = ElementType extends
+  | SanityObjectLike
+  | SanityDiscriminatedUnion<SanityTypedObject, '_type'>
   ? SanityObjectArray<ElementType>
   : ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>
   ? SanityPrimitiveArray<ElementType>
