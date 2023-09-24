@@ -2,7 +2,6 @@
  *  Generic utility types
  */
 
-import {any} from 'zod'
 import type {SanityDocument, SanityObject} from '../defs'
 
 /**
