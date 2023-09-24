@@ -17,7 +17,7 @@ import type {
 export type CommonFieldOptions = {
   readonly?: boolean
   title?: string
-  form: SanityFormDef<SanityAny>
+  form?: SanityFormDef<SanityAny>
 }
 export type StringFieldOptions = CommonFieldOptions
 export type FieldsetsDef = Todo

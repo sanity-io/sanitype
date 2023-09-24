@@ -39,12 +39,10 @@ test('define a basic nested form', () => {
       firstName: {
         title: 'Name',
         readonly: true,
-        form: {},
       },
       lastName: {
         title: 'Tag',
         readonly: true,
-        form: {},
       },
       addresses: {
         title: 'test',
@@ -56,9 +54,9 @@ test('define a basic nested form', () => {
               title: 'Location',
               form: {
                 fields: {
-                  city: {title: 'City', form: {}},
-                  country: {title: 'Country', form: {}},
-                  street: {title: 'Street', form: {}},
+                  city: {title: 'City'},
+                  country: {title: 'Country'},
+                  street: {title: 'Street'},
                 },
               },
             },
@@ -66,9 +64,9 @@ test('define a basic nested form', () => {
               title: 'Address',
               form: {
                 fields: {
-                  city: {title: 'City', form: {}},
-                  country: {title: 'Country', form: {}},
-                  street: {title: 'Street', form: {}},
+                  city: {title: 'City'},
+                  country: {title: 'Country'},
+                  street: {title: 'Street'},
                 },
               },
             },
