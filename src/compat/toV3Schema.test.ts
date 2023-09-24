@@ -8,7 +8,7 @@ import {
   string,
   union,
 } from '../creators'
-import {extend} from '../extend'
+import {extend} from '../utils/extend'
 import {toV3Schema} from './toV3Schema'
 
 const pet = object({name: string()})

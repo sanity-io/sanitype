@@ -4,7 +4,7 @@ export * from './shapeDefs'
 export * from './parse'
 export * from './createResolve'
 export * from './createFetchDocument'
-export * from './extend'
+export * from './utils/extend'
 export type {
   ValidFieldName,
   Combine,

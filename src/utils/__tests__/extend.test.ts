@@ -1,7 +1,7 @@
 import {assertType, describe, expectTypeOf, test} from 'vitest'
-import {literal, number, object, string} from '../creators'
+import {literal, number, object, string} from '../../creators'
 import {extend} from '../extend'
-import {parse} from '../parse'
+import {parse} from '../../parse'
 
 describe('extends helper', () => {
   test('simple extends', () => {

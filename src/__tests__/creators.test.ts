@@ -15,7 +15,7 @@ import {
   union,
 } from '../creators'
 import {parse} from '../parse'
-import {extend} from '../extend'
+import {extend} from '../utils/extend'
 import type {SanityObjectType, SanityType} from '../defs'
 import type {SanityDocumentValue} from '../shapeDefs'
 

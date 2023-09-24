@@ -1,6 +1,5 @@
-import type {Combine} from './helpers/utilTypes'
-import type {MergeObject} from './helpers/utilTypes'
-import type {SafeObject} from './creators'
+import type {Combine} from '../helpers/utilTypes'
+import type {SafeObject} from '../creators'
 import type {
   OutputFromShape,
   OutputOf,
@@ -9,7 +8,7 @@ import type {
   SanityObject,
   SanityObjectShape,
   SanityObjectType,
-} from './defs'
+} from '../defs'
 
 export function extend<
   Doc extends SanityDocument,
