@@ -36,6 +36,7 @@ test('resolve reference with schema', async () => {
   expect(fetch.mock.calls).toEqual([['usa']])
   expect(personCountry).toEqual({
     _type: 'country',
+    _id: 'usa',
     name: 'USA',
   })
 

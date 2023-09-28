@@ -9,10 +9,15 @@ import type {
   SanityOptional,
   SanityString,
   SanityType,
+  UndefinedOptional,
 } from './defs'
 import type {Combine, OutputFormatFix} from './utils/utilTypes'
 
 const STRING: SanityString = dt({typeName: 'string', def: ''})
+const OPTIONAL_STRING: SanityOptional<SanityString> = dt({
+  typeName: 'optional',
+  type: STRING,
+})
 const BOOLEAN: SanityBoolean = dt({
   typeName: 'boolean',
   def: true,
@@ -20,20 +25,20 @@ const BOOLEAN: SanityBoolean = dt({
 
 export type SanityDocumentShape = {
   _type: SanityString | SanityLiteral<string>
-  _id: SanityString
-  _createdAt: SanityString
-  _updatedAt: SanityString
-  _rev: SanityString
+  _id: SanityOptional<SanityString>
+  _createdAt: SanityOptional<SanityString>
+  _updatedAt: SanityOptional<SanityString>
+  _rev: SanityOptional<SanityString>
 }
 
 export const documentBase: SanityObject<SanityDocumentShape> = dt({
   typeName: 'object',
   shape: {
     _type: STRING,
-    _id: STRING,
-    _createdAt: STRING,
-    _updatedAt: STRING,
-    _rev: STRING,
+    _id: OPTIONAL_STRING,
+    _createdAt: OPTIONAL_STRING,
+    _updatedAt: OPTIONAL_STRING,
+    _rev: OPTIONAL_STRING,
   },
 })
 
@@ -66,7 +71,9 @@ export type SanityArrayValue<ElementType> = Array<
 > &
   OutputFormatFix
 
-export type SanityDocumentValue = OutputFromShape<SanityDocumentShape>
+export type SanityDocumentValue = UndefinedOptional<
+  OutputFromShape<SanityDocumentShape>
+>
 
 export type SanityReferenceValue<RefType> = Combine<
   ReferenceBase,

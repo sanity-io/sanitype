@@ -47,7 +47,12 @@ export type ItemOptions<T extends SanityType> = T extends SanityObject
   ? StringFieldOptions
   : unknown
 
-export type SystemFields = '_type' | '_id' | '_createdAt' | '_updatedAt'
+export type SystemFields =
+  | '_type'
+  | '_id'
+  | '_createdAt'
+  | '_updatedAt'
+  | '_rev'
 
 export type FindTypeByName<
   Type extends SanityObjectLike | SanityUnion<SanityObjectLike>,
