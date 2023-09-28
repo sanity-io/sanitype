@@ -1,44 +1,34 @@
-import {applyInIndex} from '@bjoerge/mutiny/_unstable_apply'
+import {createStore as _createStore} from '@bjoerge/mutiny/_unstable_apply'
 import {map, Subject} from 'rxjs'
-import type {DocumentIndex} from '@bjoerge/mutiny/_unstable_apply'
-import type {Mutation, SanityDocument} from '@bjoerge/mutiny'
+import type {Mutation, SanityDocumentBase} from '@bjoerge/mutiny'
 
 type UpdateEvent = {
   type: 'update'
   mutations: Mutation[]
 }
-const empty: DocumentIndex<any> = {}
 export type Arrify<T> = (T extends (infer E)[] ? E : T)[]
-
 export function arrify<T>(val: T): Arrify<T> {
   return Array.isArray(val) ? val : ([val] as any)
 }
 
-export const createStore = <Doc extends SanityDocument>(
+export const createStore = <Doc extends SanityDocumentBase>(
   initialEntries?: Doc[],
 ) => {
-  let index: DocumentIndex<Doc> =
-    initialEntries && initialEntries?.length > 0
-      ? initialEntries.reduce((acc, entry) => {
-          acc[entry._id] = entry
-          return acc
-        }, empty)
-      : empty
+  const store = _createStore(initialEntries)
 
   const changeEvents = new Subject<UpdateEvent>()
   return {
-    entries: () => Object.entries(index),
-    get: (id: Doc['_id']) => index[id],
+    entries: store.entries,
+    get: store.get,
     apply: (_mutations: Mutation[] | Mutation) => {
-      const mutations = arrify(_mutations)
-      const nextIndex = applyInIndex(index, mutations) as DocumentIndex<Doc>
-      if (nextIndex !== index) {
-        index = nextIndex
-        changeEvents.next({mutations, type: 'update'})
+      const versionBefore = store.version
+      store.apply(_mutations)
+      if (versionBefore !== store.version) {
+        changeEvents.next({mutations: arrify(_mutations), type: 'update'})
       }
     },
-    listen: (id: Doc['_id']) =>
-      changeEvents.asObservable().pipe(map(() => index[id])),
+    listen: <Id extends string>(id: Id) =>
+      changeEvents.asObservable().pipe(map(() => store.get(id))),
     changes: () => changeEvents.asObservable(),
   }
 }

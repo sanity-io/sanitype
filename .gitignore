@@ -2,3 +2,5 @@ dist
 node_modules
 tsconfig.vitest-temp.json
 tmp
+tsconfig.tsbuildinfo
+.tmp

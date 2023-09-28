@@ -31,6 +31,9 @@
     "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
     "test": "vitest run",
     "typecheck": "tsc",
+    "typecheck:watch": "tsc -b ./examples --watch",
+    "typecheck:examples": "tsc -b ./examples",
+    "typecheck:examples:watch": "tsc -b ./examples --watch",
     "test:types": "vitest typecheck --no-watch",
     "test:types:watch": "vitest typecheck",
     "test:watch": "vitest",
@@ -38,8 +41,8 @@
     "coverage": "vitest run --coverage",
     "example:studio": "vite --config examples/studio/vite.config.ts examples/studio",
     "examples": "run-p example:*",
-    "check": "npm-run-all --serial clean --parallel typecheck lint test test:types",
-    "dev": "run-p pkg:watch test:watch test:types:watch"
+    "check": "npm-run-all --serial clean --parallel typecheck typecheck:examples lint test test:types",
+    "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch test:types:watch"
   },
   "publishConfig": {
     "access": "restricted"

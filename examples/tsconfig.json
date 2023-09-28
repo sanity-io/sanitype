@@ -1,10 +1,8 @@
 {
-  "extends": "../tsconfig.json",
-  "include": ["./**/*.ts", "./**/*.tsx"],
-  "compilerOptions": {
-    "noEmit": true,
-    "paths": {
-      "sanitype": ["../src"]
-    }
-  }
+  "include": [],
+  "references": [
+    {"path": "./ts/tsconfig.json"},
+    {"path": "./studio/tsconfig.json"},
+    {"path": "./v3-studio/tsconfig.json"}
+  ]
 }
