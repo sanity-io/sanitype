@@ -117,7 +117,7 @@ const value = parse(schema, {
 - [x] document
 - [x] reference
 - [x] object
-- [x] array (of both primitives and objects and unions of either)
+- [x] array (of both primitives and objects and unions of either primitives or typed objects)
 - [x] union
 - [x] recursive types
 - [ ] image
@@ -197,9 +197,10 @@ Sanity is opinionated about a great deal of your data model, for example
 Maybe more important is the _restrictions_ we can build into it
 
 1. Zod has a lot of data types we don't support/care about, like sets, maps, functions, promises etc.
-2. We don't support multidimensional arrays, arrays of both primitive values and objects, etc.
-3. Fields starting with underscore is reserved for system fields
-4. There's restrictions on what characters can be used as object properties
-5. … and more?
+2. We don't support multidimensional arrays, arrays of both primitive values and objects.
+3. Object unions is only supported for _typed_ objects (i.e. objects with a `_type` literal). This restriction is necessary in order to support collaborative real-time editing of partial object values. Without a discriminator it would be impossible to tell which schema type a partial (e.g. empty) object belongs to.
+4. Fields starting with underscore is reserved for system fields. Sanitype produces a compile-time error if you define a field starting with underscore.
+5. There's restrictions on what characters can be used as object properties
+6. … and more?
 
 Making our own lets us codify these rules into our schema model and provide developers with compile-time feedback if they try to model something we don't currently support!
