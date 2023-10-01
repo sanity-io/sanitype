@@ -1,14 +1,14 @@
 import {document, object} from '../creators'
-import type {ElementType, MergeObject} from '../helpers/utilTypes'
+import type {ElementType, Format} from '../helpers/utilTypes'
 import type {SanityDocument, SanityObject} from '../defs'
 
 export type PickShape<
   T extends SanityObject | SanityDocument,
   K extends Array<keyof T['shape']>,
 > = T extends SanityObject
-  ? SanityObject<MergeObject<Pick<T['shape'], ElementType<K>>>>
+  ? SanityObject<Format<Pick<T['shape'], ElementType<K>>>>
   : T extends SanityDocument
-  ? SanityDocument<MergeObject<Pick<T['shape'], ElementType<K>>>>
+  ? SanityDocument<Format<Pick<T['shape'], ElementType<K>>>>
   : never
 
 export function pick<

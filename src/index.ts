@@ -18,7 +18,7 @@ export type {
   ValidateFieldChars,
   FieldError,
   FieldErrorCode,
-  MergeObject,
+  Format,
 } from './helpers/utilTypes'
 
 export * from './form/types'

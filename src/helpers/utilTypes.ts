@@ -14,10 +14,10 @@ export type Combine<A, B> = {
   : never
 
 /**
- * Merges an intersection object type from {"foo": 1} & {"bar": 2} to {"foo": 1, "bar": 1}
+ * Formats an intersection object type, so it outputs as `{"foo": 1, "bar": 1}` instead of `{"foo": 1} & {"bar": 2}``
  */
-export type MergeObject<A> = A extends {[P in infer K]: unknown}
-  ? {[Key in K]: A[Key]}
+export type Format<A> = A extends {[Key in keyof A]: A[Key]}
+  ? {[Key in keyof A]: A[Key]}
   : A
 
 /**

@@ -1,7 +1,7 @@
 import {defineType} from '../helpers/defineType'
 import {documentBase} from '../shapeDefs'
 import type {SanityDocumentShape} from '../shapeDefs'
-import type {MergeObject} from '../helpers/utilTypes'
+import type {Format} from '../helpers/utilTypes'
 import type {SafeObject} from './object'
 import type {
   OutputFromShape,
@@ -18,7 +18,7 @@ export function document<Shape extends SanityObjectShape = SanityObjectShape>(
     _type: SanityLiteral<string>
   },
 ): SanityDocument<
-  MergeObject<Shape & SanityDocumentShape>,
+  Format<Shape & SanityDocumentShape>,
   UndefinedOptional<OutputFromShape<SanityDocumentShape & Shape>>
 > {
   return defineType({

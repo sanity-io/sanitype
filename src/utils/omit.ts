@@ -1,14 +1,14 @@
 import {document, object} from '../creators'
-import type {ElementType, MergeObject} from '../helpers/utilTypes'
+import type {ElementType, Format} from '../helpers/utilTypes'
 import type {SanityDocument, SanityObject} from '../defs'
 
 export type OmitShape<
   T extends SanityObject | SanityDocument,
   K extends Array<keyof T['shape']>,
 > = T extends SanityObject
-  ? SanityObject<MergeObject<Omit<T['shape'], ElementType<K>>>>
+  ? SanityObject<Format<Omit<T['shape'], ElementType<K>>>>
   : T extends SanityDocument
-  ? SanityDocument<MergeObject<Omit<T['shape'], ElementType<K>>>>
+  ? SanityDocument<Format<Omit<T['shape'], ElementType<K>>>>
   : never
 
 export function omit<
