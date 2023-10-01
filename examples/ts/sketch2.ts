@@ -1,5 +1,4 @@
-import {document, literal, object, string} from 'sanitype'
-import {defineForm} from 'sanitype'
+import {defineForm, document, literal, object, string} from 'sanitype'
 
 const pet = document({
   _type: literal('pet'),

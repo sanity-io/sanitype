@@ -1,5 +1,4 @@
 import type {
-  SanityAny,
   SanityBoolean,
   SanityDiscriminatedUnion,
   SanityDocument,

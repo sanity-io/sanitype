@@ -1,4 +1,4 @@
-import {assertType, describe, expectTypeOf, test} from 'vitest'
+import {assertType, describe, test} from 'vitest'
 import {literal, number, object, string} from '../../creators'
 import {extend} from '../extend'
 import {parse} from '../../parse'

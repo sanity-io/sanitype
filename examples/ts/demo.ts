@@ -5,8 +5,8 @@ import {
   object,
   parse,
   reference,
-  string,
   resolve,
+  string,
 } from 'sanitype'
 
 import type {SanityClient} from '@sanity/client'

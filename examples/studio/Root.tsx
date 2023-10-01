@@ -1,4 +1,4 @@
-import {studioTheme, ThemeProvider} from '@sanity/ui'
+import {ThemeProvider, studioTheme} from '@sanity/ui'
 import React from 'react'
 import type {ReactNode} from 'react'
 

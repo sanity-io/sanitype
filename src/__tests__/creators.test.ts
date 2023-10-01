@@ -2,7 +2,6 @@ import {describe, test} from 'vitest'
 
 import {
   array,
-  document,
   lazy,
   literal,
   number,
@@ -10,14 +9,11 @@ import {
   objectArray,
   optional,
   primitiveArray,
-  reference,
   string,
   union,
 } from '../creators'
-import {parse} from '../parse'
 import {extend} from '../utils/extend'
-import type {SanityObjectType, SanityType} from '../defs'
-import type {SanityDocumentValue} from '../shapeDefs'
+import type {SanityObjectType} from '../defs'
 
 describe('circular schemas', () => {
   test('Circular SanityObjectType', () => {

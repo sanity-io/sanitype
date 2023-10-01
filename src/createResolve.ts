@@ -3,7 +3,7 @@ import {ParseError, safeParse} from './parse'
 import {documentBase} from './shapeDefs'
 import type {Conceal, Infer, SanityType} from './defs'
 import type {ParseOk, ParseResult} from './parse'
-import type {referenceBase, SanityDocumentValue} from './shapeDefs'
+import type {SanityDocumentValue, referenceBase} from './shapeDefs'
 
 export type DocumentLike = Infer<typeof documentBase>
 export type ReferenceLike = Infer<typeof referenceBase>

@@ -1,5 +1,5 @@
 import {createStore as _createStore} from '@bjoerge/mutiny/_unstable_apply'
-import {map, Subject} from 'rxjs'
+import {Subject, map} from 'rxjs'
 import type {Mutation, SanityDocumentBase} from '@bjoerge/mutiny'
 
 type UpdateEvent = {
