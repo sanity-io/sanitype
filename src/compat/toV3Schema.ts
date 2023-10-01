@@ -4,9 +4,9 @@ import {
   isNumberSchema,
   isObjectArraySchema,
   isObjectSchema,
+  isObjectUnionSchema,
   isPrimitiveArraySchema,
   isStringSchema,
-  isUnionSchema,
 } from '../asserters'
 import type {SanityAny, SanityDocument, SanityObject} from '../defs'
 
@@ -79,7 +79,7 @@ function convertField<S extends SanityAny>(
     return {
       name: fieldName,
       type: 'array',
-      of: isUnionSchema(schema.element)
+      of: isObjectUnionSchema(schema.element)
         ? schema.element.union.map(u => convertItem(u, hoisted))
         : [convertItem(schema.element, hoisted)],
     }

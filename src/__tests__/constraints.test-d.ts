@@ -7,9 +7,9 @@ import type {
   SanityObject,
   SanityObjectArray,
   SanityObjectType,
+  SanityObjectUnion,
   SanityPrimitiveArray,
   SanityString,
-  SanityUnion,
 } from '../defs'
 
 // lil helper to avoid having to alias types everywhere
@@ -28,7 +28,8 @@ describe('Type level constraints', () => {
     >()
   })
   test('arrays mixing primitive values and objects are not allowed', () => {
-    type ObjectOrString = SanityUnion<
+    type ObjectOrString = SanityObjectUnion<
+      // @ts-expect-error arrays of primitives and objects are not allowed
       SanityObject<{foo: SanityString}> | SanityString
     >
 

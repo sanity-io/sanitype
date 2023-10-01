@@ -1,7 +1,19 @@
-import {assertType, describe, test} from 'vitest'
-import {literal, number, object, string} from '../../creators'
+import {assertType, describe, expect, test} from 'vitest'
+import {
+  array,
+  boolean,
+  document,
+  lazy,
+  literal,
+  number,
+  object,
+  optional,
+  string,
+  union,
+} from '../../creators'
 import {extend} from '../extend'
 import {parse} from '../../parse'
+import type {SanityObjectType} from '../../defs'
 
 describe('extends helper', () => {
   test('simple extends', () => {
@@ -60,7 +72,76 @@ describe('extends helper', () => {
     // @ts-expect-error extended type has been refined to literal and is no longer compatible with string
     assertType<typeof parsed.changedFromStringToLiteralString>('' as string)
 
+    const f = parsed.changedFromNumberToString
     // @ts-expect-error extended type has been changed from number to string
     assertType<number>(parsed.changedFromNumberToString)
+  })
+
+  test('extends of circular type', () => {
+    interface Person {
+      _type: 'person'
+      name: string
+      parent: Omit<Person, 'parent'> & {foo: string; parent?: Person}
+    }
+
+    const lazyPerson: SanityObjectType<Person> = object({
+      _type: literal('person'),
+      name: lazy(() => string()),
+      parent: lazy(() =>
+        extend(lazyPerson, {
+          foo: string(),
+          parent: optional(lazyPerson),
+        }),
+      ),
+    })
+
+    const parsed = parse(lazyPerson, {
+      _type: 'person',
+      name: 'foo',
+      parent: {
+        _type: 'person',
+        name: 'parent',
+        foo: 'ok',
+      },
+    })
+    expect(parsed).toEqual({
+      _type: 'person',
+      name: 'foo',
+      parent: {
+        _type: 'person',
+        foo: 'ok',
+        name: 'parent',
+      },
+    })
+  })
+  test('inline extends', () => {
+    const pet = object({name: string()})
+
+    const u = union([
+      extend(pet, {
+        _type: literal('avine'),
+        squeaks: boolean(),
+      }),
+      extend(pet, {
+        _type: literal('feline'),
+        meows: boolean(),
+      }),
+      extend(pet, {
+        _type: literal('canine'),
+        barks: boolean(),
+      }),
+    ])
+
+    const human = document({
+      _type: literal('human'),
+      name: string(),
+      address: object({
+        street: string(),
+        city: string(),
+        country: string(),
+      }),
+
+      pets: array(u),
+    })
   })
 })

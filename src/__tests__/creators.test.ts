@@ -1,4 +1,4 @@
-import {describe, test} from 'vitest'
+import {describe, expect, test} from 'vitest'
 
 import {
   array,
@@ -66,9 +66,19 @@ test('Restrictions', () => {
   // @ts-expect-error objectArray of a primitive value is not allowed
   objectArray(string())
 
-  // @ts-expect-error mixed array (containing both objects and primitives) is not supported
-  primitiveArray(union([object({foo: string()}), string()]))
+  expect(() => {
+    primitiveArray(
+      // @ts-expect-error mixed array (containing both objects and primitives) is not supported
+      union([object({_type: literal('test'), foo: string()}), string()]),
+    )
+  }).toThrowErrorMatchingInlineSnapshot(
+    '"Union types must either be of primitive values or typed objects"',
+  )
 
-  // @ts-expect-error mixed array (containing both objects and primitives) is not supported
-  objectArray(union([object({foo: string()}), string()]))
+  expect(() =>
+    // @ts-expect-error mixed array (containing both objects and primitives) is not supported
+    objectArray(union([object({foo: string()}), string()])),
+  ).toThrowErrorMatchingInlineSnapshot(
+    '"Union types must either be of primitive values or typed objects"',
+  )
 })

@@ -8,10 +8,10 @@ import type {
   SanityObject,
   SanityObjectArray,
   SanityObjectLike,
+  SanityObjectUnion,
   SanityPrimitiveArray,
   SanityString,
   SanityType,
-  SanityUnion,
 } from '../defs'
 
 export type CommonFieldOptions = {
@@ -55,9 +55,9 @@ export type SystemFields =
   | '_rev'
 
 export type FindTypeByName<
-  Type extends SanityObjectLike | SanityUnion<SanityObjectLike>,
+  Type extends SanityObjectLike | SanityObjectUnion,
   SearchName extends string,
-> = Type extends SanityUnion<infer S>
+> = Type extends SanityObjectUnion<infer S>
   ? S extends SanityObjectLike
     ? FindTypeByName<S, SearchName>
     : unknown
@@ -67,17 +67,16 @@ export type FindTypeByName<
     : never
   : Type
 
-export type UnpackShapes<
-  Type extends SanityObjectLike | SanityUnion<SanityObjectLike>,
-> = Type extends SanityUnion<infer O>
-  ? O extends SanityObject
-    ? UnpackShapes<O>
-    : unknown
-  : Type extends SanityObject<infer Shape>
-  ? Shape
-  : never
+export type UnpackShapes<Type extends SanityObjectLike | SanityObjectUnion> =
+  Type extends SanityObjectUnion<infer O>
+    ? O extends SanityObject
+      ? UnpackShapes<O>
+      : unknown
+    : Type extends SanityObject<infer Shape>
+    ? Shape
+    : never
 
-export type Union = SanityUnion<
+export type Union = SanityObjectUnion<
   | SanityObject<{_type: SanityLiteral<'foo'>}>
   | SanityObject<{_type: SanityLiteral<'bar'>}>
   | SanityObject<{_type: SanityLiteral<'object'>; anonymous: SanityBoolean}>
@@ -97,7 +96,7 @@ export type GetType<T> = T extends SanityLiteral<infer Name>
 
 export type NamedTypeMap<T extends SanityObjectArray> =
   T extends SanityObjectArray<infer ItemType>
-    ? ItemType extends SanityObjectLike | SanityUnion<SanityObjectLike>
+    ? ItemType extends SanityObjectLike | SanityObjectUnion
       ? ItemType
       : never
     : never
@@ -122,10 +121,10 @@ type SS1 = ArrayItemTypeNames<UnionArray>
 type SS2 = TypeMap<UnionArray>
 
 type SS3 = UnpackShapes<
-  SanityUnion<
+  SanityObjectUnion<
     | SanityObject<{_type: SanityLiteral<'foo'>}>
     | SanityObject<{_type: SanityLiteral<'bar'>}>
-    | SanityObject<{anonymous: SanityBoolean}>
+    | SanityObject<{_type: SanityLiteral<'baz'>; anonymous: SanityBoolean}>
   >
 >
 

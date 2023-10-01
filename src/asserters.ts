@@ -1,6 +1,5 @@
 import type {
   SanityBoolean,
-  SanityDiscriminatedUnion,
   SanityDocument,
   SanityLazy,
   SanityLiteral,
@@ -8,24 +7,26 @@ import type {
   SanityObject,
   SanityObjectArray,
   SanityObjectLike,
+  SanityObjectUnion,
   SanityOptional,
   SanityPrimitive,
   SanityPrimitiveArray,
+  SanityPrimitiveUnion,
   SanityReference,
   SanityString,
   SanityType,
-  SanityUnion,
+  SanityTypedObject,
 } from './defs'
 
-export function isUnionSchema(
+export function isObjectUnionSchema(
   schema: SanityType,
-): schema is SanityUnion<SanityAny> {
+): schema is SanityObjectUnion {
   return schema.typeName === 'union'
 }
-export function isDiscriminatedUnionSchema(
+export function isPrimitiveUnionSchema(
   schema: SanityType,
-): schema is SanityDiscriminatedUnion {
-  return schema.typeName === 'discriminatedUnion'
+): schema is SanityPrimitiveUnion {
+  return schema.typeName === 'primitiveUnion'
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
   return schema.typeName === 'object'
@@ -45,16 +46,12 @@ export function isLiteralSchema(schema: SanityType): schema is SanityLiteral {
   return schema.typeName === 'literal'
 }
 export function isItemObjectArrayCompatible(
-  elementSchema:
-    | SanityObjectLike
-    | SanityUnion<SanityObjectLike>
-    | SanityPrimitive
-    | SanityUnion<SanityPrimitive>,
-): elementSchema is SanityObjectLike | SanityUnion<SanityObjectLike> {
+  elementSchema: SanityType,
+): elementSchema is SanityObjectLike | SanityObjectUnion {
   return (
     isObjectSchema(elementSchema) ||
-    (isUnionSchema(elementSchema) &&
-      !elementSchema.union.some(def => !isObjectSchema(def)))
+    (isObjectUnionSchema(elementSchema) &&
+      elementSchema.union.every(def => isObjectSchema(def)))
   )
 }
 
@@ -76,6 +73,24 @@ export function isObjectArraySchema(
   schema: SanityType,
 ): schema is SanityObjectArray {
   return schema.typeName === 'objectArray'
+}
+export function isPrimitiveSchema(
+  schema: SanityType,
+): schema is SanityPrimitive {
+  return (
+    isStringSchema(schema) || isBooleanSchema(schema) || isNumberSchema(schema)
+  )
+}
+
+export function isTypedObjectSchema(
+  schema: SanityType,
+): schema is SanityTypedObject {
+  return (
+    isObjectSchema(schema) &&
+    schema.shape._type &&
+    isLiteralSchema(schema.shape._type) &&
+    typeof schema.shape._type.value === 'string'
+  )
 }
 export function isPrimitiveArraySchema(
   schema: SanityType,

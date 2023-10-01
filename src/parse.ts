@@ -1,17 +1,17 @@
 import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
-  isDiscriminatedUnionSchema,
   isDocumentSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
   isObjectSchema,
+  isObjectUnionSchema,
   isOptionalSchema,
   isPrimitiveArraySchema,
+  isPrimitiveUnionSchema,
   isReferenceSchema,
   isStringSchema,
-  isUnionSchema,
 } from './asserters'
 import {defineNonEnumerableGetter} from './helpers/defineNonEnumerableGetter'
 import {referenceBase} from './shapeDefs'
@@ -21,26 +21,27 @@ import type {
   Infer,
   OutputOf,
   SanityBoolean,
-  SanityDiscriminatedUnion,
   SanityDocument,
   SanityLiteral,
   SanityNumber,
   SanityObject,
   SanityObjectArray,
+  SanityObjectUnion,
   SanityOptional,
   SanityPrimitiveArray,
+  SanityPrimitiveUnion,
   SanityReference,
   SanityString,
   SanityType,
-  SanityUnion,
+  SanityTypedObject,
 } from './defs'
 
 export type Path = Array<string | number | {_key: string}>
 
 export type ErrorCode =
   | 'INVALID_TYPE'
-  | 'INVALID_UNION'
-  | 'INVALID_DISCRIMINATED_UNION'
+  | 'INVALID_PRIMITIVE_UNION'
+  | 'INVALID_OBJECT_UNION'
   | 'ARRAY_ELEMENT_NOT_KEYED_OBJECT'
 export interface ParseErrorDetails {
   path: Path
@@ -87,19 +88,22 @@ export function safeParse<T extends SanityType>(
   if (isPrimitiveArraySchema(schema)) {
     return parsePrimitiveArray(schema, input) as any
   }
-  if (isDiscriminatedUnionSchema(schema)) {
-    return parseDiscriminatedUnion(schema, input) as any
+  if (isObjectUnionSchema(schema)) {
+    return parseUnion(schema, input) as any
   }
-  if (isUnionSchema(schema)) {
-    return parseUnion(schema, input)
+  if (isPrimitiveUnionSchema(schema)) {
+    return parsePrimitiveUnion(schema, input) as any
   }
+
   return {
     status: 'fail',
     errors: [
       {
         path: [],
         code: 'INVALID_TYPE',
-        message: `Invalid input: ${inspect(input)}`,
+        message: `Invalid input: ${inspect(input)}. Parsing of schema type "${
+          schema.typeName
+        }" is not supported.`,
       },
     ],
   }
@@ -229,14 +233,12 @@ export function parseReference<S extends SanityReference<any>>(
   }
 }
 
-export function parseUnion<S extends SanityUnion<any>>(
+export function parsePrimitiveUnion<S extends SanityPrimitiveUnion>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
   const errors: ParseErrorDetails[] = []
   for (const unionTypeDef of schema.union) {
-    // todo: optimize this by looking at the value and excluding the ones that can't match structurally
-    //  e.g. introduce a "shallow fast parse" that fails fast
     const result = safeParse(unionTypeDef, input)
     if (result.status === 'ok') {
       return result
@@ -247,7 +249,7 @@ export function parseUnion<S extends SanityUnion<any>>(
     status: 'fail',
     errors: [
       {
-        code: 'INVALID_UNION',
+        code: 'INVALID_PRIMITIVE_UNION',
         path: [],
         message: "Input doesn't match any of the valid union types",
       },
@@ -255,55 +257,65 @@ export function parseUnion<S extends SanityUnion<any>>(
     ],
   }
 }
-export function parseDiscriminatedUnion<S extends SanityDiscriminatedUnion>(
+
+function findUnionSchemaForType(
+  unionSchema: SanityObjectUnion,
+  typeName: string,
+): SanityTypedObject | SanityObjectUnion | SanityReference | undefined {
+  return unionSchema.union.find(
+    (objectDef: SanityTypedObject | SanityObjectUnion | SanityReference) => {
+      if (isObjectUnionSchema(objectDef)) {
+        return findUnionSchemaForType(objectDef, typeName)
+      }
+      const typeLiteral = objectDef.shape._type
+      return isLiteralSchema(typeLiteral) && typeLiteral.value === typeName
+    },
+  )
+}
+
+function hasTypeField(input: any): input is {_type: string} {
+  return '_type' in input
+}
+export function parseUnion<S extends SanityObjectUnion>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const discriminator = schema.discriminator
-  if (!isPlainObject(input) || !(discriminator in input)) {
+  if (!isPlainObject(input) || !hasTypeField(input)) {
     return {
       status: 'fail',
       errors: [
         {
-          code: 'INVALID_DISCRIMINATED_UNION',
+          code: 'INVALID_OBJECT_UNION',
           path: [],
-          message: `Input must be an object with a "${schema.discriminator}" property`,
+          message: `Input must be an object with a "_type"-property`,
         },
       ],
     }
   }
-  const discriminatorValue = input[discriminator]
-
-  const unionSchema = schema.union.find(objectDef => {
-    const discriminatorLiteral = objectDef.shape[discriminator]!
-    return (
-      isLiteralSchema(discriminatorLiteral) &&
-      discriminatorLiteral.value === discriminatorValue
-    )
-  })
+  const unionSchema = input._type && findUnionSchemaForType(schema, input._type)
   if (!unionSchema) {
     return {
       status: 'fail',
       errors: [
         {
-          code: 'INVALID_DISCRIMINATED_UNION',
+          code: 'INVALID_OBJECT_UNION',
           path: [],
-          message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
+          message: `Type "${input._type}" not found among valid union types`,
         },
       ],
     }
   }
   const result = safeParse(unionSchema, input)
   if (result.status === 'ok') {
-    return result
+    return result as any
   }
   return {
     status: 'fail',
     errors: [
       {
-        code: 'INVALID_DISCRIMINATED_UNION',
+        code: 'INVALID_OBJECT_UNION',
         path: [],
-        message: `Input is not valid as the discriminated union type ${schema.discriminator}="${discriminatorValue}"`,
+        message: `Cannot parse input as union type "${input._type}"`,
       },
       ...result.errors,
     ],

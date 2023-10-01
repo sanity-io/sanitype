@@ -1,24 +1,26 @@
-import {isItemObjectArrayCompatible, isUnionSchema} from '../asserters'
+import {isItemObjectArrayCompatible, isObjectUnionSchema} from '../asserters'
 import {defineType} from '../helpers/defineType'
 import {string} from './string'
 import type {
+  SanityLiteral,
   SanityObjectArray,
   SanityObjectLike,
+  SanityObjectUnion,
   SanityPrimitive,
   SanityPrimitiveArray,
-  SanityUnion,
+  SanityPrimitiveUnion,
 } from '../defs'
 
-function addKeyProperty<
-  T extends SanityObjectLike | SanityUnion<SanityObjectLike>,
->(target: T): T {
-  return isUnionSchema(target)
+function addKeyProperty<T extends SanityObjectUnion | SanityObjectLike>(
+  target: T,
+): T {
+  return isObjectUnionSchema(target)
     ? {...target, union: target.union.map(addKeyProperty)}
     : {...target, shape: {...target.shape, _key: string()}}
 }
 
 export function objectArray<
-  ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike>,
+  ElementType extends SanityObjectLike | SanityObjectUnion,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
   return defineType({
     typeName: 'objectArray',
@@ -27,23 +29,23 @@ export function objectArray<
 }
 
 export function primitiveArray<
-  ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>,
+  ElementType extends SanityPrimitive | SanityLiteral | SanityPrimitiveUnion,
 >(elementSchema: ElementType): SanityPrimitiveArray<ElementType> {
   return defineType({typeName: 'primitiveArray', element: elementSchema})
 }
 
-export function array<
-  Def extends SanityObjectLike | SanityUnion<SanityObjectLike>,
->(elementSchema: Def): SanityObjectArray<Def>
-export function array<
-  Def extends SanityPrimitive | SanityUnion<SanityPrimitive>,
->(elementSchema: Def): SanityPrimitiveArray<Def>
+export function array<Def extends SanityObjectLike | SanityObjectUnion>(
+  elementSchema: Def,
+): SanityObjectArray<Def>
+export function array<Def extends SanityPrimitive | SanityPrimitiveUnion>(
+  elementSchema: Def,
+): SanityPrimitiveArray<Def>
 export function array(
   elementSchema:
     | SanityObjectLike
-    | SanityUnion<SanityObjectLike>
+    | SanityObjectUnion
     | SanityPrimitive
-    | SanityUnion<SanityPrimitive>,
+    | SanityPrimitiveUnion,
 ) {
   return isItemObjectArrayCompatible(elementSchema)
     ? objectArray(elementSchema)

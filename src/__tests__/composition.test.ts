@@ -63,9 +63,10 @@ test('Schema composition', () => {
     {} as {_type: 'foo'; foo: string; _key: string},
   )
 
+  type X = MyObj['polyObjectArr'][0]
   assertType<MyObj['polyObjectArr'][0]>(
     //@ts-expect-error not a valid union type
-    {} as {_type: 'foo'; age: number; _key: string},
+    {} as {_type: 'foo'; foo: number; _key: string},
   )
   assertType<MyObj['composed']['someField']>(stringVal)
   assertType<MyObj['composed']['otherField']>(stringVal)

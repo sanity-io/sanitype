@@ -164,11 +164,15 @@ describe('object array parsing', () => {
     })
   })
   test('parsing of single union array', () => {
-    const schema = array(union([object({foo: string()})]))
-    const parsed = safeParse(schema, [{_key: 'somekey', foo: 'bar'}])
+    const schema = array(
+      union([object({_type: literal('foo'), foo: string()})]),
+    )
+    const parsed = safeParse(schema, [
+      {_key: 'somekey', _type: 'foo', foo: 'bar'},
+    ])
     expect(parsed).toMatchObject({
       status: 'ok',
-      value: [{_key: 'somekey', foo: 'bar'}],
+      value: [{_key: 'somekey', _type: 'foo', foo: 'bar'}],
     })
   })
   test('parsing of multi union array', () => {
@@ -201,8 +205,8 @@ describe('object array parsing', () => {
       {
         "errors": [
           {
-            "code": "INVALID_UNION",
-            "message": "Input doesn't match any of the valid union types",
+            "code": "INVALID_OBJECT_UNION",
+            "message": "Cannot parse input as union type \\"foo\\"",
             "path": [
               "key213s",
             ],
@@ -214,22 +218,6 @@ describe('object array parsing', () => {
               "key213s",
               "nested",
               "foo",
-            ],
-          },
-          {
-            "code": "INVALID_TYPE",
-            "message": "Expected literal value \\"bar\\" but got \\"\\"foo\\"\\"",
-            "path": [
-              "key213s",
-              "_type",
-            ],
-          },
-          {
-            "code": "INVALID_TYPE",
-            "message": "Expected a string but got \\"undefined\\"",
-            "path": [
-              "key213s",
-              "barProp",
             ],
           },
         ],

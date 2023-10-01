@@ -18,14 +18,13 @@ export interface SanityType<Output = any> {
 }
 export interface SanityObjectType<
   Output = UndefinedOptional<OutputFromShape<SanityObjectShape>>,
+  Shape extends SanityObjectShape = SanityObjectShape,
 > extends SanityType<Output> {
   typeName: 'object'
   shape: SanityObjectShape
 }
 
-export interface SanityDocumentType<
-  Output = UndefinedOptional<OutputFromShape<SanityObjectShape>>,
-> extends SanityType<Output> {
+export interface SanityDocumentType<Output> extends SanityType<Output> {
   typeName: 'document'
   shape: SanityObjectShape
 }
@@ -52,21 +51,21 @@ export interface SanityLiteral<
   value: Def
 }
 
-export interface SanityUnion<Def extends SanityAny, Output = OutputOf<Def>>
-  extends SanityType<Output> {
+export interface SanityObjectUnion<
+  Def extends SanityTypedObject | SanityReference =
+    | SanityTypedObject
+    | SanityReference,
+  Output = OutputOf<Def>,
+> extends SanityType<Output> {
   typeName: 'union'
   union: Def[]
 }
 
-export interface SanityDiscriminatedUnion<
-  Def extends SanityObject = SanityObject,
-  Discriminator extends keyof LiteralKeyNames<
-    Def['shape']
-  > = keyof LiteralKeyNames<Def['shape']>,
+export interface SanityPrimitiveUnion<
+  Def extends SanityPrimitive | SanityLiteral = SanityPrimitive | SanityLiteral,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
-  typeName: 'discriminatedUnion'
-  discriminator: Discriminator
+  typeName: 'primitiveUnion'
   union: Def[]
 }
 
@@ -90,7 +89,8 @@ export interface SanityLazy<T extends SanityType>
 }
 
 export interface SanityReference<
-  RefType extends SanityType<SanityDocumentValue>,
+  RefType extends
+    SanityType<SanityDocumentValue> = SanityType<SanityDocumentValue>,
 > extends SanityType<WithRefTypeDef<RefType>> {
   typeName: 'reference'
   referenceType: RefType
@@ -118,29 +118,27 @@ export type UndefinedOptional<T> = Combine<
 
 export type OutputFromShape<T extends SanityObjectShape> = {
   [Property in keyof T]: Infer<T[Property]>
-} & OutputFormatFix
+}
 
 export type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type SanityObjectLike = SanityObject | SanityReference<any>
 
-export type SanityTypedObject = SanityObject<{_type: SanityLiteral<string>}>
+export type SanityTypedObject = SanityObjectType<{_type: string}>
 
 export type SanityArray<
   ElementType extends
-    | (SanityObjectLike | SanityUnion<SanityObjectLike>)
-    | (SanityPrimitive | SanityUnion<SanityPrimitive>),
-> = ElementType extends
-  | SanityObjectLike
-  | SanityDiscriminatedUnion<SanityTypedObject, '_type'>
+    | (SanityObjectLike | SanityObjectUnion)
+    | (SanityPrimitive | SanityPrimitiveUnion),
+> = ElementType extends SanityObjectLike | SanityObjectUnion
   ? SanityObjectArray<ElementType>
-  : ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive>
+  : ElementType extends SanityPrimitive | SanityPrimitiveUnion
   ? SanityPrimitiveArray<ElementType>
   : never
 export interface SanityObjectArray<
-  ElementType extends SanityObjectLike | SanityUnion<SanityObjectLike> =
+  ElementType extends SanityObjectLike | SanityObjectUnion =
     | SanityObjectLike
-    | SanityUnion<SanityObjectLike>,
+    | SanityObjectUnion,
   Output = AddArrayKey<OutputOf<ElementType>>[],
 > extends SanityType<Output> {
   typeName: 'objectArray'
@@ -148,9 +146,10 @@ export interface SanityObjectArray<
 }
 
 export interface SanityPrimitiveArray<
-  ElementType extends SanityPrimitive | SanityUnion<SanityPrimitive> =
+  ElementType extends SanityPrimitive | SanityLiteral | SanityPrimitiveUnion =
     | SanityPrimitive
-    | SanityUnion<SanityPrimitive>,
+    | SanityLiteral
+    | SanityPrimitiveUnion,
   Output = OutputOf<ElementType>[],
 > extends SanityType<Output> {
   typeName: 'primitiveArray'
@@ -186,10 +185,6 @@ export type LiteralKeys<T extends SanityObjectShape> = {
     ? K
     : never]: InferLiteralValue<T[K]>
 } & OutputFormatFix
-
-export type LiteralKeyNames<T extends SanityObjectShape> = {
-  [K in keyof T as T[K] extends SanityLiteral ? K : never]: string
-}
 
 export type InferDeepLiteralValue<T extends SanityObjectShape> =
   LiteralKeys<T> & OutputFormatFix
