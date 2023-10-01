@@ -39,24 +39,24 @@ describe('discriminated union', () => {
     expect(
       safeParse(union, {status: 'success', data: {num: 'should be number'}}),
     ).toMatchInlineSnapshot(`
-        {
-          "errors": [
-            {
-              "code": "INVALID_DISCRIMINATED_UNION",
-              "message": "Input is not valid as the discriminated union type status=\\"success\\"",
-              "path": [],
-            },
-            {
-              "code": "INVALID_TYPE",
-              "message": "Expected a number but got \\"'should be number'\\"",
-              "path": [
-                "data",
-                "num",
-              ],
-            },
-          ],
-          "status": "fail",
-        }
-      `)
+      {
+        "errors": [
+          {
+            "code": "INVALID_DISCRIMINATED_UNION",
+            "message": "Input is not valid as the discriminated union type status=\\"success\\"",
+            "path": [],
+          },
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a number but got \\"\\"should be number\\"\\"",
+            "path": [
+              "data",
+              "num",
+            ],
+          },
+        ],
+        "status": "fail",
+      }
+    `)
   })
 })

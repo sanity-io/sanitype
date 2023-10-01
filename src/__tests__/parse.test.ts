@@ -197,31 +197,45 @@ describe('object array parsing', () => {
       {_type: 'foo', _key: 'key213s', nested: {foo: 1}},
     ])
 
-    expect(parsed).toMatchObject({
-      errors: [
-        {
-          code: 'INVALID_UNION',
-          message: "Input doesn't match any of the valid union types",
-          path: ['key213s'],
-        },
-        {
-          code: 'INVALID_TYPE',
-          message: 'Expected a string but got "1"',
-          path: ['key213s', 'nested', 'foo'],
-        },
-        {
-          code: 'INVALID_TYPE',
-          message: 'Expected literal value "bar" but got "\'foo\'"',
-          path: ['key213s', '_type'],
-        },
-        {
-          code: 'INVALID_TYPE',
-          message: 'Expected a string but got "undefined"',
-          path: ['key213s', 'barProp'],
-        },
-      ],
-      status: 'fail',
-    })
+    expect(parsed).toMatchInlineSnapshot(`
+      {
+        "errors": [
+          {
+            "code": "INVALID_UNION",
+            "message": "Input doesn't match any of the valid union types",
+            "path": [
+              "key213s",
+            ],
+          },
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a string but got \\"1\\"",
+            "path": [
+              "key213s",
+              "nested",
+              "foo",
+            ],
+          },
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected literal value \\"bar\\" but got \\"\\"foo\\"\\"",
+            "path": [
+              "key213s",
+              "_type",
+            ],
+          },
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a string but got \\"undefined\\"",
+            "path": [
+              "key213s",
+              "barProp",
+            ],
+          },
+        ],
+        "status": "fail",
+      }
+    `)
   })
 })
 

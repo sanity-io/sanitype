@@ -48,7 +48,6 @@
     "access": "restricted"
   },
   "dependencies": {
-    "object-inspect": "^1.12.3"
   },
   "devDependencies": {
     "@bjoerge/mutiny": "^0.1.0",

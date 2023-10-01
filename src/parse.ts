@@ -1,4 +1,3 @@
-import inspect from 'object-inspect'
 import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
@@ -17,6 +16,7 @@ import {
 import {defineNonEnumerableGetter} from './helpers/defineNonEnumerableGetter'
 import {referenceBase} from './shapeDefs'
 import {getLazySchema} from './helpers/getLazySchema'
+import {inspect} from './helpers/inspect'
 import type {
   Infer,
   OutputOf,
