@@ -18,7 +18,6 @@ export interface SanityType<Output = any> {
 }
 export interface SanityObjectType<
   Output = UndefinedOptional<OutputFromShape<SanityObjectShape>>,
-  Shape extends SanityObjectShape = SanityObjectShape,
 > extends SanityType<Output> {
   typeName: 'object'
   shape: SanityObjectShape
