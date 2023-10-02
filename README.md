@@ -133,11 +133,11 @@ const value = parse(schema, {
   - [ ] Terminal (optionally w/colors)
   - [ ] React
   - [ ] Plain HTML
-- [ ] Life cycle augmentations
+- [x] Life cycle augmentations
 
-  - [ ] New
-  - [ ] Draft
-  - [ ] Published
+  - [x] Draft
+  - [x] Published
+  - [x] Stored
 
 - [ ] **Serializer (maybe even deserializer)**
   - Serialize TS schema to JSON (easy except for lazy/recursive types), potentially also from JSON to TS schemas too (this might be pretty tricky!)
@@ -151,7 +151,7 @@ const value = parse(schema, {
   - [ ] custom validation rules with custom messages (or i18n-keys)
 - [ ] Transformations
 - [ ] Refinements
-- [ ] Partial / deep partial and required/deep required objects
+- [x] Partial / deep partial and required/deep required objects
 - [ ] Async validations (or perhaps these could be modelled separately as more of "linter" style checks, that can also provide autofix features)
 
 ## Forms
