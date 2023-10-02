@@ -1,6 +1,6 @@
 {
   "name": "@sanity/sanitype",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Experimental TypeScript-first schemas for Sanity",
   "keywords": [],
   "license": "MIT",
@@ -47,8 +47,7 @@
   "publishConfig": {
     "access": "restricted"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@bjoerge/mutiny": "^0.1.0",
     "@sanity/client": "^6.4.12",
