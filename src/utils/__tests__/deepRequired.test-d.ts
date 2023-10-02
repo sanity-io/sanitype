@@ -42,9 +42,10 @@ test('deep required on shallow document type', () => {
     _rev: SanityOptional<SanityString>
     foo: SanityOptional<SanityString>
   }>
+
   expectTypeOf<DeepRequired<Doc>>().toEqualTypeOf<
     SanityDocument<{
-      _type: SanityLiteral<'test'> // _type can never be optional
+      _type: SanityLiteral<'test'>
       _id: SanityString
       _createdAt: SanityString
       _updatedAt: SanityString

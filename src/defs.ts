@@ -154,13 +154,18 @@ export interface SanityPrimitiveArray<
   element: ElementType
 }
 
-export interface SanityDocument<
-  Shape extends SanityObjectShape = SanityObjectShape,
-  Output = UndefinedOptional<OutputFromShape<SanityDocumentShape & Shape>>,
+export interface _SanityDocument<
+  Shape extends SanityDocumentShape = SanityDocumentShape,
+  Output = UndefinedOptional<OutputFromShape<Shape>>,
 > extends SanityType<Output> {
   typeName: 'document'
   shape: Shape
 }
+
+export type SanityDocument<
+  Shape extends SanityObjectShape = SanityObjectShape,
+  Output = UndefinedOptional<OutputFromShape<Shape>>,
+> = _SanityDocument<SanityDocumentShape & Shape, Output>
 
 export const INTERNAL_REF_TYPE_SCHEMA = '__schema__' as const
 
