@@ -6,7 +6,6 @@ import type {
   SanityNumber,
   SanityObject,
   SanityObjectArray,
-  SanityObjectType,
   SanityObjectUnion,
   SanityPrimitiveArray,
   SanityString,
@@ -23,7 +22,7 @@ describe('Type level constraints', () => {
     pass<
       SanityObjectArray<
         // @ts-expect-error array of array is not allowed
-        SanityObjectArray<SanityObjectType<{_key: SanityString}>>
+        SanityObjectArray<SanityObject<{_key: SanityString}>>
       >
     >()
   })

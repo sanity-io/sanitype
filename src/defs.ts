@@ -69,7 +69,7 @@ export interface SanityPrimitiveUnion<
   union: Def[]
 }
 
-export type SanityObjectShape<T = any> = {[key in keyof T]: SanityAny}
+export type SanityObjectShape = {[key: string]: SanityAny}
 
 export interface SanityObject<
   Shape extends SanityObjectShape = SanityObjectShape,

@@ -1,5 +1,3 @@
-import type {Combine} from '../helpers/utilTypes'
-import type {SafeObject} from '../creators'
 import type {
   OutputFromShape,
   SanityDocument,
@@ -8,14 +6,20 @@ import type {
   SanityObjectShape,
   SanityObjectType,
 } from '../defs'
+import type {Combine} from '../helpers/utilTypes'
+import type {SafeObject} from '../creators'
 
 export type Extends<
-  Obj extends SanityObjectType | SanityDocumentType<any>,
-  Shape extends SafeObject<SanityObjectShape>,
-> = Obj extends SanityObjectType<infer Output>
-  ? SanityObjectType<Combine<Output, OutputFromShape<Shape>>>
-  : Obj extends SanityObjectType<infer Output>
-  ? SanityObject<Combine<Output, Shape>>
+  Obj extends SanityObject | SanityDocument,
+  Augmentation extends SafeObject<SanityObjectShape>,
+> = Obj extends SanityObject<infer Shape, infer Output>
+  ? SanityObjectShape extends Shape
+    ? SanityObjectType<Combine<Output, OutputFromShape<Augmentation>>>
+    : SanityObject<Combine<Shape, Augmentation>>
+  : Obj extends SanityDocument<infer Shape, infer Output>
+  ? SanityObjectShape extends Shape
+    ? SanityDocumentType<Combine<Output, OutputFromShape<Augmentation>>>
+    : SanityDocument<Combine<Shape, Augmentation>>
   : never
 
 export function extend<

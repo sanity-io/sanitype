@@ -5,7 +5,6 @@ import {
   isPrimitiveUnionSchema,
   isTypedObjectSchema,
 } from '../asserters'
-import type {SanityObject} from '../defs'
 import type {
   SanityLiteral,
   SanityObjectUnion,
