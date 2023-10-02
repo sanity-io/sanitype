@@ -18,9 +18,11 @@ export type {
   ValidateFieldChars,
   FieldError,
   FieldErrorCode,
+  ExtendsNever,
   Format,
 } from './helpers/utilTypes'
 
 export * from './form/types'
 export * from './form/creators'
 export * from './asserters'
+export * from './utils/deepPartial'

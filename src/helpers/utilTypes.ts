@@ -20,6 +20,8 @@ export type Format<A> = A extends {[Key in keyof A]: A[Key]}
   ? {[Key in keyof A]: A[Key]}
   : A
 
+export type ExtendsNever<T> = [T] extends [never] ? true : false
+
 /**
  * Extracts all keys from an object type that starts with `_`
  */

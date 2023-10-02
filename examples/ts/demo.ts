@@ -1,5 +1,6 @@
 import {
   array,
+  deepPartial,
   document,
   literal,
   object,
@@ -8,6 +9,7 @@ import {
   resolve,
   string,
 } from 'sanitype'
+import type {Infer} from 'sanitype'
 
 import type {SanityClient} from '@sanity/client'
 
@@ -29,6 +31,17 @@ const pet = document({
   name: string(),
   humans: array(reference(human)),
 })
+
+type Pet = Infer<typeof pet>
+const partialPet = deepPartial(pet)
+
+type PartiaPet = Infer<typeof partialPet>
+
+const p: PartiaPet = {
+  _type: 'pet',
+  name: 'jara',
+  humans: [],
+}
 
 const jaraAsJson = client.fetch('*[_type == "pet" && _id=="jara"][0]')
 

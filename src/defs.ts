@@ -60,7 +60,6 @@ export interface SanityObjectUnion<
   typeName: 'union'
   union: Def[]
 }
-
 export interface SanityPrimitiveUnion<
   Def extends SanityPrimitive | SanityLiteral = SanityPrimitive | SanityLiteral,
   Output = OutputOf<Def>,
