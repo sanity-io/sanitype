@@ -1,7 +1,7 @@
 import {Card, Stack, Text} from '@sanity/ui'
 import {useCallback} from 'react'
 import {at, setIfMissing} from '@bjoerge/mutiny'
-import {getInstanceName} from '../../../../../src/content-utils/getInstanceName'
+import {getInstanceName} from 'sanitype'
 import type {SanityObject} from 'sanitype'
 import type {InputProps, PatchEvent} from '../types'
 
