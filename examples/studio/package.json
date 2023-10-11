@@ -1,0 +1,19 @@
+{
+  "name": "example-studio",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "package.json",
+  "scripts": {
+    "dev": "vite dev",
+    "start": "vite dev"
+  },
+  "dependencies": {
+    "@bjoerge/mutiny": "^0.1.0",
+    "@sanity/ui": "^1.8.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.2.13"
+  }
+}
