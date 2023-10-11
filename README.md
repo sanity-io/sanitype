@@ -40,6 +40,26 @@ A simple Studio example can be found in `examples/studio`. Start with:
 npm run example:studio
 ```
 
+## Benefits
+
+### Improved content migration DX
+Sanitype schemas are highly composable. I.e. you can create a base schema that can be extended in different contexts or represent different versions of the same content model. This makes it easier to create a migration strategy that can be applied to different versions of the same schema. Different versions of a schema type can coexist side by side in a transition period, enabling incremental content migration.
+
+### Shared content models
+Current sanity schemas have a few drawbacks that makes it harder to share across runtimes and environments:
+- They include both content model concerns and form/UI concerns, this means they assume browser context and will often fail if used server side
+- They don't compose well, so you can't easily create a base schema that can be extended in different contexts
+- They usually include a lot of boilerplate, which makes them harder to read and maintain
+
+Decoupling UI/form concerns from the content model has several advantages:
+- Easier re-use across runtimes and environments
+- Content models can be easier shared between applications
+- Content models can be composed and modified in a more flexible way, e.g.:
+  - Different versions of the same content model can live side by side, extending or composing from each other
+  - The content model can be published to npm versioned independently, imported as a dependency to another studio
+- Importing external content into sanity in a way that guarantees that the shape of the imported content matches the shape of the schema
+- Improved content migration DX.
+
 Also make sure to take a look at the various tests that are colocated with the source code.
 
 ## Features
@@ -50,11 +70,11 @@ You define your schema using TypeScript, and you'll get type definitions for you
 
 ### Extensible
 
-Create base types that can be extended in different contexts. For example: share the schema for user submitted data between your frontend and your Studio.
+Create base types that can be extended in different contexts. For example: share the schema for user submitted content between your frontend and your Studio.
 
 ### End to end type safety with runtime validation
 
-You can use sanitype definitions to validate JSON data coming from the Sanity API or any other external data source.
+You can use sanitype definitions to validate JSON content coming from the Sanity API or any other external content source.
 
 ### Composable
 
@@ -62,7 +82,7 @@ Types can be extended and composed with other types, made partial depending on c
 
 ### Better separation of concerns
 
-Decouples _datamodel_ and _form_. Currently, Sanity Schemas is used for both. This means you can create different editing experiences for on top of the same data model, and your data model can be used in other contexts than the Sanity Studio.
+Decouples _content model_ and _form_. Currently, Sanity Schemas is used for both. This means you can create different editing experiences for on top of the same content model, and your content model can be used in other contexts than the Sanity Studio.
 
 ### Everything is immutable
 
@@ -129,7 +149,7 @@ const value = parse(schema, {
 ## Schema type features
 
 - [ ] **Parse error formatters**:
-      Parse errors are currently represented as a data structure containing array of node paths and errors - there should be some basic utils for formatting these nicely
+      Parse errors are currently represented as a content structure containing array of node paths and errors - there should be some basic utils for formatting these nicely
   - [ ] Terminal (optionally w/colors)
   - [ ] React
   - [ ] Plain HTML
@@ -170,7 +190,7 @@ Forms need to have the same feature set as current sanity schemas (although with
 
 # Open questions
 
-1. Should schema types allow for _some_ degree of metadata? E.g. feels like it should at least support a general `description`. Although, this metadata should probably be seen as more like metadata about the _data model_ itself, rather than something to guide the editor when doing data entry. Alternatively, metadata could be provided in the form of code comments/tsdocs, but that requires more effort to extract.
+1. Should schema types allow for _some_ degree of metadata? E.g. feels like it should at least support a general `description`. Although, this metadata should probably be seen as more like metadata about the _content model_ itself, rather than something to guide the editor when doing content entry. Alternatively, metadata could be provided in the form of code comments/tsdocs, but that requires more effort to extract.
 2. No builder pattern? Currently, this implementation uses creator functions that returns plain JavaScript values. This is design choice appears to be in line with general industry trends, but is different from e.g. zod, which uses a builder pattern. The advantage if builder pattern is that you can pass the schema type around, and start calling methods on it. With a creator pattern, you'll have to import the methods and call them by passing the schema type to it. E.g. builder pattern: `movie.parse(json)`, creator pattern: `parse(movie, json)`. Note: it should be fairly straightforward to implement an api providing the builder pattern on top of the creator functions if we want to.
 3. Do we still need schema-level runtime checks for developers using plain JS? I think yes, also because TS errors can be hard to comprehend, so being able to validate the schema runtime and give helpful errors in a UI. Also: we probably want to warn about common pitfalls.
 
@@ -184,7 +204,7 @@ There's several advantages of building our own:
 
 #### We can build sanity-isms into it
 
-Sanity is opinionated about a great deal of your data model, for example
+Sanity is opinionated about a great deal of your content model, for example
 
 1. Object types automatically gets assigned `_key: string` when they're inside arrays
 2. Documents gets assigned a `_rev: string`-property, etc.
@@ -196,7 +216,7 @@ Sanity is opinionated about a great deal of your data model, for example
 
 Maybe more important is the _restrictions_ we can build into it
 
-1. Zod has a lot of data types we don't support/care about, like sets, maps, functions, promises etc.
+1. Zod has a lot of content types we don't support/care about, like sets, maps, functions, promises etc.
 2. We don't support multidimensional arrays, arrays of both primitive values and objects.
 3. Object unions is only supported for _typed_ objects (i.e. objects with a `_type` literal). This restriction is necessary in order to support collaborative real-time editing of partial object values. Without a discriminator it would be impossible to tell which schema type a partial (e.g. empty) object belongs to.
 4. Fields starting with underscore is reserved for system fields. Sanitype produces a compile-time error if you define a field starting with underscore.
