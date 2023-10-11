@@ -1,25 +1,15 @@
-import {expectTypeOf} from 'vitest'
 import {isObjectSchema, isOptionalSchema} from '../asserters'
 import {object} from '../creators'
 import type {
-  SanityLiteral,
-  SanityNumber,
-  SanityObjectArray,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityString,
-  _SanityDocument,
-} from '../defs'
-import type {Combine} from '../helpers/utilTypes'
-import type {MaybeOptionalType} from './deepPartial'
-import type {
   OutputOf,
   SanityDocument,
+  SanityDocumentType,
   SanityObject,
   SanityObjectShape,
   SanityObjectType,
 } from '../defs'
-import type {DeepPartial} from './deepPartial'
+import type {Combine} from '../helpers/utilTypes'
+import type {MaybeOptionalType} from './deepPartial'
 
 export type ShallowPartialShape<S> = S extends SanityObjectShape
   ? {
@@ -32,7 +22,7 @@ export type ShallowPartial<S extends SanityObject | SanityDocument> =
     ? SanityObjectShape extends Shape
       ? SanityObjectType<ShallowPartialPlain<OutputOf<S>>>
       : SanityObject<ShallowPartialShape<Shape>>
-    : S extends _SanityDocument<infer Shape>
+    : S extends SanityDocumentType<infer Shape>
     ? SanityDocument<ShallowPartialShape<Shape>>
     : never
 

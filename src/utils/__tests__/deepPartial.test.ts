@@ -1,19 +1,8 @@
 import {expect, test} from 'vitest'
 
-import {
-  array,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  string,
-  union,
-} from '../../creators'
+import {array, literal, number, object, string, union} from '../../creators'
 import {parse} from '../../parse'
 import {deepPartial} from '../deepPartial'
-import {extend} from '../extend'
-import type {SanityObjectType} from '../../defs'
 
 test('deep partial on nested object', () => {
   const u = union([

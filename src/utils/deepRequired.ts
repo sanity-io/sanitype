@@ -5,8 +5,6 @@ import {
   isOptionalSchema,
 } from '../asserters'
 import {object, objectArray, optional, union} from '../creators'
-import type {SanityDocumentShape} from '../shapeDefs'
-import type {_SanityDocument} from '../defs'
 import type {
   OutputOf,
   SanityDocument,

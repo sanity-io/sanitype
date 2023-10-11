@@ -5,7 +5,6 @@ import {extend} from '../extend'
 import {deepRequired} from '../deepRequired'
 import {parse} from '../../parse'
 import {omit} from '../omit'
-import type {SanityObjectType} from '../../defs'
 import type {DeepRequired} from '../deepRequired'
 import type {
   Infer,
@@ -15,6 +14,7 @@ import type {
   SanityNumber,
   SanityObject,
   SanityObjectArray,
+  SanityObjectType,
   SanityObjectUnion,
   SanityOptional,
   SanityString,
