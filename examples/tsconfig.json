@@ -1,6 +1,7 @@
 {
   "include": [],
   "references": [
+    {"path": "./migration/tsconfig.json"},
     {"path": "./ts/tsconfig.json"},
     {"path": "./studio/tsconfig.json"},
     {"path": "./v3-studio/tsconfig.json"}
