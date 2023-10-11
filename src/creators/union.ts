@@ -1,5 +1,6 @@
 import {defineType} from '../helpers/defineType'
 import {
+  isLiteralSchema,
   isObjectUnionSchema,
   isPrimitiveSchema,
   isPrimitiveUnionSchema,
@@ -55,7 +56,10 @@ export function union<
   : never {
   if (
     unionTypes.every(
-      schema => isPrimitiveSchema(schema) || isPrimitiveUnionSchema(schema),
+      schema =>
+        isLiteralSchema(schema) ||
+        isPrimitiveSchema(schema) ||
+        isPrimitiveUnionSchema(schema),
     )
   ) {
     return defineType({typeName: 'primitiveUnion', union: unionTypes}) as any
