@@ -22,6 +22,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "run-s clean pkg:build pkg:check",
+    "vercel-build": "vite build --config examples/studio/vite.config.ts examples/studio",
     "clean": "rimraf dist",
     "format": "prettier --write --cache --ignore-unknown .",
     "pkg:build": "pkg build --strict",
