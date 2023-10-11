@@ -22,7 +22,12 @@ export type {
   Format,
 } from './helpers/utilTypes'
 
+export * from './utils/omit'
+export * from './utils/pick'
 export * from './form/types'
 export * from './form/creators'
 export * from './asserters'
 export * from './utils/deepPartial'
+
+export * from './content-utils/pickDeep'
+export * from './content-utils/getInstanceName'

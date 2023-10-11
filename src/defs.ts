@@ -120,7 +120,10 @@ export type OutputFromShape<T extends SanityObjectShape> = {
 
 export type AddArrayKey<T> = Combine<T, {_key: string}>
 
-export type SanityObjectLike = SanityObject | SanityReference<any>
+export type SanityObjectLike =
+  | SanityObject
+  | SanityReference<any>
+  | SanityDocument
 
 export type SanityTypedObject = SanityObjectType<{_type: string}>
 
