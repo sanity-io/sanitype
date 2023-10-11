@@ -1,0 +1,46 @@
+name: Unit tests
+
+on:
+  pull_request:
+  push:
+    branches: ['**']
+
+jobs:
+  test:
+    timeout-minutes: 60
+    name: Test (${{ matrix.os }} / node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # we want to know if a test fails on a specific node version
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [18, 20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install project dependencies
+        run: npm install --ci
+
+      - name: Test
+        id: test
+        run: |
+          node -v
+          npm -v
+          npm test
+
+      - name: Test types
+        id: test-types
+        run: |
+          node -v
+          npm -v
+          npm test
+          npm run test:types
