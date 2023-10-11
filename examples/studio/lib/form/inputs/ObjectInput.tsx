@@ -1,25 +1,19 @@
 import {Card, Stack, Text} from '@sanity/ui'
 import {useCallback} from 'react'
 import {at, setIfMissing} from '@bjoerge/mutiny'
-import {isLiteralSchema} from 'sanitype'
+import {getInstanceName} from '../../../../../src/content-utils/getInstanceName'
 import type {SanityObject} from 'sanitype'
 import type {InputProps, PatchEvent} from '../types'
-
-function getTypeAnnotation(schema: SanityObject) {
-  const typeLiteral = schema.shape?._type
-  return typeLiteral && isLiteralSchema(typeLiteral)
-    ? typeLiteral.value
-    : undefined
-}
 
 export function ObjectInput<Schema extends SanityObject>(
   props: InputProps<Schema>,
 ) {
   const handleFieldPatch = useCallback(
     (fieldName: string, patchEvent: PatchEvent) => {
+      const instanceName = getInstanceName(props.schema)
       props.onPatch({
         patches: [
-          at([], setIfMissing({_type: getTypeAnnotation(props.schema)})),
+          at([], setIfMissing(instanceName ? {_type: instanceName} : {})),
           ...patchEvent.patches.map(patch =>
             at([fieldName, ...patch.path], patch.op),
           ),
@@ -36,9 +30,11 @@ export function ObjectInput<Schema extends SanityObject>(
           const value = props.value?.[fieldName]
           const Input = props.resolveInput(fieldSchema)
           return (
-            <Stack key={fieldName} space={2}>
+            <Stack key={fieldName} space={3}>
               <label>
-                <Text>{fieldOptions.title}</Text>
+                <Text size={1} weight="semibold">
+                  {fieldOptions.title}
+                </Text>
               </label>
               <Input
                 form={fieldOptions.form}

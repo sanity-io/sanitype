@@ -18,7 +18,7 @@ export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
     [props.schema, props.onPatch],
   )
   return (
-    <Stack space={3}>
+    <Stack space={4}>
       {Object.entries(props.form.fields).map(([fieldName, fieldOptions]) => {
         const fieldSchema = props.schema.shape[fieldName]
         const value = props.value?.[fieldName]
@@ -26,7 +26,9 @@ export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
         return (
           <Stack key={fieldName} space={3}>
             <label>
-              <Text>{fieldOptions.title}</Text>
+              <Text size={1} weight="semibold">
+                {fieldOptions.title}
+              </Text>
             </label>
             <Input
               form={fieldOptions.form}

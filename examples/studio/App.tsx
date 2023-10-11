@@ -1,18 +1,41 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {Card, Code, Stack} from '@sanity/ui'
+import {Card, Flex, Text} from '@sanity/ui'
 import {tap} from 'rxjs'
 import {createIfNotExists, patch} from '@bjoerge/mutiny'
-import {isObjectSchema, isStringSchema} from '../../src/asserters'
-import {DocumentInput, ObjectInput, StringInput} from './lib/form'
+import {
+  isBooleanSchema,
+  isObjectSchema,
+  isObjectUnionSchema,
+  isOptionalSchema,
+  isPrimitiveUnionSchema,
+  isStringSchema,
+} from 'sanitype'
+import {
+  BooleanInput,
+  DocumentInput,
+  ObjectInput,
+  StringInput,
+  UnionInput,
+} from './lib/form'
 import {person} from './schema/person'
 import {personForm} from './forms/person'
 import {createStore} from './lib/mock-store'
+import {JSONValue} from './lib/form/JsonView'
+import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
 import type {InputProps, PatchEvent} from './lib/form'
+import type {Infer, SanityAny, SanityOptional, SanityType} from 'sanitype'
 import type {ComponentType} from 'react'
-import type {Infer, SanityAny, SanityType} from 'sanitype'
 
 function Unresolved<Schema extends SanityAny>(props: InputProps<Schema>) {
-  return <div>Unresolved input for type {props.schema.typeName}</div>
+  return <Text>Unresolved input for type {props.schema.typeName}</Text>
+}
+
+function OptionalInput<Schema extends SanityOptional<SanityAny>>(
+  props: InputProps<Schema>,
+) {
+  const Input = props.resolveInput(props.schema.type)
+
+  return <Input {...props} schema={props.schema.type} />
 }
 
 function resolveInput<Schema extends SanityType>(
@@ -21,17 +44,29 @@ function resolveInput<Schema extends SanityType>(
   if (isStringSchema(schema)) {
     return StringInput as any
   }
+  if (isOptionalSchema(schema)) {
+    return OptionalInput as any
+  }
   if (isObjectSchema(schema)) {
     return ObjectInput as any
+  }
+  if (isObjectUnionSchema(schema)) {
+    return UnionInput as any
+  }
+  if (isPrimitiveUnionSchema(schema)) {
+    return PrimitiveUnionInput as any
+  }
+  if (isBooleanSchema(schema)) {
+    return BooleanInput as any
   }
   return Unresolved
 }
 
-const documentId = 'dummy'
+const documentId = 'example'
 type Person = Infer<typeof person>
 const datastore = createStore<Person>([
   {
-    _id: 'dummy',
+    _id: documentId,
     _type: 'person',
     _createdAt: new Date().toISOString(),
     _updatedAt: new Date().toISOString(),
@@ -41,12 +76,13 @@ const datastore = createStore<Person>([
       street: 'Næss',
       city: 'Oslo',
     },
+    favoritePet: {_type: 'canine', name: 'Jara', barks: false},
     name: 'Bjørge',
   },
 ])
 
 function App() {
-  const [value, setValue] = useState<Partial<Person>>(datastore.get('dummy'))
+  const [value, setValue] = useState<Partial<Person>>(datastore.get(documentId))
 
   useEffect(() => {
     const sub = datastore
@@ -66,21 +102,23 @@ function App() {
   }, [])
 
   return (
-    <Card height="fill" padding={2}>
-      <Stack space={6} padding={3}>
-        <DocumentInput
-          value={value}
-          schema={person}
-          form={personForm}
-          onPatch={handlePatch}
-          resolveInput={resolveInput}
-        />
+    <Card width="fill" height="fill" padding={2}>
+      <Flex size={2} gap={2} padding={3}>
+        <Card flex={1} width={3} padding={4} shadow={2} radius={2}>
+          <DocumentInput
+            value={value}
+            schema={person}
+            form={personForm}
+            onPatch={handlePatch}
+            resolveInput={resolveInput}
+          />
+        </Card>
         {value && (
-          <Card padding={4} shadow={2} radius={2}>
-            <Code language="json">{JSON.stringify(value, null, 2)}</Code>
+          <Card flex={1} padding={4} shadow={2} radius={2}>
+            <JSONValue value={value} />
           </Card>
         )}
-      </Stack>
+      </Flex>
     </Card>
   )
 }
