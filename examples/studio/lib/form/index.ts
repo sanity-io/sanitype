@@ -1,4 +1,6 @@
 export * from './inputs/DocumentInput'
 export * from './inputs/ObjectInput'
 export * from './inputs/StringInput'
+export * from './inputs/UnionInput'
+export * from './inputs/BooleanInput'
 export * from './types'

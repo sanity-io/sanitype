@@ -1,5 +1,20 @@
 import {defineForm} from 'sanitype'
-import type {person} from '../schema/person'
+import type {address, person} from '../schema/person'
+
+const addressForm = defineForm<typeof address>({
+  fields: {
+    street: {
+      form: {readonly: true},
+      title: 'Street',
+    },
+    city: {
+      title: 'City',
+    },
+    country: {
+      title: 'Country',
+    },
+  },
+})
 
 /**
  * Define a form for the person type. TypeScript will yell at you if you don't declare a field for all properties defined
@@ -9,24 +24,106 @@ export const personForm = defineForm<typeof person>({
   fields: {
     name: {
       title: 'Name',
-      form: {}, // Note: will make this optional (kept required and explicit for now)
+    },
+    content: {
+      title: 'Content',
+      form: {
+        types: {
+          code: {
+            title: 'Code',
+            form: {
+              fields: {
+                language: {
+                  title: 'Language',
+                  form: {
+                    types: {
+                      js: {title: 'JavaScript'},
+                      ts: {title: 'TypeScript'},
+                      py: {title: 'Python'},
+                    },
+                  },
+                },
+                text: {title: 'Text', form: {multiline: true}},
+                author: {title: 'Author'},
+              },
+            },
+          },
+          blockquote: {
+            title: 'Block quote',
+            form: {
+              fields: {
+                text: {title: 'Text', form: {multiline: true}},
+                style: {
+                  title: 'Style',
+                  form: {
+                    types: {
+                      normal: {title: 'Normal'},
+                      fancy: {title: 'Fancy'},
+                    },
+                  },
+                },
+                author: {title: 'Author'},
+              },
+            },
+          },
+          paragraph: {
+            title: 'Paragraph',
+            form: {
+              fields: {
+                text: {title: 'Text', form: {multiline: true}},
+                author: {title: 'Author'},
+              },
+            },
+          },
+        },
+      },
     },
     address: {
       title: 'Address',
+      form: addressForm,
+    },
+    favoritePet: {
+      title: 'Favorite pet',
       form: {
-        fields: {
-          street: {
-            readonly: true,
-            title: 'Street',
-            form: {},
+        types: {
+          feline: {
+            title: 'Feline',
+            form: {
+              fields: {
+                name: {
+                  title: 'Name',
+                },
+                meows: {
+                  title: 'Meows',
+                },
+              },
+            },
           },
-          city: {
-            title: 'City',
-            form: {},
+          canine: {
+            title: 'Canine',
+            form: {
+              fields: {
+                name: {
+                  title: 'Name',
+                },
+                barks: {
+                  title: 'Barks',
+                },
+              },
+            },
           },
-          country: {
-            title: 'Country',
-            form: {},
+          avine: {
+            title: 'Avine',
+            form: {
+              fields: {
+                name: {
+                  title: 'Name',
+                },
+                squawks: {
+                  title: 'Squawks',
+                },
+              },
+            },
           },
         },
       },
