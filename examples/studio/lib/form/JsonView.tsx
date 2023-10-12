@@ -1,14 +1,34 @@
 import {adjustHue, desaturate} from 'color2k'
+import {partition} from 'lodash'
 import type {JsonArray, JsonObject, JsonValue} from './json'
 
 const BASE_BRACKET_COLOR = desaturate('#FF871F', 0.5)
+
+const DOCUMENT_KEYS_DISPLAY_ORDER = [
+  '_id',
+  '_type',
+  '_rev',
+  /*... other system fields will be sorted after */
+]
+
 export function JSONObject(props: {value: JsonObject; depth: number}) {
   const bracketColor = adjustHue(BASE_BRACKET_COLOR, props.depth * 10)
+
+  const [systemEntries, entries] = partition(
+    Object.entries(props.value),
+    ([key]) => key.startsWith('_'),
+  )
   return (
     <>
       <code style={{color: bracketColor}}>{'{'}</code>
       <div style={{paddingLeft: '1em'}}>
-        {Object.entries(props.value)
+        {systemEntries
+          .toSorted(([a], [b]) => {
+            const i1 = DOCUMENT_KEYS_DISPLAY_ORDER.indexOf(a)
+            const i2 = DOCUMENT_KEYS_DISPLAY_ORDER.indexOf(b)
+            return i1 === -1 ? 0 : i1 - i2
+          })
+          .concat(entries)
           .filter(([, value]) => value !== undefined)
           .map(([key, value]) => {
             return (

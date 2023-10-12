@@ -1,6 +1,7 @@
 import {Stack, Text} from '@sanity/ui'
 import {at} from '@bjoerge/mutiny'
 import {useCallback} from 'react'
+import type {Draft} from '../../../../../src/lifecycle'
 import type {InputProps, PatchEvent} from '../types'
 import type {SanityDocument} from 'sanitype'
 

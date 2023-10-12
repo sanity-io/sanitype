@@ -1,7 +1,8 @@
 {
-  "include": ["../../src","./**/*.ts", "./**/*.tsx"],
+  "include": ["../../src", "./**/*.ts", "./**/*.tsx"],
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "esModuleInterop": true,
     "jsx": "react-jsx"
   }

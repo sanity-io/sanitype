@@ -1,3 +1,4 @@
+import type {Draft} from '../../../../src/lifecycle'
 import type {Mutation, NodePatch} from '@bjoerge/mutiny'
 import type {ComponentType} from 'react'
 import type {Infer, SanityAny, SanityDocument, SanityFormDef} from 'sanitype'
@@ -14,7 +15,7 @@ export type DocumentInputProps<Schema extends SanityDocument> = {
 export type InputProps<Schema extends SanityAny> = {
   schema: Schema
   form: SanityFormDef<Schema>
-  value?: Partial<Infer<Schema>>
+  value?: Infer<Schema extends SanityDocument ? Draft<Schema> : Schema>
   onPatch: (patchEvent: PatchEvent) => void
   // onMutate: (mutationEvent: MutationEvent) => void // todo: consider support for patching other documents too
   resolveInput: <T extends SanityAny>(schema: T) => ComponentType<InputProps<T>>

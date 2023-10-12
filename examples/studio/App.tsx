@@ -3,6 +3,7 @@ import {Card, Flex, Text} from '@sanity/ui'
 import {tap} from 'rxjs'
 import {createIfNotExists, patch} from '@bjoerge/mutiny'
 import {
+  draft,
   isBooleanSchema,
   isObjectSchema,
   isObjectUnionSchema,
@@ -62,27 +63,25 @@ function resolveInput<Schema extends SanityType>(
   return Unresolved
 }
 
+const personDraft = draft(person)
 const documentId = 'example'
-type Person = Infer<typeof person>
-const datastore = createStore<Person>([
+type PersonDraft = Infer<typeof personDraft>
+const datastore = createStore<PersonDraft>([
   {
     _id: documentId,
     _type: 'person',
-    _createdAt: new Date().toISOString(),
-    _updatedAt: new Date().toISOString(),
-    _rev: '0',
+    name: 'Bjørge',
     address: {
-      country: 'Norway',
-      street: 'Næss',
+      street: 'Korsgata',
       city: 'Oslo',
+      country: 'Norway',
     },
     favoritePet: {_type: 'canine', name: 'Jara', barks: false},
-    name: 'Bjørge',
   },
 ])
 
 function App() {
-  const [value, setValue] = useState<Partial<Person>>(datastore.get(documentId))
+  const [value, setValue] = useState<PersonDraft>(datastore.get(documentId))
 
   useEffect(() => {
     const sub = datastore
@@ -107,7 +106,7 @@ function App() {
         <Card flex={1} width={3} padding={4} shadow={2} radius={2}>
           <DocumentInput
             value={value}
-            schema={person}
+            schema={personDraft}
             form={personForm}
             onPatch={handlePatch}
             resolveInput={resolveInput}
