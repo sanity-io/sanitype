@@ -13,9 +13,9 @@ const STORED_KEYS = [
   '_updatedAt',
   '_rev',
 ] as const
-type StoredKeys = ArrayElement<typeof STORED_KEYS>
+export type StoredKeys = ArrayElement<typeof STORED_KEYS>
 
-type Stored<T extends SanityDocument<any>> = T extends SanityDocument<
+export type Stored<T extends SanityDocument<any>> = T extends SanityDocument<
   infer DocShape
 >
   ? SanityDocument<
@@ -23,7 +23,7 @@ type Stored<T extends SanityDocument<any>> = T extends SanityDocument<
     >
   : never
 
-type Draft<T extends SanityDocument> = DeepPartial<T>
+export type Draft<T extends SanityDocument> = DeepPartial<T>
 
 export function draft<T extends SanityDocument>(schema: T): Draft<T> {
   return deepPartial(schema)

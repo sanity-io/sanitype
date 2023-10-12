@@ -24,6 +24,7 @@ export type {
 
 export * from './utils/omit'
 export * from './utils/pick'
+export * from './lifecycle'
 export * from './form/types'
 export * from './form/creators'
 export * from './asserters'
