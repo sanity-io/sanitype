@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@bjoerge/mutiny": "^0.1.0",
-    "@sanity/ui": "^1.8.2"
+    "@sanity/ui": "^2.0.0-alpha.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
