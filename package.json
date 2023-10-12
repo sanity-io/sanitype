@@ -16,7 +16,7 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./dis/index.cjs",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
