@@ -4,6 +4,7 @@ import {
   isObjectUnionSchema,
   isPrimitiveSchema,
   isPrimitiveUnionSchema,
+  isReferenceSchema,
   isTypedObjectSchema,
 } from '../asserters'
 import type {
@@ -67,7 +68,10 @@ export function union<
 
   if (
     unionTypes.every(
-      schema => isTypedObjectSchema(schema) || isObjectUnionSchema(schema),
+      schema =>
+        isTypedObjectSchema(schema) ||
+        isObjectUnionSchema(schema) ||
+        isReferenceSchema(schema),
     )
   ) {
     return defineType({
