@@ -25,7 +25,7 @@ const person = document({
 })
 
 test('define a basic nested form', () => {
-  const personForm = defineForm<typeof person>({
+  const personForm = defineForm(person, {
     fields: {
       firstName: {
         title: 'Name',

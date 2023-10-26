@@ -26,7 +26,7 @@ const tagForm = {
   },
 }
 
-const petForm = defineForm<typeof pet>({
+const petForm = defineForm(pet, {
   fields: {
     name: {
       title: 'Name',

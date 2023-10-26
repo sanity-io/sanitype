@@ -1,7 +1,7 @@
 import {defineForm} from 'sanitype'
-import type {address, person} from '../schema/person'
+import {address, person} from '../schema/person'
 
-const addressForm = defineForm<typeof address>({
+const addressForm = defineForm(address, {
   fields: {
     street: {
       form: {readonly: true},
@@ -20,7 +20,7 @@ const addressForm = defineForm<typeof address>({
  * Define a form for the person type. TypeScript will yell at you if you don't declare a field for all properties defined
  * for the schema type
  */
-export const personForm = defineForm<typeof person>({
+export const personForm = defineForm(person, {
   fields: {
     name: {
       title: 'Name',
