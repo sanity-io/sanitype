@@ -9,7 +9,7 @@
     "start": "vite dev"
   },
   "dependencies": {
-    "@bjoerge/mutiny": "^0.1.0",
+    "@bjoerge/mutiny": "^0.4.3",
     "@sanity/client": "^6.7.0",
     "@sanity/ui": "^2.0.0-alpha.17",
     "react-jason": "^1.1.2"
