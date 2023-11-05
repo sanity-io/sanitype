@@ -6,9 +6,10 @@ import type {InputProps, PatchEvent} from '../types'
 import type {SanityDocument} from 'sanitype'
 
 export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
+  const {schema, onPatch, resolveInput, form, value} = props
   const handleFieldPatch = useCallback(
     (fieldName: string, patchEvent: PatchEvent) => {
-      props.onPatch({
+      onPatch({
         patches: [
           ...patchEvent.patches.map(patch =>
             at([fieldName, ...patch.path], patch.op),
@@ -16,14 +17,14 @@ export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
         ],
       })
     },
-    [props.schema, props.onPatch],
+    [onPatch],
   )
   return (
     <Stack space={4}>
-      {Object.entries(props.form.fields).map(([fieldName, fieldOptions]) => {
-        const fieldSchema = props.schema.shape[fieldName]
-        const value = props.value?.[fieldName]
-        const Input = props.resolveInput(fieldSchema)
+      {Object.entries(form.fields).map(([fieldName, fieldOptions]) => {
+        const fieldSchema = schema.shape[fieldName]
+        const fieldValue = value?.[fieldName]
+        const Input = resolveInput(fieldSchema)
         return (
           <Stack key={fieldName} space={3}>
             <label>
@@ -35,8 +36,8 @@ export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
               form={fieldOptions.form}
               schema={fieldSchema}
               onPatch={patchEvent => handleFieldPatch(fieldName, patchEvent)}
-              value={value}
-              resolveInput={props.resolveInput}
+              value={fieldValue}
+              resolveInput={resolveInput}
             />
           </Stack>
         )

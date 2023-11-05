@@ -6,11 +6,12 @@ import type {InputProps} from '../types'
 import type {SanityBoolean} from 'sanitype'
 
 export function BooleanInput(props: InputProps<SanityBoolean>) {
+  const {onPatch} = props
   const handleChange: FormEventHandler<HTMLInputElement> = useCallback(
     event => {
-      props.onPatch({patches: [at([], set(event.currentTarget.checked))]})
+      onPatch({patches: [at([], set(event.currentTarget.checked))]})
     },
-    [props.onPatch],
+    [onPatch],
   )
   return <Checkbox checked={props.value || false} onChange={handleChange} />
 }

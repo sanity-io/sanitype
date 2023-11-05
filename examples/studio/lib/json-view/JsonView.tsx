@@ -1,6 +1,5 @@
 import {ReactJason} from 'react-jason'
 import styled from 'styled-components'
-import React from 'react'
 import type {CSSProperties} from 'react'
 
 export const sharedRoot: CSSProperties = {

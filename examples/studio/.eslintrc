@@ -1,42 +1,30 @@
 {
-  "root": true,
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
-  },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
-  },
-  "plugins": ["import", "prettier"],
-  "rules": {
-    "no-console": "error",
-    "no-shadow": "error",
-    "no-warning-comments": [
-      "warn",
-      {
-        "location": "start",
-        "terms": ["todo", "fixme"]
-      }
-    ]
+  "extends": "../../.eslintrc",
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   },
   "overrides": [
     {
-      "files": ["**/*.ts"],
+      "files": ["**/*.ts", "**/*.tsx"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": ["./tsconfig.settings.json"]
+        "project": true
       },
       "extends": [
         "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended",
         "plugin:prettier/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended"
       ],
-      "plugins": ["import", "@typescript-eslint", "prettier"],
+      "plugins": ["import", "@typescript-eslint", "prettier", "react"],
       "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/interface-name-prefix": "off",
         "@typescript-eslint/member-delimiter-style": "off",

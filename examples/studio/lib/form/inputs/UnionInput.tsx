@@ -13,7 +13,7 @@ import {
   Text,
 } from '@sanity/ui'
 import {useCallback} from 'react'
-import {assign, at, set, setIfMissing, unset} from '@bjoerge/mutiny'
+import {assign, at, set, unset} from '@bjoerge/mutiny'
 import {getInstanceName, isObjectSchema, pickDeep} from 'sanitype'
 import {EllipsisVerticalIcon, TransferIcon, TrashIcon} from '@sanity/icons'
 import {startCase} from 'lodash'
@@ -68,7 +68,7 @@ export function UnionInput(props: InputProps<SanityObjectUnion>) {
         ],
       })
     },
-    [onPatch, currentSchema, value, schema],
+    [onPatch, value, schema],
   )
 
   const handleSelectType = useCallback(
@@ -83,7 +83,7 @@ export function UnionInput(props: InputProps<SanityObjectUnion>) {
         patches: [at([], set({_type: nextTypeName}))],
       })
     },
-    [onPatch, currentSchema],
+    [schema.union, onPatch],
   )
 
   const handleClear = useCallback(
