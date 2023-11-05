@@ -6,10 +6,11 @@ import type {InputProps} from '../types'
 import type {SanityString} from 'sanitype'
 
 export function StringInput(props: InputProps<SanityString>) {
+  const {value, onPatch} = props
   const handleChange: FormEventHandler<HTMLInputElement | HTMLTextAreaElement> =
     useCallback(
       event => {
-        props.onPatch({
+        onPatch({
           patches: [
             at(
               [],
@@ -20,12 +21,12 @@ export function StringInput(props: InputProps<SanityString>) {
           ],
         })
       },
-      [props.onPatch],
+      [onPatch],
     )
 
   return props.form?.multiline ? (
-    <TextArea value={props.value || ''} onChange={handleChange} />
+    <TextArea value={value || ''} onChange={handleChange} />
   ) : (
-    <TextInput value={props.value || ''} onChange={handleChange} />
+    <TextInput value={value || ''} onChange={handleChange} />
   )
 }

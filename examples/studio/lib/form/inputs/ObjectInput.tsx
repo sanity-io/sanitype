@@ -8,10 +8,11 @@ import type {InputProps, PatchEvent} from '../types'
 export function ObjectInput<Schema extends SanityObject>(
   props: InputProps<Schema>,
 ) {
+  const {schema, onPatch, value, resolveInput, form} = props
   const handleFieldPatch = useCallback(
     (fieldName: string, patchEvent: PatchEvent) => {
-      const instanceName = getInstanceName(props.schema)
-      props.onPatch({
+      const instanceName = getInstanceName(schema)
+      onPatch({
         patches: [
           at([], setIfMissing(instanceName ? {_type: instanceName} : {})),
           ...patchEvent.patches.map(patch =>
@@ -20,15 +21,15 @@ export function ObjectInput<Schema extends SanityObject>(
         ],
       })
     },
-    [props.schema, props.onPatch],
+    [schema, onPatch],
   )
   return (
     <Card paddingLeft={3} borderLeft>
       <Stack space={3}>
-        {Object.entries(props.form.fields).map(([fieldName, fieldOptions]) => {
-          const fieldSchema = props.schema.shape[fieldName]
-          const value = props.value?.[fieldName]
-          const Input = props.resolveInput(fieldSchema)
+        {Object.entries(form.fields).map(([fieldName, fieldOptions]) => {
+          const fieldSchema = schema.shape[fieldName]
+          const fieldValue = value?.[fieldName]
+          const Input = resolveInput(fieldSchema)
           return (
             <Stack key={fieldName} space={3}>
               <label>
@@ -39,11 +40,11 @@ export function ObjectInput<Schema extends SanityObject>(
               <Input
                 form={fieldOptions.form}
                 schema={fieldSchema}
-                value={value}
+                value={fieldValue}
                 onPatch={(patchEvent: PatchEvent) =>
                   handleFieldPatch(fieldName, patchEvent)
                 }
-                resolveInput={props.resolveInput}
+                resolveInput={resolveInput}
               />
             </Stack>
           )

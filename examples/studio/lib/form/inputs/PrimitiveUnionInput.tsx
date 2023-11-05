@@ -6,17 +6,17 @@ import type {SanityPrimitiveUnion} from 'sanitype'
 import type {InputProps} from '../types'
 
 export function PrimitiveUnionInput(props: InputProps<SanityPrimitiveUnion>) {
-  const {value} = props
+  const {value, schema, onPatch, form} = props
 
   const handleReplaceType = useCallback(
     (nextValue: string) =>
-      props.onPatch({
+      onPatch({
         patches: [at([], nextValue === '' ? unset() : set(nextValue))],
       }),
-    [props.onPatch],
+    [onPatch],
   )
 
-  const literalTypes = props.schema.union.filter(isLiteralSchema)
+  const literalTypes = schema.union.filter(isLiteralSchema)
   // todo: support non-literal primitives
   return (
     <Stack space={3}>
@@ -31,7 +31,7 @@ export function PrimitiveUnionInput(props: InputProps<SanityPrimitiveUnion>) {
             const literalValue = String(ut.value)
             return (
               <option key={i} value={literalValue}>
-                {((props.form as any).types as any)[literalValue]?.title}
+                {((form as any).types as any)[literalValue]?.title}
               </option>
             )
           })}
