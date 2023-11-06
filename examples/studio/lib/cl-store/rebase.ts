@@ -64,6 +64,8 @@ export function rebase(
         type: 'dmpified' as const,
         mutation: {
           ...mut,
+          // Todo: make compactDMPSetPatches return pairs of patches that was dmpified with their
+          //  original as dmpPatches and original is not 1:1 (e..g some of the original may not be dmpified)
           dmpPatches: compactDMPSetPatches(before, mut.patches as NodePatch[]),
           original: mut.patches,
         },
