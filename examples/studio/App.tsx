@@ -332,7 +332,7 @@ function App() {
             </Stack>
           </Card>
           {local && (
-            <Card flex={1} padding={4} shadow={2} radius={2}>
+            <Card flex={1} padding={4} shadow={2} radius={2} overflow="auto">
               <Stack space={4}>
                 <Heading size={1}>Local</Heading>
                 <Text size={1}>
@@ -342,7 +342,7 @@ function App() {
             </Card>
           )}
           {server && (
-            <Card flex={1} padding={4} shadow={2} radius={2}>
+            <Card flex={1} padding={4} shadow={2} radius={2} overflow="auto">
               <Stack space={4}>
                 <Heading size={1}>Remote</Heading>
                 <Text size={1}>
@@ -353,7 +353,7 @@ function App() {
           )}
         </Flex>
         <Flex size={2} gap={2}>
-          <Card flex={1} shadow={2} radius={2} height="fill">
+          <Card flex={1} shadow={2} radius={2} height="fill" overflow="auto">
             <Stack space={4} padding={4} height="fill">
               <Flex align="center" justify="center">
                 <Box flex={1}>
