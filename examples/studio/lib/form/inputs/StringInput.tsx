@@ -25,7 +25,7 @@ export function StringInput(props: InputProps<SanityString>) {
     )
 
   return props.form?.multiline ? (
-    <TextArea value={value || ''} onChange={handleChange} />
+    <TextArea value={value || ''} rows={5} onChange={handleChange} />
   ) : (
     <TextInput value={value || ''} onChange={handleChange} />
   )

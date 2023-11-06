@@ -16,6 +16,7 @@ export const address = object({
 export const person = document({
   _type: literal('person'),
   name: string(),
+  bio: string(),
   address: address,
   favoritePet: optional(
     union([
