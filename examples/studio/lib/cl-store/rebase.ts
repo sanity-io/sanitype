@@ -15,7 +15,7 @@ export function rebase(
 ): [newOutBox: PendingTransaction[], newLocal: SanityDocumentBase | undefined] {
   // 1. get the dmpified mutations from the outbox based on the old base
   // 2. apply those to the new base
-  // 3. convert those back into set patches based on the new base
+  // 3. convert those back into set patches based on the new base and return as a new outbox
   let edge = oldBase
   const dmpForOldBase = outbox.map((transaction): PendingTransaction => {
     const mutations = transaction.mutations.flatMap(mut => {
@@ -46,7 +46,7 @@ export function rebase(
       dmpForOldBase.flatMap(t => t.mutations),
     )
   } catch (err) {
-    // console.error(err)
+    console.error(err)
     return [
       outbox,
       applyAll(
