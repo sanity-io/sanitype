@@ -21,8 +21,8 @@ import {
 import {person} from './schema/person'
 import {personForm} from './forms/person'
 import {createStore} from './lib/mock-store'
-import {JSONValue} from './lib/form/JsonView'
 import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
+import {JsonView} from './lib/json-view/JsonView'
 import type {InputProps, PatchEvent} from './lib/form'
 import type {Infer, SanityAny, SanityOptional, SanityType} from 'sanitype'
 import type {ComponentType} from 'react'
@@ -114,7 +114,7 @@ function App() {
         </Card>
         {value && (
           <Card flex={1} padding={4} shadow={2} radius={2}>
-            <JSONValue value={value} />
+            <JsonView value={value} />
           </Card>
         )}
       </Flex>
