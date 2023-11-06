@@ -1,6 +1,13 @@
 import type {Mutation} from '@bjoerge/mutiny'
 
-export function getMutationDocumentId(mutation: Mutation): string {
+type MutationLike =
+  | {type: 'patch'; id: string}
+  | {type: 'create'; document: {_id: string}}
+  | {type: 'delete'; id: string}
+  | {type: 'createIfNotExists'; document: {_id: string}}
+  | {type: 'createOrReplace'; document: {_id: string}}
+
+export function getMutationDocumentId(mutation: MutationLike): string {
   if (mutation.type === 'patch') {
     return mutation.id
   }

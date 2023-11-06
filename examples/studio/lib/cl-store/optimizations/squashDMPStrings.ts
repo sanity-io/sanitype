@@ -33,17 +33,6 @@ export function dmpIfyMutations(
   })
 }
 
-export function dmpIfyMutationsForDoc(
-  base: SanityDocumentBase | undefined,
-  mutations: Mutation[],
-): Mutation[] {
-  return mutations.map((mutation, i) => {
-    return mutation.type === 'patch'
-      ? dmpifyPatchMutation(base, mutation)
-      : mutation
-  })
-}
-
 export function dmpifyPatchMutation(
   base: SanityDocumentBase | undefined,
   mutation: PatchMutation,
