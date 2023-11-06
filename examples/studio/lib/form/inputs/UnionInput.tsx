@@ -43,12 +43,7 @@ export function UnionInput(props: InputProps<SanityObjectUnion>) {
         // note: this should never happen
         throw new Error(`Cannot apply patch. No current to apply patch to`)
       }
-      onPatch({
-        patches: [
-          at([], setIfMissing({_type: getInstanceName(currentSchema!)})),
-          ...patchEvent.patches,
-        ],
-      })
+      onPatch(patchEvent)
     },
     [onPatch, currentSchema],
   )
