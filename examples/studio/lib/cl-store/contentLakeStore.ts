@@ -18,6 +18,7 @@ import {squashTransactions} from './optimizations/squashMutations'
 import {applyMendozaPatch} from './applyMendoza'
 import {rebase} from './rebase'
 import {squashDMPStrings} from './optimizations/squashDMPStrings'
+import {createLoader, query} from './query'
 import type {Observable} from 'rxjs'
 
 import type {
@@ -32,6 +33,7 @@ import type {
 import type {SanityDocumentBase} from '@bjoerge/mutiny'
 
 export interface StoreBackend {
+  fetchDocuments: (ids: string[]) => PromiseLike<SanityDocumentBase[]>
   sync: (id: string) => Observable<SanityDocumentBase | undefined>
   listen: (id: string) => Observable<RemoteListenerEvent>
   submit: (transactions: PendingTransaction[]) => Promise<SubmitResult>
@@ -106,8 +108,15 @@ export function createContentLakeStore(
     localLog: localLog$.asObservable(),
     remoteLog: remoteLog$.asObservable(),
     outbox: outbox$.asObservable().pipe(map(() => outbox)),
-    query: query => {
-      throw new Error('Not implemented')
+    query: async (q: string, params?: Record<string, unknown>) => {
+      const start = new Date()
+      const dataset = local.getAll()
+      const loader = createLoader(backend.fetchDocuments, dataset)
+      const result = await query(dataset, loader, q, params)
+      return {
+        result,
+        ms: new Date().getTime() - start.getTime(),
+      }
     },
     mutate: mutations => {
       outbox.push({mutations})

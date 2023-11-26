@@ -1,3 +1,4 @@
+import type {Value} from 'groq-js'
 import type {Mutation, SanityDocumentBase} from '@bjoerge/mutiny'
 import type {Observable} from 'rxjs'
 import type {RawPatch} from 'mendoza'
@@ -33,20 +34,19 @@ export interface RemoteMutationEvent {
 }
 export type RemoteDocumentEvent = RemoteSyncEvent | RemoteMutationEvent
 
-// export interface DocumentEntry<Doc extends SanityDocumentBase> {
-//   current: Doc | undefined
-// }
-type DocumentEntry<Doc> = Doc | undefined
-export interface LocalDocumentStore<Doc extends SanityDocumentBase> {
-  [id: string]: DocumentEntry<Doc>
+export interface Dataset<Doc extends SanityDocumentBase> {
+  [id: string]: Doc | undefined
 }
 
 export interface RemoteDocumentStore<Doc extends SanityDocumentBase> {
-  [id: string]: DocumentEntry<Doc>
+  [id: string]: Doc | undefined
 }
 
 export interface MutationResult {}
-export interface QueryResult {}
+export interface QueryResult {
+  ms: number
+  result: Value
+}
 
 export interface SubmitResult {}
 
@@ -69,7 +69,10 @@ export interface ContentLakeStore {
   /**
    * Can this be executed both locally and remotely?
    */
-  query(query: string): QueryResult
+  query(
+    query: string,
+    params?: Record<string, unknown>,
+  ): PromiseLike<QueryResult>
 
   /**
    * Applies the given mutations. Mutations are not guaranteed to be submitted in the same transaction

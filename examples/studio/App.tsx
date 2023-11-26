@@ -53,6 +53,11 @@ import {createContentLakeStore} from './lib/cl-store'
 import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
 import {FormatMutation} from './lib/mutiny-formatter/react'
 import {JsonView} from './lib/json-view/JsonView'
+import {Query} from './Query'
+import {DocumentView} from './DocumentView'
+import {CLStoreProvider} from './hooks/CLStoreProvider'
+import type {InputProps, PatchEvent} from './lib/form'
+import type {ListenEvent, MutationEvent} from '@sanity/client'
 import type {InputProps, MutationEvent} from './lib/form'
 import type {
   MutationEvent as APIMutationEvent,
@@ -198,6 +203,7 @@ function listen(id: string) {
 }
 
 const datastore = createContentLakeStore({
+  fetchDocuments: (ids: string[]) => client.fetch('*[_id in $ids', {ids}),
   listen,
   sync: id => client.observable.getDocument(id),
   submit: transactions =>
@@ -331,26 +337,11 @@ function App() {
               ))}
             </Stack>
           </Card>
-          {local && (
-            <Card flex={1} padding={4} shadow={2} radius={2} overflow="auto">
-              <Stack space={4}>
-                <Heading size={1}>Local</Heading>
-                <Text size={1}>
-                  <JsonView value={local} />
-                </Text>
-              </Stack>
-            </Card>
-          )}
-          {server && (
-            <Card flex={1} padding={4} shadow={2} radius={2} overflow="auto">
-              <Stack space={4}>
-                <Heading size={1}>Remote</Heading>
-                <Text size={1}>
-                  <JsonView value={server} />
-                </Text>
-              </Stack>
-            </Card>
-          )}
+          <Box flex={2}>
+            <CLStoreProvider store={datastore}>
+              <DocumentView local={local} remote={server} />
+            </CLStoreProvider>
+          </Box>
         </Flex>
         <Flex size={2} gap={2}>
           <Card flex={1} shadow={2} radius={2} height="fill" overflow="auto">

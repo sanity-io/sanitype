@@ -1,13 +1,13 @@
 import {apply} from '../apply'
 import {getMutationDocumentId} from '../utils/getMutationDocumentId'
-import type {LocalDocumentStore} from '../types'
+import type {Dataset} from '../types'
 import type {Mutation, SanityDocumentBase} from '@bjoerge/mutiny'
 
 /**
  * A data store is a collection of documents that can be queried and mutated.
  */
 export function createLocalDataStore() {
-  const records: LocalDocumentStore<SanityDocumentBase> = Object.create(null)
+  const records: Dataset<SanityDocumentBase> = Object.create(null)
 
   function commit(results: UpdateResult<SanityDocumentBase>[]) {
     results.forEach(result => {
@@ -29,6 +29,7 @@ export function createLocalDataStore() {
     set: (id: string, doc: SanityDocumentBase | undefined) => {
       records[id] = doc
     },
+    getAll: () => records,
     get: (id: string) => records[id],
     has: (id: string) => id in records,
     apply: applyOptimistically,
@@ -41,7 +42,7 @@ interface UpdateResult<T extends SanityDocumentBase> {
   after?: T
 }
 function applyInStore<T extends SanityDocumentBase>(
-  store: LocalDocumentStore<T>,
+  store: Dataset<T>,
   mutations: Mutation[],
 ): UpdateResult<T>[] {
   const updatedDocs: Record<
