@@ -1,29 +1,29 @@
 import {Stack, Text} from '@sanity/ui'
-import {at} from '@bjoerge/mutiny'
+import {at, patch} from '@bjoerge/mutiny'
 import {useCallback} from 'react'
-import type {InputProps, PatchEvent} from '../types'
 import type {SanityDocument} from 'sanitype'
+import type {DocumentInputProps, PatchEvent} from '../types'
 
-export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
-  const {schema, onPatch, resolveInput, form, value} = props
+export function DocumentInput<T extends SanityDocument>(
+  props: DocumentInputProps<T>,
+) {
+  const {value, onMutation, schema} = props
   const handleFieldPatch = useCallback(
     (fieldName: string, patchEvent: PatchEvent) => {
-      onPatch({
-        patches: [
-          ...patchEvent.patches.map(patch =>
-            at([fieldName, ...patch.path], patch.op),
-          ),
-        ],
+      onMutation({
+        mutations: patchEvent.patches.map(nodePatch =>
+          patch(value._id, at([fieldName, ...nodePatch.path], nodePatch.op)),
+        ),
       })
     },
-    [onPatch],
+    [onMutation, value._id],
   )
   return (
     <Stack space={4}>
-      {Object.entries(form.fields).map(([fieldName, fieldOptions]) => {
-        const fieldSchema = schema.shape[fieldName]
+      {Object.entries(props.form.fields).map(([fieldName, fieldOptions]) => {
+        const fieldSchema = props.schema.shape[fieldName]
         const fieldValue = value?.[fieldName]
-        const Input = resolveInput(fieldSchema)
+        const Input = props.resolveInput(fieldSchema)
         return (
           <Stack key={fieldName} space={3}>
             <label>
@@ -36,7 +36,7 @@ export function DocumentInput<T extends SanityDocument>(props: InputProps<T>) {
               schema={fieldSchema}
               onPatch={patchEvent => handleFieldPatch(fieldName, patchEvent)}
               value={fieldValue}
-              resolveInput={resolveInput}
+              resolveInput={props.resolveInput}
             />
           </Stack>
         )

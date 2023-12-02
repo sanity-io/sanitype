@@ -26,10 +26,6 @@ export const personForm = defineForm(person, {
       title: 'Name',
     },
     bio: {
-      title: 'Bio',
-      form: {multiline: true},
-    },
-    content: {
       title: 'Content',
       form: {
         types: {
