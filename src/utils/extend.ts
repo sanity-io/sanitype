@@ -17,10 +17,10 @@ export type Extends<
     ? SanityObjectType<Combine<Output, OutputFromShape<Augmentation>>>
     : SanityObject<Combine<Shape, Augmentation>>
   : Obj extends SanityDocument<infer Shape, infer Output>
-  ? SanityObjectShape extends Shape
-    ? SanityDocumentType<Combine<Output, OutputFromShape<Augmentation>>>
-    : SanityDocument<Combine<Shape, Augmentation>>
-  : never
+    ? SanityObjectShape extends Shape
+      ? SanityDocumentType<Combine<Output, OutputFromShape<Augmentation>>>
+      : SanityDocument<Combine<Shape, Augmentation>>
+    : never
 
 export function extend<
   Obj extends SanityObject | SanityDocument,

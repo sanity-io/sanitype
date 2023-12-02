@@ -101,13 +101,13 @@ export type ValidateFieldName<T extends string> = Uppercase<
 export type ValidateFieldChars<T extends string> = T extends ''
   ? true
   : T extends `${infer First}${infer Remainder}`
-  ? Uppercase<First> extends ValidFieldChar
-    ? ValidateFieldChars<Remainder>
-    : FieldError<
-        'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
-        `Invalid character in field name: '${First}'.`
-      >
-  : never
+    ? Uppercase<First> extends ValidFieldChar
+      ? ValidateFieldChars<Remainder>
+      : FieldError<
+          'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
+          `Invalid character in field name: '${First}'.`
+        >
+    : never
 
 export type ValidFieldName<T extends keyof any> = T extends string
   ? Uppercase<GetFirstChar<T>> extends ValidFirstChar
@@ -120,13 +120,13 @@ export type ValidFieldName<T extends keyof any> = T extends string
 export type ValidFieldChars<T extends string> = T extends ''
   ? true
   : T extends `${infer First}${infer Remainder}`
-  ? Uppercase<First> extends ValidFieldChar
-    ? ValidateFieldChars<Remainder>
-    : FieldError<
-        'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
-        `Invalid character in field name: '${First}'.`
-      >
-  : never
+    ? Uppercase<First> extends ValidFieldChar
+      ? ValidateFieldChars<Remainder>
+      : FieldError<
+          'FIELD_NAME_CANNOT_CONTAIN_CHARACTER',
+          `Invalid character in field name: '${First}'.`
+        >
+    : never
 
 type MaybeAddKey<T> = T extends Array<infer E>
   ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
@@ -144,7 +144,7 @@ export type GetShapeOf<T extends SanityObject | SanityDocument> =
   T extends SanityObject<infer Def>
     ? Def
     : T extends SanityDocument<infer Def>
-    ? Def
-    : never
+      ? Def
+      : never
 
 export type ElementType<T extends any[]> = T extends (infer E)[] ? E : never

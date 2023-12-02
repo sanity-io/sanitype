@@ -28,8 +28,8 @@ export type PartialShape<
   [K in keyof S]: ExtendsNever<Except> extends true
     ? MaybeOptionalType<DeepPartial<S[K]>>
     : K extends Except
-    ? DeepPartial<S[K]>
-    : MaybeOptionalType<DeepPartial<S[K]>>
+      ? DeepPartial<S[K]>
+      : MaybeOptionalType<DeepPartial<S[K]>>
 }
 
 export type DeepPartialPlain<T> = T extends {_type: string}
@@ -47,18 +47,18 @@ export type DeepPartialObject<S extends SanityObject | SanityDocument> =
       ? SanityObjectType<DeepPartialPlain<OutputOf<S>>>
       : SanityObject<PartialShape<Shape, '_type'>>
     : S extends SanityDocument<infer Shape>
-    ? SanityDocument<PartialShape<Shape, '_type'>>
-    : never
+      ? SanityDocument<PartialShape<Shape, '_type'>>
+      : never
 
 export type DeepPartial<S extends SanityType> = S extends SanityOptional<any>
   ? S
   : S extends SanityObject | SanityDocument
-  ? DeepPartialObject<S>
-  : S extends SanityObjectUnion<infer UnionTypes>
-  ? SanityObjectUnion<DeepPartial<UnionTypes>>
-  : S extends SanityObjectArray<infer ElementType>
-  ? SanityObjectArray<DeepPartial<ElementType>>
-  : S
+    ? DeepPartialObject<S>
+    : S extends SanityObjectUnion<infer UnionTypes>
+      ? SanityObjectUnion<DeepPartial<UnionTypes>>
+      : S extends SanityObjectArray<infer ElementType>
+        ? SanityObjectArray<DeepPartial<ElementType>>
+        : S
 
 export function deepPartial<S extends SanityType>(schema: S): DeepPartial<S> {
   if (isOptionalSchema(schema)) {

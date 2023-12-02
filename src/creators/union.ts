@@ -53,8 +53,8 @@ export function union<
 ): UnionTypes extends SanityPrimitive
   ? SanityPrimitiveUnion<UnionTypes>
   : UnionTypes extends SanityTypedObject
-  ? SanityObjectUnion<UnionTypes>
-  : never {
+    ? SanityObjectUnion<UnionTypes>
+    : never {
   if (
     unionTypes.every(
       schema =>

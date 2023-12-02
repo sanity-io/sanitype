@@ -56,30 +56,30 @@ export type OptionalFieldOptions<T extends SanityOptional<any>> =
 export type FieldOptions<T extends SanityType> = T extends SanityObject
   ? ObjectFieldOptions<T>
   : T extends SanityArray<any>
-  ? ArrayFieldOptions<T>
-  : T extends SanityString
-  ? StringFieldOptions
-  : T extends SanityLiteral
-  ? LiteralFieldOptions
-  : T extends SanityBoolean
-  ? BooleanFieldOptions
-  : T extends SanityObjectUnion<infer UnionTypes>
-  ? ObjectUnionFieldOptions<UnionTypes>
-  : T extends SanityPrimitiveUnion<infer UnionTypes>
-  ? PrimitiveUnionFieldOptions<UnionTypes>
-  : T extends SanityOptional<any>
-  ? OptionalFieldOptions<T>
-  : SanityAny extends T
-  ? CommonFieldOptions
-  : ['TODO', T]
+    ? ArrayFieldOptions<T>
+    : T extends SanityString
+      ? StringFieldOptions
+      : T extends SanityLiteral
+        ? LiteralFieldOptions
+        : T extends SanityBoolean
+          ? BooleanFieldOptions
+          : T extends SanityObjectUnion<infer UnionTypes>
+            ? ObjectUnionFieldOptions<UnionTypes>
+            : T extends SanityPrimitiveUnion<infer UnionTypes>
+              ? PrimitiveUnionFieldOptions<UnionTypes>
+              : T extends SanityOptional<any>
+                ? OptionalFieldOptions<T>
+                : SanityAny extends T
+                  ? CommonFieldOptions
+                  : ['TODO', T]
 
 export type ItemOptions<T extends SanityType> = T extends SanityObject
   ? ObjectFieldOptions<T>
   : T extends SanityArray<any>
-  ? ArrayFieldOptions<T>
-  : T extends SanityString
-  ? StringFieldOptions
-  : unknown
+    ? ArrayFieldOptions<T>
+    : T extends SanityString
+      ? StringFieldOptions
+      : unknown
 
 export type SystemFields =
   | '_type'
@@ -96,10 +96,10 @@ export type FindTypeByName<
     ? FindTypeByName<S, SearchName>
     : unknown
   : Type extends SanityObject<{_type: SanityLiteral<infer TName>}>
-  ? SearchName extends TName
-    ? Type
-    : never
-  : Type
+    ? SearchName extends TName
+      ? Type
+      : never
+    : Type
 
 export type UnpackShapes<Type extends SanityObjectLike | SanityObjectUnion> =
   Type extends SanityObjectUnion<infer O>
@@ -107,8 +107,8 @@ export type UnpackShapes<Type extends SanityObjectLike | SanityObjectUnion> =
       ? UnpackShapes<O>
       : unknown
     : Type extends SanityObject<infer Shape>
-    ? Shape
-    : never
+      ? Shape
+      : never
 
 export type Union = SanityObjectUnion<
   | SanityObject<{_type: SanityLiteral<'foo'>}>
@@ -212,8 +212,8 @@ export type ArrayFormDef<T extends SanityArray<any>> =
   T extends SanityObjectArray
     ? ObjectArrayFormDef<ArrayTypeMap<T>>
     : T extends SanityPrimitiveArray
-    ? PrimitiveArrayFormDef<T>
-    : never
+      ? PrimitiveArrayFormDef<T>
+      : never
 
 export type Todo = unknown
 
@@ -237,13 +237,13 @@ export type DocumentFormDef<T extends SanityDocument> = {
 export type SanityFormDef<T extends SanityType> = T extends SanityDocument
   ? DocumentFormDef<T>
   : T extends SanityObject
-  ? ObjectFormDef<T>
-  : T extends SanityObjectArray
-  ? ObjectArrayFormDef<ArrayTypeMap<T>>
-  : T extends SanityPrimitiveArray
-  ? PrimitiveArrayFormDef<T>
-  : T extends SanityString
-  ? StringFormDef<T>
-  : T extends SanityObjectUnion<infer U>
-  ? ObjectUnionFormDef<U>
-  : Todo
+    ? ObjectFormDef<T>
+    : T extends SanityObjectArray
+      ? ObjectArrayFormDef<ArrayTypeMap<T>>
+      : T extends SanityPrimitiveArray
+        ? PrimitiveArrayFormDef<T>
+        : T extends SanityString
+          ? StringFormDef<T>
+          : T extends SanityObjectUnion<infer U>
+            ? ObjectUnionFormDef<U>
+            : Todo
