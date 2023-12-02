@@ -23,8 +23,8 @@ export type ShallowPartial<S extends SanityObject | SanityDocument> =
       ? SanityObjectType<ShallowPartialPlain<OutputOf<S>>>
       : SanityObject<ShallowPartialShape<Shape>>
     : S extends SanityDocumentType<infer Shape>
-    ? SanityDocument<ShallowPartialShape<Shape>>
-    : never
+      ? SanityDocument<ShallowPartialShape<Shape>>
+      : never
 
 export type ShallowPartialPlain<T> = T extends {_type: string}
   ? Combine<

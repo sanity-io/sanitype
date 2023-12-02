@@ -134,8 +134,8 @@ export type SanityArray<
 > = ElementType extends SanityObjectLike | SanityObjectUnion
   ? SanityObjectArray<ElementType>
   : ElementType extends SanityPrimitive | SanityPrimitiveUnion
-  ? SanityPrimitiveArray<ElementType>
-  : never
+    ? SanityPrimitiveArray<ElementType>
+    : never
 export interface SanityObjectArray<
   ElementType extends SanityObjectLike | SanityObjectUnion =
     | SanityObjectLike
@@ -183,8 +183,8 @@ export type WithRefTypeDef<RefType extends SanityType<SanityDocumentValue>> =
 export type Infer<T> = T extends () => infer R
   ? Infer<R>
   : T extends SanityAny
-  ? OutputOf<T>
-  : T
+    ? OutputOf<T>
+    : T
 
 export type LiteralKeys<T extends SanityObjectShape> = {
   [K in keyof T as T[K] extends SanityLiteral | SanityObject | SanityDocument
@@ -200,9 +200,9 @@ export type InferLiteralValue<T extends SanityAny> = T extends SanityLiteral<
 >
   ? Literal
   : T extends SanityObject<infer Shape>
-  ? InferDeepLiteralValue<Shape>
-  : T extends SanityDocument<infer Shape>
-  ? InferDeepLiteralValue<Shape>
-  : never
+    ? InferDeepLiteralValue<Shape>
+    : T extends SanityDocument<infer Shape>
+      ? InferDeepLiteralValue<Shape>
+      : never
 
 export type OutputOf<T extends SanityAny> = T['output']

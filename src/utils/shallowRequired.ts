@@ -22,8 +22,8 @@ export type ShallowRequired<S extends SanityObject | SanityDocument> =
       ? SanityObjectType<Required<OutputOf<S>>>
       : SanityObject<RequiredShape<Shape>>
     : S extends _SanityDocument<infer Shape>
-    ? SanityDocument<RequiredShape<Shape>>
-    : never
+      ? SanityDocument<RequiredShape<Shape>>
+      : never
 
 export function shallowRequired<S extends SanityObject | SanityDocument>(
   schema: S,

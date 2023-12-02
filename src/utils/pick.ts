@@ -17,10 +17,10 @@ export type PickShape<
     ? SanityObjectType<Format<Pick<OutputOf<T>, ElementType<K>>>>
     : SanityObject<Format<Pick<Shape, ElementType<K>>>>
   : T extends SanityDocument<infer Shape>
-  ? SanityObjectShape extends Shape
-    ? SanityDocumentType<Format<Pick<OutputOf<T>, ElementType<K>>>>
-    : SanityDocument<Format<Pick<Shape, ElementType<K>>>>
-  : never
+    ? SanityObjectShape extends Shape
+      ? SanityDocumentType<Format<Pick<OutputOf<T>, ElementType<K>>>>
+      : SanityDocument<Format<Pick<Shape, ElementType<K>>>>
+    : never
 
 export function pick<
   T extends SanityObject | SanityDocument,

@@ -11,13 +11,17 @@
 ### 1. Get the code
 
 #### Alternative 1: install from npm
+
 NOTE: It's a private package, so this it requires you to be logged in to npm as a user with access to the @sanity-io organization
+
 ```
 npm i -S @sanity/sanitype
 ```
+
 Check out the [examples](./examples) folder for how to use it.
 
 #### Alternative 2: use GitHub Codespaces
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/sanity-io/sanitype)
 
 #### Alternative 3: Clone this repository
@@ -43,15 +47,19 @@ npm run example:studio
 ## Benefits
 
 ### Improved content migration DX
+
 Sanitype schemas are highly composable. I.e. you can create a base schema that can be extended in different contexts or represent different versions of the same content model. This makes it easier to create a migration strategy that can be applied to different versions of the same schema. Different versions of a schema type can coexist side by side in a transition period, enabling incremental content migration.
 
 ### Shared content models
+
 Current sanity schemas have a few drawbacks that makes it harder to share across runtimes and environments:
+
 - They include both content model concerns and form/UI concerns, this means they assume browser context and will often fail if used server side
 - They don't compose well, so you can't easily create a base schema that can be extended in different contexts
 - They usually include a lot of boilerplate, which makes them harder to read and maintain
 
 Decoupling UI/form concerns from the content model has several advantages:
+
 - Easier re-use across runtimes and environments
 - Content models can be easier shared between applications
 - Content models can be composed and modified in a more flexible way, e.g.:

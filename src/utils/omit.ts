@@ -17,10 +17,10 @@ export type OmitShape<
     ? SanityObjectType<Format<Omit<OutputOf<T>, ElementType<K>>>>
     : SanityObject<Format<Omit<Shape, ElementType<K>>>>
   : T extends SanityDocument<infer Shape>
-  ? SanityObjectShape extends Shape
-    ? SanityDocumentType<Format<Omit<OutputOf<T>, ElementType<K>>>>
-    : SanityDocument<Format<Omit<Shape, ElementType<K>>>>
-  : never
+    ? SanityObjectShape extends Shape
+      ? SanityDocumentType<Format<Omit<OutputOf<T>, ElementType<K>>>>
+      : SanityDocument<Format<Omit<Shape, ElementType<K>>>>
+    : never
 
 export function omit<
   T extends SanityObject | SanityDocument,

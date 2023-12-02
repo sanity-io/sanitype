@@ -27,8 +27,8 @@ export function createSafeResolve(fetch: (ref: string) => Promise<any>) {
         ? Ref extends SanityType<infer Output>
           ? Output
           : T extends {_weak: true}
-          ? undefined | DocumentLike
-          : DocumentLike
+            ? undefined | DocumentLike
+            : DocumentLike
         : DocumentLike
     >
   > {
