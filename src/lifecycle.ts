@@ -2,17 +2,19 @@ import {deepPartial} from './utils/deepPartial'
 import {document} from './creators'
 import {required} from './utils/required'
 import type {DeepPartial} from './utils/deepPartial'
-import type {ArrayElement} from '@bjoerge/mutiny'
 import type {SanityDocument} from './defs'
 import type {RequiredShape} from './utils/shallowRequired'
 
-const STORED_KEYS = [
+export type ArrayElement<A> = A extends readonly (infer T)[] ? T : never
+
+export const STORED_KEYS = [
   '_type',
   '_id',
   '_createdAt',
   '_updatedAt',
   '_rev',
 ] as const
+
 export type StoredKeys = ArrayElement<typeof STORED_KEYS>
 
 export type Stored<T extends SanityDocument<any>> = T extends SanityDocument<

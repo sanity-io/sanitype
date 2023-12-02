@@ -1,6 +1,6 @@
 import {createContext, useContext} from 'react'
+import type {ContentLakeStore} from '@bjoerge/mutiny/_unstable_store'
 import type {ReactNode} from 'react'
-import type {ContentLakeStore} from '../lib/cl-store/types'
 
 const CLStoreContext = createContext<ContentLakeStore | null>(null)
 

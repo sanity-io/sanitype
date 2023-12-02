@@ -15,14 +15,14 @@ import {
 } from '@sanity/ui'
 import {
   ReplaySubject,
+  concatMap,
   defer,
   filter,
-  finalize,
+  from,
   map,
   merge,
   mergeMap,
   share,
-  shareReplay,
   tap,
   timer,
 } from 'rxjs'
@@ -39,7 +39,7 @@ import {
 } from 'sanitype'
 
 import {createClient} from '@sanity/client'
-import {nanoid} from 'nanoid'
+import {createContentLakeStore} from '@bjoerge/mutiny/_unstable_store'
 import {
   BooleanInput,
   DocumentInput,
@@ -49,16 +49,18 @@ import {
 } from './lib/form'
 import {person} from './schema/person'
 import {personForm} from './forms/person'
-import {createContentLakeStore} from './lib/cl-store'
 import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
 import {FormatMutation} from './lib/mutiny-formatter/react'
 import {JsonView} from './lib/json-view/JsonView'
-import {Query} from './Query'
 import {DocumentView} from './DocumentView'
-import {CLStoreProvider} from './hooks/CLStoreProvider'
-import type {InputProps, PatchEvent} from './lib/form'
-import type {ListenEvent, MutationEvent} from '@sanity/client'
 import type {InputProps, MutationEvent} from './lib/form'
+import type {
+  ListenerSyncEvent,
+  MutationGroup,
+  RemoteDocumentEvent,
+  RemoteListenerEvent,
+  SanityMutation,
+} from '@bjoerge/mutiny/_unstable_store'
 import type {
   MutationEvent as APIMutationEvent,
   ListenEvent,
@@ -67,12 +69,6 @@ import type {Infer, SanityAny, SanityOptional, SanityType} from 'sanitype'
 import type {Mutation, SanityDocumentBase} from '@bjoerge/mutiny'
 import type {MonoTypeOperatorFunction, Observable} from 'rxjs'
 import type {ComponentType} from 'react'
-import type {
-  ListenerSyncEvent,
-  PendingTransaction,
-  RemoteDocumentEvent,
-  RemoteListenerEvent,
-} from './lib/cl-store/types'
 
 function Unresolved<Schema extends SanityAny>(props: InputProps<Schema>) {
   return <Text>Unresolved input for type {props.schema.typeName}</Text>
@@ -196,6 +192,7 @@ function listen(id: string) {
           type: 'mutation',
           transactionId: event.transactionId,
           effects: event.effects!.apply,
+          mutations: event.mutations as SanityMutation[],
         }),
       ),
     ),
@@ -203,12 +200,10 @@ function listen(id: string) {
 }
 
 const datastore = createContentLakeStore({
-  fetchDocuments: (ids: string[]) => client.fetch('*[_id in $ids', {ids}),
-  listen,
-  sync: id => client.observable.getDocument(id),
-  submit: transactions =>
-    Promise.all(
-      transactions.map(trans =>
+  observe: listen,
+  submit: transactions => {
+    return from(transactions).pipe(
+      concatMap(trans =>
         client.dataRequest(
           'mutate',
           {
@@ -221,43 +216,53 @@ const datastore = createContentLakeStore({
           },
         ),
       ),
-    ),
+    )
+  },
 })
 
 const DOCUMENT_IDS = ['some-document', 'some-other-document']
 
 function App() {
   const [documentId, setDocumentId] = useState<string>(DOCUMENT_IDS[0])
-  const [local, setLocalValue] = useState<PersonDraft | null>(null)
-  const [server, setServerValue] = useState<PersonDraft | null>(null)
-  const [outbox, setOutbox] = useState<PendingTransaction[]>([])
+  const [documentState, setDocumentState] = useState<{
+    local?: PersonDraft
+    remote?: PersonDraft
+  }>({})
+
+  const [staged, setStaged] = useState<MutationGroup[]>([])
   const [autoOptimize, setAutoOptimize] = useState<boolean>(true)
+
   const [remoteLogEntries, setRemoteLogEntries] = useState<
     RemoteDocumentEvent[]
   >([])
-
   useEffect(() => {
-    const local$ = datastore.outbox.pipe(tap(next => setOutbox(next)))
-    const remote$ = datastore.remoteLog.pipe(
+    const staged$ = datastore.meta.stage.pipe(tap(next => setStaged(next)))
+    const remote$ = datastore.meta.events.pipe(
+      filter(
+        (ev): ev is RemoteDocumentEvent =>
+          ev.type === 'sync' || ev.type === 'mutation',
+      ),
       tap(event => setRemoteLogEntries(e => [...e, event].slice(0, 100))),
     )
-    const sub = merge(local$, remote$).subscribe()
+    const sub = merge(staged$, remote$).subscribe()
     return () => sub.unsubscribe()
   }, [])
-
   useEffect(() => {
     const sub = datastore
-      .get(documentId)
+      .observeEvents(documentId)
       .pipe(
         tap(event => {
-          setLocalValue(event.local as PersonDraft)
-          setServerValue(event.remote as PersonDraft)
+          setDocumentState(current => {
+            return (
+              event.type === 'optimistic'
+                ? {...current, local: event.after}
+                : event.after
+            ) as {remote: PersonDraft; local: PersonDraft}
+          })
         }),
       )
       .subscribe()
-    return () => {
-      sub.unsubscribe()
-    }
+    return () => sub.unsubscribe()
   }, [documentId])
 
   const handleMutate = useCallback(
@@ -314,8 +319,8 @@ function App() {
                     <Stack flex={1} space={3}>
                       <DocumentInput
                         value={
-                          local || {
-                            _id: nanoid(),
+                          documentState.local || {
+                            _id: documentId,
                             _type: person.shape._type.value,
                           }
                         }
@@ -338,9 +343,10 @@ function App() {
             </Stack>
           </Card>
           <Box flex={2}>
-            <CLStoreProvider store={datastore}>
-              <DocumentView local={local} remote={server} />
-            </CLStoreProvider>
+            <DocumentView
+              local={documentState.local}
+              remote={documentState.remote}
+            />
           </Box>
         </Flex>
         <Flex size={2} gap={2}>
@@ -349,7 +355,7 @@ function App() {
               <Flex align="center" justify="center">
                 <Box flex={1}>
                   <Heading size={1} textOverflow="ellipsis">
-                    Local (optimistic) mutations
+                    Staged mutations
                   </Heading>
                 </Box>
                 <Flex gap={3} align="center" justify="center">
@@ -389,7 +395,7 @@ function App() {
                 overflow="auto"
                 style={{height: 200}}
               >
-                {outbox.map((e, i) => (
+                {staged.map((e, i) => (
                   <Stack key={i} space={4}>
                     {e.mutations.map((m, mi) => (
                       <Flex key={mi} gap={3} align="center">
@@ -424,7 +430,7 @@ function App() {
                           <JsonView
                             oneline
                             value={
-                              e.type === 'sync' ? e.document || null : e.effects
+                              e.type === 'sync' ? e.after.remote : e.effects
                             }
                           />
                         </Text>

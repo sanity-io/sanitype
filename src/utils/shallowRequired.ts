@@ -1,6 +1,7 @@
 import {isObjectSchema, isOptionalSchema} from '../asserters'
 import {object} from '../creators'
 import type {SanityRequired} from './required'
+export type {SanityRequired}
 import type {
   OutputOf,
   SanityDocument,

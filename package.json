@@ -51,8 +51,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@bjoerge/mutiny": "^0.5.1",
-    "@sanity/client": "^6.9.1",
     "@sanity/pkg-utils": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",

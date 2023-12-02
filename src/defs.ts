@@ -1,4 +1,4 @@
-import type {Combine, OutputFormatFix} from './helpers/utilTypes'
+import type {Combine, Format, OutputFormatFix} from './helpers/utilTypes'
 import type {
   ReferenceBase,
   SanityDocumentShape,

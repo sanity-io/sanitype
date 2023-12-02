@@ -10,18 +10,14 @@ import {
 } from '@sanity/ui'
 import React, {useState} from 'react'
 import {JsonView} from './lib/json-view/JsonView'
-import {Query} from './Query'
 import type {SanityDocumentBase} from '@bjoerge/mutiny'
 
 interface DocumentViewProps<Doc extends SanityDocumentBase> {
-  local: Doc | null
-  remote: Doc | null
+  local: Doc | undefined
+  remote: Doc | undefined
 }
 
-const TABS = [
-  {id: 'query', title: 'Query'},
-  {id: 'current', title: 'Current document'},
-] as const
+const TABS = [{id: 'current', title: 'Current document'}] as const
 
 export function DocumentView<Doc extends SanityDocumentBase>(
   props: DocumentViewProps<Doc>,
@@ -53,7 +49,6 @@ export function DocumentView<Doc extends SanityDocumentBase>(
         )}
       </Flex>
     ),
-    query: () => <Query />,
   }
   return (
     <Stack padding={2} margin={2}>
