@@ -1,22 +1,13 @@
-import {array, document, literal, number, object, string} from 'sanitype'
+import {array, extend, number, omit, string} from 'sanitype'
+import * as current from './current'
 import type {Infer} from 'sanitype'
 
-const address = object({
-  city: string(),
-  country: string(),
-})
-
-export const human = document({
-  _type: literal('human'),
-  name: string(),
-  oldTemporaryField: string(),
+export const human = extend(omit(current.human, ['birthYear', 'addresses']), {
   age: number(),
-  address: array(address),
+  oldTemporaryField: string(),
+  address: array(current.address),
 })
 
 export type Human = Infer<typeof human>
 
-export const pet = document({
-  _type: literal('pet'),
-  name: string(),
-})
+export const pet = current.pet
