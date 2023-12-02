@@ -23,7 +23,7 @@ import {personForm} from './forms/person'
 import {createStore} from './lib/mock-store'
 import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
 import {JsonView} from './lib/json-view/JsonView'
-import type {InputProps, PatchEvent} from './lib/form'
+import type {InputProps, MutationEvent, PatchEvent} from './lib/form'
 import type {Infer, SanityAny, SanityOptional, SanityType} from 'sanitype'
 import type {ComponentType} from 'react'
 
@@ -93,11 +93,8 @@ function App() {
     }
   }, [])
 
-  const handlePatch = useCallback((event: PatchEvent) => {
-    datastore.apply([
-      createIfNotExists({_id: documentId, _type: person.shape._type.value}),
-      patch(documentId, event.patches),
-    ])
+  const handleMutation = useCallback((event: MutationEvent) => {
+    datastore.apply(event.mutations)
   }, [])
 
   return (
@@ -108,7 +105,7 @@ function App() {
             value={value}
             schema={personDraft}
             form={personForm}
-            onPatch={handlePatch}
+            onMutation={handleMutation}
             resolveInput={resolveInput}
           />
         </Card>

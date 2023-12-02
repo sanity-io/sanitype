@@ -13,31 +13,11 @@ export const address = object({
   city: string(),
   country: string(),
 })
+
 export const person = document({
   _type: literal('person'),
   name: string(),
-  bio: string(),
-  address: address,
-  favoritePet: optional(
-    union([
-      object({
-        _type: literal('feline'),
-        name: string(),
-        meows: boolean(),
-      }),
-      object({
-        _type: literal('canine'),
-        name: string(),
-        barks: boolean(),
-      }),
-      object({
-        _type: literal('avine'),
-        name: string(),
-        squawks: boolean(),
-      }),
-    ]),
-  ),
-  content: optional(
+  bio: optional(
     union([
       object({
         _type: literal('code'),
@@ -55,6 +35,26 @@ export const person = document({
         text: string(),
         style: union([literal('normal'), literal('fancy')]),
         author: string(),
+      }),
+    ]),
+  ),
+  address,
+  favoritePet: optional(
+    union([
+      object({
+        _type: literal('feline'),
+        name: string(),
+        meows: boolean(),
+      }),
+      object({
+        _type: literal('canine'),
+        name: string(),
+        barks: boolean(),
+      }),
+      object({
+        _type: literal('avine'),
+        name: string(),
+        squawks: boolean(),
       }),
     ]),
   ),
