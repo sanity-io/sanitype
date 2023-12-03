@@ -64,7 +64,7 @@ test('default formatting', () => {
   expect(
     inspect({foo: 'bar', baz: {a: 'a', b: 'b', c: 'c', d: 'd'}}),
   ).toMatchInlineSnapshot(
-    '"{foo: \\"bar\\", baz: {a: \\"a\\", b: \\"b\\", …(+2)}}"',
+    '"{baz: {a: \\"a\\", b: \\"b\\", …(+2)}, foo: \\"bar\\"}"',
   )
 
   expect(

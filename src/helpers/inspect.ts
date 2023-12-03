@@ -37,7 +37,7 @@ function getEntries(val: any): [string, unknown][] {
 function inspectEnumerable(value: unknown, opts: InspectOpts = {}): string {
   const {maxDepth = 3, maxLength = 2} = opts
 
-  const entries = getEntries(value)
+  const entries = getEntries(value).sort(([n1], [n2]) => n1.localeCompare(n2))
 
   const slice = entries.slice(
     0,
