@@ -68,7 +68,7 @@ Decoupling UI/form concerns from the content model has several advantages:
 - Importing external content into sanity in a way that guarantees that the shape of the imported content matches the shape of the schema
 - Improved content migration DX.
 
-Also make sure to take a look at the various tests that are colocated with the source code.
+Also make sure to take a look at the various tests that are co-located with the source code.
 
 ## Features
 
@@ -106,7 +106,7 @@ For example, if you desire to generate types dynamically like this:
 const strings = ['firstName', 'lastName']
 const shape = {}
 strings.forEach(key => {
-  shape[key] = z.string()
+  shape[key] = string()
 })
 
 const schema = s.object(shape)
