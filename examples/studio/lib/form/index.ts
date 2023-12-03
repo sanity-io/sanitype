@@ -1,5 +1,5 @@
-export * from './inputs/DocumentInput'
-export * from './inputs/ObjectInput'
+export * from './inputs/objects/DocumentInput'
+export * from './inputs/objects/ObjectInput'
 export * from './inputs/StringInput'
 export * from './inputs/UnionInput'
 export * from './inputs/BooleanInput'

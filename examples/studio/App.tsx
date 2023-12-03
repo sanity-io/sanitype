@@ -31,6 +31,7 @@ import {SanityEncoder, createIfNotExists, del} from '@bjoerge/mutiny'
 import {
   draft,
   isBooleanSchema,
+  isDocumentSchema,
   isObjectSchema,
   isObjectUnionSchema,
   isOptionalSchema,
@@ -53,6 +54,7 @@ import {PrimitiveUnionInput} from './lib/form/inputs/PrimitiveUnionInput'
 import {FormatMutation} from './lib/mutiny-formatter/react'
 import {JsonView} from './lib/json-view/JsonView'
 import {DocumentView} from './DocumentView'
+import {FormNode} from './lib/form/FormNode'
 import type {InputProps, MutationEvent} from './lib/form'
 import type {
   ListenerSyncEvent,
@@ -93,6 +95,9 @@ function resolveInput<Schema extends SanityType>(
   }
   if (isObjectSchema(schema)) {
     return ObjectInput as any
+  }
+  if (isDocumentSchema(schema)) {
+    return DocumentInput as any
   }
   if (isObjectUnionSchema(schema)) {
     return UnionInput as any
@@ -290,6 +295,22 @@ function App() {
 
   return (
     <Card width="fill" height="fill" padding={2}>
+      <Text>Node</Text>
+      <Card border padding={4} margin={2} radius={3}>
+        <FormNode
+          path={['bio']}
+          value={
+            documentState.local || {
+              _id: documentId,
+              _type: person.shape._type.value,
+            }
+          }
+          schema={personDraft}
+          form={personForm}
+          onMutation={handleMutation}
+          resolveInput={resolveInput}
+        />
+      </Card>
       <Stack space={3}>
         <Flex size={2} gap={2}>
           <Card flex={2} width={3} padding={3} shadow={2} radius={2}>

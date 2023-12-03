@@ -18,7 +18,7 @@ import {getInstanceName, isObjectSchema, pickDeep} from 'sanitype'
 import {EllipsisVerticalIcon, TransferIcon, TrashIcon} from '@sanity/icons'
 import {startCase} from 'lodash'
 
-import {ObjectInput} from './ObjectInput'
+import {ObjectInput} from './objects/ObjectInput'
 import type {ObjectUnionFieldOptions, SanityObjectUnion} from 'sanitype'
 import type {MenuButtonProps} from '@sanity/ui'
 import type {InputProps, PatchEvent} from '../types'
