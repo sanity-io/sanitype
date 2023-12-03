@@ -7,6 +7,6 @@ import {defineNonEnumerableGetter} from './defineNonEnumerableGetter'
  */
 export function defineType<T>(target: T): T & {output: never} {
   return defineNonEnumerableGetter(target, 'output', () => {
-    throw new Error('This method is not defined runtime')
+    return undefined
   }) as T & {output: never}
 }
