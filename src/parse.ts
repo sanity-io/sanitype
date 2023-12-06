@@ -2,10 +2,10 @@ import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
   isDocumentSchema,
+  isExtendableObjectSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
-  isObjectSchema,
   isObjectUnionSchema,
   isOptionalSchema,
   isPrimitiveArraySchema,
@@ -23,9 +23,9 @@ import type {
   SanityBlock,
   SanityBoolean,
   SanityDocument,
+  SanityExtendableObject,
   SanityLiteral,
   SanityNumber,
-  SanityObject,
   SanityObjectArray,
   SanityObjectUnion,
   SanityOptional,
@@ -74,9 +74,6 @@ export function safeParse<T extends SanityType>(
   if (isReferenceSchema(schema)) {
     return parseReference(schema, input) as any
   }
-  if (isObjectSchema(schema)) {
-    return parseObject(schema, input) as any
-  }
   if (isDocumentSchema(schema)) {
     return parseDocument(schema, input) as any
   }
@@ -94,6 +91,9 @@ export function safeParse<T extends SanityType>(
   }
   if (isPrimitiveUnionSchema(schema)) {
     return parsePrimitiveUnion(schema, input) as any
+  }
+  if (isExtendableObjectSchema(schema)) {
+    return parseObject(schema, input) as any
   }
 
   return {
@@ -345,11 +345,11 @@ export function parseDocument<S extends SanityDocument>(
   return parseObject(schema, input)
 }
 
-export function parseObject<S extends SanityObject | SanityDocument>(
+export function parseObject<S extends SanityExtendableObject>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const keys: string[] = Object.keys(schema.shape)
+  const keys = Object.keys(schema.shape)
 
   if (!isPlainObject(input)) {
     return {
@@ -367,6 +367,7 @@ export function parseObject<S extends SanityObject | SanityDocument>(
   }
   const errors: ParseErrorDetails[] = []
   const value: PlainObject = {}
+
   keys.forEach(key => {
     const parsed = safeParse(schema.shape[key]!, input[key])
     if (parsed.status === 'fail') {
