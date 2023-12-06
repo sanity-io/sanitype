@@ -79,5 +79,4 @@ export const imageAsset = document({
 export const fileAsset = document({
   ...assetBase,
   _type: literal('sanity.fileAsset'),
-  metadata: imageMetadata,
 })
