@@ -1,7 +1,9 @@
 import {
+  SANITY_EXTENDABLE_OBJECT,
   SANITY_OBJECT_LIKE,
   type SanityBoolean,
   type SanityDocument,
+  type SanityExtendableObject,
   type SanityImage,
   type SanityLazy,
   type SanityLiteral,
@@ -37,6 +39,11 @@ export function isObjectLikeSchema(
   schema: SanityType,
 ): schema is SanityObjectLike {
   return SANITY_OBJECT_LIKE.includes(schema.typeName)
+}
+export function isExtendableObjectSchema(
+  schema: SanityType,
+): schema is SanityExtendableObject {
+  return SANITY_EXTENDABLE_OBJECT.includes(schema.typeName)
 }
 export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
   return schema.typeName === 'document'

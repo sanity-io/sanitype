@@ -144,6 +144,13 @@ export type SanityObjectLike =
   | SanityReference<any>
   | SanityDocument
 
+export const SANITY_EXTENDABLE_OBJECT = ['object', 'document', 'image']
+
+export type SanityExtendableObject = Extract<
+  SanityObjectLike,
+  SanityObject | SanityDocument | SanityImage
+>
+
 export type SanityTypedObject = SanityObjectType<{_type: string}>
 
 export type SanityArray<
