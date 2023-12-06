@@ -1,6 +1,9 @@
+import {parse as dateFnsParseDate, parseJSON} from 'date-fns'
 import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
+  isDateSchema,
+  isDateTimeSchema,
   isDocumentSchema,
   isExtendableObjectSchema,
   isLiteralSchema,
@@ -23,6 +26,8 @@ import type {
   SanityAsset,
   SanityBlock,
   SanityBoolean,
+  SanityDate,
+  SanityDateTime,
   SanityDocument,
   SanityExtendableObject,
   SanityLiteral,
@@ -37,7 +42,6 @@ import type {
   SanityType,
   SanityTypedObject,
 } from './defs'
-
 export type Path = Array<string | number | {_key: string}>
 
 export type ErrorCode =
@@ -71,6 +75,12 @@ export function safeParse<T extends SanityType>(
   }
   if (isBooleanSchema(schema)) {
     return parseBoolean(schema, input) as any
+  }
+  if (isDateTimeSchema(schema)) {
+    return parseDateTime(schema, input) as any
+  }
+  if (isDateSchema(schema)) {
+    return parseDate(schema, input) as any
   }
   if (isReferenceSchema(schema)) {
     return parseReference(schema, input) as any
@@ -187,6 +197,74 @@ export function parseBoolean(
           },
         ],
       }
+}
+export function parseDateTime(
+  schema: SanityDateTime,
+  input: unknown,
+): ParseResult<string> {
+  if (typeof input !== 'string') {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'INVALID_TYPE',
+          message: `Expected a string but got "${inspect(input)}"`,
+        },
+      ],
+    }
+  }
+  const parsed = parseJSON(input)
+  if (isNaN(parsed.valueOf())) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'INVALID_TYPE',
+          message: `Expected a valid JSON datetime string as input but got "${inspect(
+            input,
+          )}"`,
+        },
+      ],
+    }
+  }
+  return {status: 'ok', value: input}
+}
+
+const DATE_FORMAT = 'yyyy-mm-dd'
+export function parseDate(
+  schema: SanityDate,
+  input: unknown,
+): ParseResult<string> {
+  if (typeof input !== 'string') {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'INVALID_TYPE',
+          message: `Expected a string but got "${inspect(input)}"`,
+        },
+      ],
+    }
+  }
+  const parsed = dateFnsParseDate(input, DATE_FORMAT, new Date())
+  if (isNaN(parsed.valueOf())) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'INVALID_TYPE',
+          message: `Expected a date string on the format "${DATE_FORMAT.toUpperCase()}" but got "${inspect(
+            input,
+          )}"`,
+        },
+      ],
+    }
+  }
+  return {status: 'ok', value: input}
 }
 export function parseOptional<T extends SanityType>(
   schema: SanityOptional<T>,

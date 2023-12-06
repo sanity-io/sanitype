@@ -47,7 +47,9 @@
     "typecheck:watch": "tsc -b ./examples --watch",
     "vercel-build": "vite build --config examples/studio/vite.config.ts examples/studio"
   },
-  "dependencies": {},
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
   "devDependencies": {
     "@bjoerge/mutiny": "^0.5.1",
     "@sanity/client": "^6.9.1",

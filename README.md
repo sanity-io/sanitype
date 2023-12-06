@@ -215,7 +215,7 @@ const value = parse(schema, {
 - [x] recursive types
 - [x] image
 - [x] file
-- [ ] date + datetime
+- [x] date + datetime
 - [ ] other string derivatives: text, email, url (probably best solved by [_refinement_](https://zod.dev/?id=refine))
 - [ ] block array / portable text
 
