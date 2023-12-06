@@ -35,6 +35,7 @@ export type SanityAny = SanityType
 export interface SanityString extends SanityType<string> {
   typeName: 'string'
 }
+
 export interface SanityNumber extends SanityType<number> {
   typeName: 'number'
 }
@@ -42,8 +43,19 @@ export interface SanityNumber extends SanityType<number> {
 export interface SanityBoolean extends SanityType<boolean> {
   typeName: 'boolean'
 }
+export interface SanityDateTime extends SanityType<string> {
+  typeName: 'datetime'
+}
+export interface SanityDate extends SanityType<string> {
+  typeName: 'date'
+}
 
-export type SanityPrimitive = SanityString | SanityNumber | SanityBoolean
+export type SanityPrimitive =
+  | SanityString
+  | SanityNumber
+  | SanityBoolean
+  | SanityDate
+  | SanityDateTime
 
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,

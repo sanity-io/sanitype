@@ -4,6 +4,8 @@ import {
   SANITY_OBJECT_LIKE,
   type SanityAsset,
   type SanityBoolean,
+  type SanityDate,
+  type SanityDateTime,
   type SanityDocument,
   type SanityExtendableObject,
   type SanityFile,
@@ -83,6 +85,12 @@ export function isItemObjectArrayCompatible(
 
 export function isStringSchema(schema: SanityType): schema is SanityString {
   return schema.typeName === 'string'
+}
+export function isDateSchema(schema: SanityType): schema is SanityDate {
+  return schema.typeName === 'date'
+}
+export function isDateTimeSchema(schema: SanityType): schema is SanityDateTime {
+  return schema.typeName === 'datetime'
 }
 export function isNumberSchema(schema: SanityType): schema is SanityNumber {
   return schema.typeName === 'number'
