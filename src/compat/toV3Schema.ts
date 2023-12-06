@@ -3,12 +3,14 @@ import {
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
+  isObjectLikeSchema,
   isObjectSchema,
   isObjectUnionSchema,
   isPrimitiveArraySchema,
+  isReferenceSchema,
   isStringSchema,
 } from '../asserters'
-import type {SanityAny, SanityDocument, SanityObject} from '../defs'
+import type {SanityAny, SanityDocument, SanityObjectLike} from '../defs'
 
 type SanityV3SchemaType = any
 
@@ -62,7 +64,10 @@ function convertField<S extends SanityAny>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ) {
-  if (isObjectSchema(schema)) {
+  if (isReferenceSchema(schema)) {
+    throw new Error('References not implemented.')
+  }
+  if (isObjectLikeSchema(schema)) {
     return {...objectToV3Schema(schema, hoisted), name: fieldName}
   }
   if (
@@ -87,7 +92,7 @@ function convertField<S extends SanityAny>(
   return []
 }
 
-export function objectToV3Schema<S extends SanityObject>(
+export function objectToV3Schema<S extends SanityObjectLike>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ): SanityV3SchemaType {
@@ -97,7 +102,7 @@ export function objectToV3Schema<S extends SanityObject>(
     typeLiteral && isLiteralSchema(typeLiteral) ? typeLiteral.value : undefined
 
   return {
-    type: 'object',
+    type: schema.typeName,
     name: typeName,
     fields: Object.entries(schema.shape)
       .filter(([fieldName]) => !fieldName.startsWith('_'))

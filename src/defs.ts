@@ -136,6 +136,8 @@ export type OutputFromShape<T extends SanityObjectShape> = {
 
 export type AddArrayKey<T> = Combine<T, {_key: string}>
 
+export const SANITY_OBJECT_LIKE = ['object', 'document', 'image', 'reference']
+
 export type SanityObjectLike =
   | SanityObject
   | SanityBlock

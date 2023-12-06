@@ -1,21 +1,23 @@
-import type {
-  SanityBoolean,
-  SanityDocument,
-  SanityLazy,
-  SanityLiteral,
-  SanityNumber,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectLike,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityPrimitive,
-  SanityPrimitiveArray,
-  SanityPrimitiveUnion,
-  SanityReference,
-  SanityString,
-  SanityType,
-  SanityTypedObject,
+import {
+  SANITY_OBJECT_LIKE,
+  type SanityBoolean,
+  type SanityDocument,
+  type SanityImage,
+  type SanityLazy,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectLike,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityPrimitive,
+  type SanityPrimitiveArray,
+  type SanityPrimitiveUnion,
+  type SanityReference,
+  type SanityString,
+  type SanityType,
+  type SanityTypedObject,
 } from './defs'
 
 export function isObjectUnionSchema(
@@ -30,6 +32,11 @@ export function isPrimitiveUnionSchema(
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
   return schema.typeName === 'object'
+}
+export function isObjectLikeSchema(
+  schema: SanityType,
+): schema is SanityObjectLike {
+  return SANITY_OBJECT_LIKE.includes(schema.typeName)
 }
 export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
   return schema.typeName === 'document'
