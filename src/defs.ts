@@ -96,6 +96,16 @@ export interface SanityBlock<
   shape: Shape
 }
 
+export interface SanityImage<
+  Shape extends SanityObjectShape = SanityObjectShape,
+  // @verify!
+  Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
+    OutputFromShape<Shape>
+  >,
+> extends SanityType<Output> {
+  shape: Shape
+}
+
 export interface SanityLazy<T extends SanityType>
   extends SanityType<OutputOf<T>> {
   typeName: 'lazy'
@@ -143,6 +153,7 @@ export type SanityObjectLike =
   | SanityBlock
   | SanityReference<any>
   | SanityDocument
+  | SanityImage
 
 export const SANITY_EXTENDABLE_OBJECT = ['object', 'document', 'image']
 

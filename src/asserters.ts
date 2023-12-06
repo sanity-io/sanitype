@@ -45,6 +45,9 @@ export function isExtendableObjectSchema(
 ): schema is SanityExtendableObject {
   return SANITY_EXTENDABLE_OBJECT.includes(schema.typeName)
 }
+export function isImageSchema(schema: SanityType): schema is SanityImage {
+  return schema.typeName === 'image'
+}
 export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
   return schema.typeName === 'document'
 }
