@@ -38,8 +38,9 @@ export type BlockObjectShape<
     | SanityTypedObject
     | SanityObjectUnion<SanityTypedObject>
   )[],
+  TypeName extends SanityLiteral<string>,
 > = {
-  _type: SanityLiteral<'block'>
+  _type: TypeName
   style: SanityOptional<SanityPrimitiveUnion<Styles>>
   level: SanityOptional<SanityNumber>
   listType: SanityOptional<SanityPrimitiveUnion<Lists>>
@@ -70,7 +71,9 @@ export type BlockOptions<
     | SanityTypedObject
     | SanityObjectUnion<SanityTypedObject>
   )[],
+  TypeName extends SanityLiteral<string> = SanityLiteral<'block'>,
 > = {
+  _type?: TypeName
   styles: Styles[]
   lists: Lists[]
   decorators: Decorators[]
@@ -90,15 +93,30 @@ export function block<
     | SanityTypedObject
     | SanityObjectUnion<SanityTypedObject>
   )[],
+  TypeName extends SanityLiteral<string> = SanityLiteral<'block'>,
 >(
-  options: BlockOptions<Styles, Lists, InlineTypes, Decorators, Annotations>,
+  options: BlockOptions<
+    Styles,
+    Lists,
+    InlineTypes,
+    Decorators,
+    Annotations,
+    TypeName
+  >,
 ): SanityBlock<
-  BlockObjectShape<Styles, Lists, InlineTypes, Decorators, Annotations>
+  BlockObjectShape<
+    Styles,
+    Lists,
+    InlineTypes,
+    Decorators,
+    Annotations,
+    TypeName
+  >
 > {
   return defineType({
     typeName: 'block',
     shape: {
-      _type: literal('block'),
+      _type: options._type || literal('block'),
       style: optional(union([...options.styles])),
       level: optional(number()),
       listType: optional(union([...options.lists])),

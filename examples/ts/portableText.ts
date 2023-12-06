@@ -3,6 +3,7 @@ import {block} from '../../src/creators/block'
 import type {Infer} from 'sanitype'
 
 const someBlock = block({
+  _type: literal('someBlock'),
   styles: [literal('normal'), literal('h1'), literal('h2')],
   lists: [literal('bullet'), literal('number')],
   inlineTypes: [
@@ -23,4 +24,4 @@ const myPTArray = array(someBlock)
 type MyPTArray = Infer<typeof myPTArray>
 
 const myPTArrayValue = parse(myPTArray, [])
-myPTArrayValue[0].children
+myPTArrayValue[0]._type // 'someBlock'
