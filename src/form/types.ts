@@ -2,6 +2,7 @@ import type {
   Infer,
   SanityAny,
   SanityArray,
+  SanityBlock,
   SanityBoolean,
   SanityDocument,
   SanityLiteral,
@@ -34,7 +35,7 @@ export type ObjectFieldOptions<T extends SanityObject> = CommonFieldOptions & {
 }
 
 export type ObjectUnionFieldOptions<
-  T extends SanityTypedObject | SanityReference,
+  T extends SanityTypedObject | SanityReference | SanityBlock,
 > = CommonFieldOptions & {
   form: ObjectUnionFormDef<T>
 }
@@ -180,14 +181,15 @@ export type UnionTypeOptions<T extends SanityType> = T extends SanityObject
 export type PrimitiveUnionTypeOptions<T extends SanityLiteral> =
   T extends SanityLiteral ? FieldOptions<T> : unknown
 
-export type ObjectUnionFormDef<T extends SanityTypedObject | SanityReference> =
-  {
-    types: {
-      [Name in GetType<T['shape']['_type']>]: UnionTypeOptions<
-        FindTypeByName<T, Name>
-      >
-    }
+export type ObjectUnionFormDef<
+  T extends SanityTypedObject | SanityReference | SanityBlock,
+> = {
+  types: {
+    [Name in GetType<T['shape']['_type']>]: UnionTypeOptions<
+      FindTypeByName<T, Name>
+    >
   }
+}
 
 export type PrimitiveUnionFormDef<T extends SanityPrimitive | SanityLiteral> =
   T extends SanityLiteral

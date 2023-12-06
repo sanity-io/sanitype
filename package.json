@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "build": "run-s clean pkg:build pkg:check",
-    "check": "npm-run-all --serial clean --parallel typecheck typecheck:examples lint test test:types",
+    "check": "npm-run-all --serial clean pkg:build --parallel typecheck typecheck:examples lint test test:types pkg:check",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch test:types:watch",

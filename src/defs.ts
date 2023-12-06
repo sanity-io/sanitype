@@ -51,9 +51,10 @@ export interface SanityLiteral<
 }
 
 export interface SanityObjectUnion<
-  Def extends SanityTypedObject | SanityReference =
+  Def extends SanityTypedObject | SanityReference | SanityBlock =
     | SanityTypedObject
-    | SanityReference,
+    | SanityReference
+    | SanityBlock,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'union'
@@ -68,6 +69,10 @@ export interface SanityPrimitiveUnion<
 }
 
 export type SanityObjectShape = {[key: string]: SanityAny}
+export type SanityNamedObjectShape = {
+  _type: SanityLiteral
+  [key: string]: SanityAny
+}
 
 export interface SanityObject<
   Shape extends SanityObjectShape = SanityObjectShape,
@@ -77,6 +82,17 @@ export interface SanityObject<
   >,
 > extends SanityType<Output> {
   typeName: 'object'
+  shape: Shape
+}
+
+export interface SanityBlock<
+  Shape extends SanityNamedObjectShape = SanityNamedObjectShape,
+  // @verify!
+  Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
+    OutputFromShape<Shape>
+  >,
+> extends SanityType<Output> {
+  typeName: 'block'
   shape: Shape
 }
 
@@ -122,6 +138,7 @@ export type AddArrayKey<T> = Combine<T, {_key: string}>
 
 export type SanityObjectLike =
   | SanityObject
+  | SanityBlock
   | SanityReference<any>
   | SanityDocument
 

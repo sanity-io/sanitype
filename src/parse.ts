@@ -20,6 +20,7 @@ import {inspect} from './helpers/inspect'
 import type {
   Infer,
   OutputOf,
+  SanityBlock,
   SanityBoolean,
   SanityDocument,
   SanityLiteral,
@@ -261,9 +262,20 @@ export function parsePrimitiveUnion<S extends SanityPrimitiveUnion>(
 function findUnionSchemaForType(
   unionSchema: SanityObjectUnion,
   typeName: string,
-): SanityTypedObject | SanityObjectUnion | SanityReference | undefined {
+):
+  | SanityTypedObject
+  | SanityObjectUnion
+  | SanityReference
+  | SanityBlock
+  | undefined {
   return unionSchema.union.find(
-    (objectDef: SanityTypedObject | SanityObjectUnion | SanityReference) => {
+    (
+      objectDef:
+        | SanityTypedObject
+        | SanityObjectUnion
+        | SanityReference
+        | SanityBlock,
+    ) => {
       if (isObjectUnionSchema(objectDef)) {
         return findUnionSchemaForType(objectDef, typeName)
       }
