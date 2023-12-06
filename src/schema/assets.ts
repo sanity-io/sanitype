@@ -1,5 +1,12 @@
-import {boolean, literal, number, object, optional, string} from '../creators'
-import {extend} from '../utils/extend'
+import {
+  boolean,
+  document,
+  literal,
+  number,
+  object,
+  optional,
+  string,
+} from '../creators'
 
 export const assetSourceSpec = object({
   id: string(),
@@ -7,7 +14,7 @@ export const assetSourceSpec = object({
   url: optional(string()),
 })
 
-export const asset = object({
+const assetBase = {
   url: string(),
   path: string(),
   assetId: string(),
@@ -25,7 +32,7 @@ export const asset = object({
   // External asset source extensions
   creditLine: optional(string()),
   source: optional(assetSourceSpec),
-})
+}
 
 export const imageDimensions = object({
   _type: literal('sanity.imageDimensions'),
@@ -63,12 +70,14 @@ export const imageMetadata = object({
   isOpaque: boolean(),
 })
 
-export const imageAsset = extend(asset, {
+export const imageAsset = document({
+  ...assetBase,
   _type: literal('sanity.imageAsset'),
   metadata: imageMetadata,
 })
 
-export const fileAsset = extend(asset, {
+export const fileAsset = document({
+  ...assetBase,
   _type: literal('sanity.fileAsset'),
   metadata: imageMetadata,
 })
