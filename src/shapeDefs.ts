@@ -1,4 +1,6 @@
+import {reference} from './creators'
 import {defineType as dt} from './helpers/defineType'
+import {imageAsset} from './schema/assets'
 import type {
   Conceal,
   Infer,
@@ -7,6 +9,7 @@ import type {
   SanityLiteral,
   SanityObject,
   SanityOptional,
+  SanityReference,
   SanityString,
   SanityType,
   UndefinedOptional,
@@ -63,6 +66,24 @@ export const referenceBase: SanityObject<SanityReferenceShape> = dt({
 })
 
 export type ReferenceBase = Infer<typeof referenceBase>
+
+export type SanityImageShape = {
+  _type: SanityLiteral<'image'>
+  asset: SanityReference<typeof imageAsset>
+}
+
+const IMAGE_LITERAL: SanityLiteral<'image'> = dt({
+  typeName: 'literal',
+  value: 'image',
+})
+
+export const imageBase: SanityObject<SanityImageShape> = dt({
+  typeName: 'object',
+  shape: {
+    _type: IMAGE_LITERAL,
+    asset: reference(imageAsset),
+  },
+})
 
 export type SanityArrayValue<ElementType> = Array<
   ElementType extends object

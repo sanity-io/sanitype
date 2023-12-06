@@ -1,6 +1,7 @@
 export * from './array'
 export * from './boolean'
 export * from './document'
+export * from './image'
 export * from './lazy'
 export * from './literal'
 export * from './number'
