@@ -20,7 +20,11 @@ export type {
   FieldErrorCode,
   ExtendsNever,
   Format,
+  ElementType,
 } from './helpers/utilTypes'
+
+export type {RequiredShape} from './utils/shallowRequired'
+export type {SanityRequired} from './utils/required'
 
 export * from './utils/omit'
 export * from './utils/pick'

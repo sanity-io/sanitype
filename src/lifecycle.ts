@@ -6,7 +6,7 @@ import type {ArrayElement} from '@bjoerge/mutiny'
 import type {SanityDocument} from './defs'
 import type {RequiredShape} from './utils/shallowRequired'
 
-const STORED_KEYS = [
+export const STORED_KEYS = [
   '_type',
   '_id',
   '_createdAt',
