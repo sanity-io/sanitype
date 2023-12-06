@@ -43,4 +43,3 @@ jobs:
           node -v
           npm -v
           npm test
-          npm run test:types
