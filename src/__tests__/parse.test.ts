@@ -206,14 +206,14 @@ describe('object array parsing', () => {
         "errors": [
           {
             "code": "INVALID_OBJECT_UNION",
-            "message": "Cannot parse input as union type \\"foo\\"",
+            "message": "Cannot parse input as union type "foo"",
             "path": [
               "key213s",
             ],
           },
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got \\"1\\"",
+            "message": "Expected a string but got "1"",
             "path": [
               "key213s",
               "nested",

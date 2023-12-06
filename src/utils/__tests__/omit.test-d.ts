@@ -19,8 +19,8 @@ test('omit from document', () => {
     }>
   >()
 
-  // @ts-expect-error foo should not be part of the new type
   expectTypeOf<OmitShape<Doc, ['foo']>>().toEqualTypeOf<
+    // @ts-expect-error foo should not be part of the new type
     SanityDocument<{
       foo: SanityString
       bar: SanityNumber

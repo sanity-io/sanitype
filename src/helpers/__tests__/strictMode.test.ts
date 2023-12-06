@@ -72,7 +72,7 @@ test('invalid strict mode types', () => {
       ),
     ),
   ).toThrowErrorMatchingInlineSnapshot(
-    '"GraphQL Strict Mode error: Duplicate named types found in schema: Found object with _type: \\"bar\\" at bar, bar -> inner"',
+    `[Error: GraphQL Strict Mode error: Duplicate named types found in schema: Found object with _type: "bar" at bar, bar -> inner]`,
   )
   expect(() =>
     strictMode(
@@ -94,6 +94,6 @@ test('invalid strict mode types', () => {
       }),
     ),
   ).toThrowErrorMatchingInlineSnapshot(
-    '"GraphQL Strict Mode error: Duplicate named types found in schema: Found object with _type: \\"bar\\" at (root), bar"',
+    `[Error: GraphQL Strict Mode error: Duplicate named types found in schema: Found object with _type: "bar" at (root), bar]`,
   )
 })

@@ -49,7 +49,7 @@ describe('typed object union', () => {
     expect(parse(u, {_type: 'e'})).toEqual({_type: 'e'})
 
     expect(() => parse(u, {_type: 'x'})).toThrowErrorMatchingInlineSnapshot(
-      '"Invalid input at \\"<root>\\": Type \\"x\\" not found among valid union types"',
+      `[Error: Invalid input at "<root>": Type "x" not found among valid union types]`,
     )
   })
   test('failed parsing when invalid literal value for discriminator', () => {
@@ -71,7 +71,7 @@ describe('typed object union', () => {
         "errors": [
           {
             "code": "INVALID_OBJECT_UNION",
-            "message": "Input must be an object with a \\"_type\\"-property",
+            "message": "Input must be an object with a "_type"-property",
             "path": [],
           },
         ],
@@ -99,7 +99,7 @@ describe('typed object union', () => {
           "errors": [
             {
               "code": "INVALID_OBJECT_UNION",
-              "message": "Input must be an object with a \\"_type\\"-property",
+              "message": "Input must be an object with a "_type"-property",
               "path": [],
             },
           ],

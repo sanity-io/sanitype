@@ -8,7 +8,7 @@ class CustomClass {
 
 test('default formatting', () => {
   expect(inspect(undefined)).toMatchInlineSnapshot('undefined')
-  expect(inspect('foo')).toMatchInlineSnapshot('"\\"foo\\""')
+  expect(inspect('foo')).toMatchInlineSnapshot('""foo""')
   expect(inspect([])).toMatchInlineSnapshot('"[]"')
 
   expect(inspect([1, 2, 3])).toMatchInlineSnapshot('"[1, 2, 3]"')
@@ -28,7 +28,7 @@ test('default formatting', () => {
   expect(inspect(new ArrayBuffer(10))).toMatchInlineSnapshot('"ArrayBuffer{}"')
 
   expect(inspect(BigInt('9007199254740991'))).toMatchInlineSnapshot(
-    '"BigInt(\\"9007199254740991\\")"',
+    '"BigInt("9007199254740991")"',
   )
   expect(inspect(new RegExp(/ok/))).toMatchInlineSnapshot('"RegExp{}"')
   expect(inspect(new URL('http://example.com'))).toMatchInlineSnapshot(
@@ -53,19 +53,17 @@ test('default formatting', () => {
 
   expect(inspect(CustomClass)).toMatchInlineSnapshot('"class CustomClass {…"')
   expect(inspect(new CustomClass('hello'))).toMatchInlineSnapshot(
-    '"CustomClass{foo: \\"bar\\", greeting: \\"hello\\"}"',
+    '"CustomClass{foo: "bar", greeting: "hello"}"',
   )
 
   expect(inspect({})).toMatchInlineSnapshot('"{}"')
   expect(inspect({foo: 'bar'})).toMatchInlineSnapshot(`
-    "{foo: \\"bar\\"}"
+    "{foo: "bar"}"
   `)
 
   expect(
     inspect({foo: 'bar', baz: {a: 'a', b: 'b', c: 'c', d: 'd'}}),
-  ).toMatchInlineSnapshot(
-    '"{baz: {a: \\"a\\", b: \\"b\\", …(+2)}, foo: \\"bar\\"}"',
-  )
+  ).toMatchInlineSnapshot('"{baz: {a: "a", b: "b", …(+2)}, foo: "bar"}"')
 
   expect(
     inspect(
@@ -76,5 +74,5 @@ test('default formatting', () => {
         ['d', 'd'],
       ]),
     ),
-  ).toMatchInlineSnapshot('"Map{a: \\"a\\", b: \\"b\\", …(+2)}"')
+  ).toMatchInlineSnapshot('"Map{a: "a", b: "b", …(+2)}"')
 })

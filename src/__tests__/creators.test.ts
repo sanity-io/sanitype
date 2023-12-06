@@ -72,13 +72,13 @@ test('Restrictions', () => {
       union([object({_type: literal('test'), foo: string()}), string()]),
     )
   }).toThrowErrorMatchingInlineSnapshot(
-    '"Union types must either be of primitive values or typed objects"',
+    `[Error: Union types must either be of primitive values or typed objects]`,
   )
 
   expect(() =>
     // @ts-expect-error mixed array (containing both objects and primitives) is not supported
     objectArray(union([object({foo: string()}), string()])),
   ).toThrowErrorMatchingInlineSnapshot(
-    '"Union types must either be of primitive values or typed objects"',
+    `[Error: Union types must either be of primitive values or typed objects]`,
   )
 })

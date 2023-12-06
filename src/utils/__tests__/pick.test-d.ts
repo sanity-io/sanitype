@@ -20,8 +20,8 @@ test('pick from document', () => {
     }>
   >()
 
-  // @ts-expect-error bar should not be part of the new type
   expectTypeOf<PickShape<Doc, ['foo']>>().toEqualTypeOf<
+    // @ts-expect-error bar should not be part of the new type
     SanityDocument<{
       foo: SanityString
       bar: SanityNumber
