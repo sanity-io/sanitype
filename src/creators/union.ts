@@ -8,6 +8,7 @@ import {
   isTypedObjectSchema,
 } from '../asserters'
 import type {
+  SanityBlock,
   SanityLiteral,
   SanityObjectUnion,
   SanityPrimitive,
@@ -17,7 +18,11 @@ import type {
 } from '../defs'
 
 export type FlattenUnionTypes<
-  T extends SanityTypedObject | SanityReference | SanityObjectUnion<any>,
+  T extends
+    | SanityTypedObject
+    | SanityReference
+    | SanityObjectUnion<any>
+    | SanityBlock,
 > = T extends SanityObjectUnion<infer UnionTypes>
   ? UnionTypes extends SanityObjectUnion<any>
     ? FlattenUnionTypes<UnionTypes>
@@ -36,6 +41,7 @@ export function union<
   UnionTypes extends
     | SanityTypedObject
     | SanityReference
+    | SanityBlock
     | SanityObjectUnion<any>,
 >(unionTypes: UnionTypes[]): SanityObjectUnion<FlattenUnionTypes<UnionTypes>>
 export function union<
@@ -47,12 +53,16 @@ export function union<
   unionTypes: UnionTypes[],
 ): SanityPrimitiveUnion<FlattenPrimitiveUnionTypes<UnionTypes>>
 export function union<
-  UnionTypes extends SanityTypedObject | SanityReference | SanityPrimitive,
+  UnionTypes extends
+    | SanityTypedObject
+    | SanityReference
+    | SanityPrimitive
+    | SanityBlock,
 >(
   unionTypes: UnionTypes[],
 ): UnionTypes extends SanityPrimitive
   ? SanityPrimitiveUnion<UnionTypes>
-  : UnionTypes extends SanityTypedObject
+  : UnionTypes extends SanityTypedObject | SanityReference | SanityBlock
     ? SanityObjectUnion<UnionTypes>
     : never {
   if (
