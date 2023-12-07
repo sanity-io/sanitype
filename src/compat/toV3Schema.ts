@@ -1,5 +1,6 @@
 import {
   isBooleanSchema,
+  isImageSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
@@ -10,7 +11,12 @@ import {
   isReferenceSchema,
   isStringSchema,
 } from '../asserters'
-import type {SanityAny, SanityDocument, SanityObjectLike} from '../defs'
+import type {
+  SanityAny,
+  SanityDocument,
+  SanityImage,
+  SanityObjectLike,
+} from '../defs'
 
 type SanityV3SchemaType = any
 
@@ -45,6 +51,9 @@ function convertItem<S extends SanityAny>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ) {
+  if (isImageSchema(schema)) {
+    return assetToV3Schema(schema, hoisted)
+  }
   if (isObjectSchema(schema)) {
     return objectToV3Schema(schema, hoisted)
   }
@@ -66,6 +75,9 @@ function convertField<S extends SanityAny>(
 ) {
   if (isReferenceSchema(schema)) {
     throw new Error('References not implemented.')
+  }
+  if (isImageSchema(schema)) {
+    return {...assetToV3Schema(schema, hoisted), name: fieldName}
   }
   if (isObjectLikeSchema(schema)) {
     return {...objectToV3Schema(schema, hoisted), name: fieldName}
@@ -108,4 +120,23 @@ export function objectToV3Schema<S extends SanityObjectLike>(
       .filter(([fieldName]) => !fieldName.startsWith('_'))
       .flatMap(([fieldName, field]) => convertField(fieldName, field, hoisted)),
   }
+}
+
+export function assetToV3Schema<S extends SanityImage>(
+  schema: S,
+  hoisted: Map<string, SanityV3SchemaType[]>,
+): SanityV3SchemaType {
+  const systemFieldNames = ['asset']
+
+  return objectToV3Schema(
+    {
+      ...schema,
+      shape: Object.fromEntries(
+        Object.entries(schema.shape).filter(
+          ([fieldName]) => !systemFieldNames.includes(fieldName),
+        ),
+      ),
+    },
+    hoisted,
+  )
 }
