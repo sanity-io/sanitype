@@ -1,4 +1,5 @@
 import {
+  isAssetSchema,
   isBooleanSchema,
   isImageSchema,
   isLiteralSchema,
@@ -12,8 +13,8 @@ import {
 } from '../asserters'
 import type {
   SanityAny,
+  SanityAsset,
   SanityDocument,
-  SanityImage,
   SanityObjectLike,
 } from '../defs'
 
@@ -78,7 +79,7 @@ function convertField<S extends SanityAny>(
   if (isReferenceSchema(schema)) {
     throw new Error('References not implemented.')
   }
-  if (isImageSchema(schema)) {
+  if (isAssetSchema(schema)) {
     return {...assetToV3Schema(schema, hoisted), name: fieldName}
   }
   if (
@@ -121,7 +122,7 @@ export function objectToV3Schema<S extends SanityObjectLike>(
   }
 }
 
-export function assetToV3Schema<S extends SanityImage>(
+export function assetToV3Schema<S extends SanityAsset>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ): SanityV3SchemaType {

@@ -3,6 +3,7 @@ import type {
   ReferenceBase,
   SanityDocumentShape,
   SanityDocumentValue,
+  SanityFileShape,
   SanityImageShape,
   SanityReferenceShape,
 } from './shapeDefs'
@@ -107,6 +108,16 @@ export interface SanityImage<
   shape: Shape
 }
 
+export interface SanityFile<
+  Shape extends SanityFileShape = SanityFileShape,
+  // @verify!
+  Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
+    OutputFromShape<Shape>
+  >,
+> extends SanityType<Output> {
+  shape: Shape
+}
+
 export interface SanityLazy<T extends SanityType>
   extends SanityType<OutputOf<T>> {
   typeName: 'lazy'
@@ -147,20 +158,33 @@ export type OutputFromShape<T extends SanityObjectShape> = {
 
 export type AddArrayKey<T> = Combine<T, {_key: string}>
 
-export const SANITY_OBJECT_LIKE = ['object', 'document', 'image', 'reference']
+export const SANITY_ASSET = ['image', 'file'] as const
+
+export type SanityAsset = SanityImage | SanityFile
+
+export const SANITY_OBJECT_LIKE = [
+  'object',
+  'document',
+  'reference',
+  ...SANITY_ASSET,
+] as const
 
 export type SanityObjectLike =
   | SanityObject
   | SanityBlock
   | SanityReference<any>
   | SanityDocument
-  | SanityImage
+  | SanityAsset
 
-export const SANITY_EXTENDABLE_OBJECT = ['object', 'document', 'image']
+export const SANITY_EXTENDABLE_OBJECT = [
+  'object',
+  'document',
+  ...SANITY_ASSET,
+] as const
 
 export type SanityExtendableObject = Extract<
   SanityObjectLike,
-  SanityObject | SanityDocument | SanityImage
+  SanityObject | SanityDocument | SanityAsset
 >
 
 export type SanityTypedObject = SanityObjectType<{_type: string}>
