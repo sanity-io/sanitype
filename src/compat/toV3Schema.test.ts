@@ -3,6 +3,8 @@ import {
   array,
   boolean,
   document,
+  file,
+  image,
   literal,
   object,
   string,
@@ -20,7 +22,12 @@ export const human = document({
     city: string(),
     country: string(),
   }),
-
+  profilePicture: image({
+    alt: string(),
+  }),
+  cv: file({
+    description: string(),
+  }),
   pets: array(
     union([
       extend(pet, {
@@ -53,6 +60,26 @@ test('toV3Schema', () => {
             {name: 'street', type: 'string'},
             {name: 'city', type: 'string'},
             {name: 'country', type: 'string'},
+          ],
+        },
+        {
+          name: 'profilePicture',
+          type: 'image',
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+            },
+          ],
+        },
+        {
+          name: 'cv',
+          type: 'file',
+          fields: [
+            {
+              name: 'description',
+              type: 'string',
+            },
           ],
         },
         {
