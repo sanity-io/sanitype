@@ -4,6 +4,8 @@ import {parse, safeParse} from '../parse'
 import {
   array,
   document,
+  file,
+  image,
   lazy,
   literal,
   object,
@@ -242,6 +244,51 @@ describe('reference parsing', () => {
     expect(parsed).toEqual({
       _ref: 'some-person',
       _type: 'reference',
+    })
+  })
+})
+
+describe('asset parsing', () => {
+  test('parsing of image', () => {
+    const imageSchema = image({caption: string()})
+
+    const parsed = parse(imageSchema, {
+      _type: 'image',
+      caption: 'A nice pic of my favourite lizard, Leon.',
+      asset: {
+        _type: 'reference',
+        _ref: 'xxx',
+      },
+    })
+
+    expect(parsed).toEqual({
+      _type: 'image',
+      caption: 'A nice pic of my favourite lizard, Leon.',
+      asset: {
+        _type: 'reference',
+        _ref: 'xxx',
+      },
+    })
+  })
+  test('parsing of file', () => {
+    const fileSchema = file({caption: string()})
+
+    const parsed = parse(fileSchema, {
+      _type: 'file',
+      asset: {
+        _type: 'reference',
+        _ref: '123',
+      },
+      caption: 'An absolutely tip-top file for you.',
+    })
+
+    expect(parsed).toEqual({
+      _type: 'file',
+      asset: {
+        _type: 'reference',
+        _ref: '123',
+      },
+      caption: 'An absolutely tip-top file for you.',
     })
   })
 })
