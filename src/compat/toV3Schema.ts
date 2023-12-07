@@ -4,7 +4,6 @@ import {
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
-  isObjectLikeSchema,
   isObjectSchema,
   isObjectUnionSchema,
   isPrimitiveArraySchema,
@@ -73,14 +72,14 @@ function convertField<S extends SanityAny>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ) {
+  if (isObjectSchema(schema)) {
+    return {...objectToV3Schema(schema, hoisted), name: fieldName}
+  }
   if (isReferenceSchema(schema)) {
     throw new Error('References not implemented.')
   }
   if (isImageSchema(schema)) {
     return {...assetToV3Schema(schema, hoisted), name: fieldName}
-  }
-  if (isObjectLikeSchema(schema)) {
-    return {...objectToV3Schema(schema, hoisted), name: fieldName}
   }
   if (
     isStringSchema(schema) ||
