@@ -1,6 +1,5 @@
 import {defineType} from '../helpers/defineType'
-import {documentBase} from '../shapeDefs'
-import type {SanityDocumentShape} from '../shapeDefs'
+import {type SanityDocumentShape, documentBase} from '../shapeDefs'
 import type {Format} from '../helpers/utilTypes'
 import type {SafeObject} from './object'
 import type {
