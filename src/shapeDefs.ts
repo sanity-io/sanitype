@@ -73,6 +73,11 @@ export type SanityImageShape = {
   asset: SanityReference<SanityDocument<ImageAssetShape>>
 }
 
+export type SanityFileShape = {
+  _type: SanityLiteral<'file'>
+  asset: SanityReference<SanityDocument<FileAssetShape>>
+}
+
 export type AssetSourceSpecShape = {
   id: SanityString
   name: SanityString
@@ -266,6 +271,23 @@ export const imageBase: SanityObject<SanityImageShape> = dt({
     asset: dt({
       typeName: 'reference',
       referenceType: IMAGE_ASSET,
+      shape: referenceBase.shape,
+    }),
+  },
+})
+
+const FILE_LITERAL: SanityLiteral<'file'> = dt({
+  typeName: 'literal',
+  value: 'file',
+})
+
+export const fileBase: SanityObject<SanityFileShape> = dt({
+  typeName: 'object',
+  shape: {
+    _type: FILE_LITERAL,
+    asset: dt({
+      typeName: 'reference',
+      referenceType: FILE_ASSET,
       shape: referenceBase.shape,
     }),
   },

@@ -1,9 +1,12 @@
 import {
+  SANITY_ASSET,
   SANITY_EXTENDABLE_OBJECT,
   SANITY_OBJECT_LIKE,
+  type SanityAsset,
   type SanityBoolean,
   type SanityDocument,
   type SanityExtendableObject,
+  type SanityFile,
   type SanityImage,
   type SanityLazy,
   type SanityLiteral,
@@ -38,15 +41,21 @@ export function isObjectSchema(schema: SanityType): schema is SanityObject {
 export function isObjectLikeSchema(
   schema: SanityType,
 ): schema is SanityObjectLike {
-  return SANITY_OBJECT_LIKE.includes(schema.typeName)
+  return (SANITY_OBJECT_LIKE as any).includes(schema.typeName)
 }
 export function isExtendableObjectSchema(
   schema: SanityType,
 ): schema is SanityExtendableObject {
-  return SANITY_EXTENDABLE_OBJECT.includes(schema.typeName)
+  return (SANITY_EXTENDABLE_OBJECT as any).includes(schema.typeName)
 }
 export function isImageSchema(schema: SanityType): schema is SanityImage {
   return schema.typeName === 'image'
+}
+export function isFileSchema(schema: SanityType): schema is SanityFile {
+  return schema.typeName === 'file'
+}
+export function isAssetSchema(schema: SanityType): schema is SanityAsset {
+  return (SANITY_ASSET as any).includes(schema.typeName)
 }
 export function isDocumentSchema(schema: SanityType): schema is SanityDocument {
   return schema.typeName === 'document'
