@@ -3,6 +3,7 @@ import type {
   ReferenceBase,
   SanityDocumentShape,
   SanityDocumentValue,
+  SanityImageShape,
   SanityReferenceShape,
 } from './shapeDefs'
 
@@ -97,7 +98,7 @@ export interface SanityBlock<
 }
 
 export interface SanityImage<
-  Shape extends SanityObjectShape = SanityObjectShape,
+  Shape extends SanityImageShape = SanityImageShape,
   // @verify!
   Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
     OutputFromShape<Shape>

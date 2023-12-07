@@ -8,6 +8,7 @@ import type {
   SanityBoolean,
   SanityLiteral,
   SanityObject,
+  SanityObjectShape,
   SanityOptional,
   SanityReference,
   SanityString,
@@ -34,17 +35,6 @@ export type SanityDocumentShape = {
   _rev: SanityOptional<SanityString>
 }
 
-export const documentBase: SanityObject<SanityDocumentShape> = dt({
-  typeName: 'object',
-  shape: {
-    _type: STRING,
-    _id: OPTIONAL_STRING,
-    _createdAt: OPTIONAL_STRING,
-    _updatedAt: OPTIONAL_STRING,
-    _rev: OPTIONAL_STRING,
-  },
-})
-
 export type SanityReferenceShape = {
   _type: SanityString | SanityLiteral<'reference'>
   _ref: SanityString
@@ -67,7 +57,7 @@ export const referenceBase: SanityObject<SanityReferenceShape> = dt({
 
 export type ReferenceBase = Infer<typeof referenceBase>
 
-export type SanityImageShape = {
+export type SanityImageShape = SanityObjectShape & {
   _type: SanityLiteral<'image'>
   asset: SanityReference<typeof imageAsset>
 }
