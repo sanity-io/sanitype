@@ -8,7 +8,6 @@ import type {
   SanityLiteral,
   SanityNumber,
   SanityObject,
-  SanityObjectShape,
   SanityOptional,
   SanityReference,
   SanityString,
