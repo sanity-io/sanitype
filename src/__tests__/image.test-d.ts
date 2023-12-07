@@ -10,7 +10,7 @@ describe('image type', () => {
     type ImageValue = {
       _type: 'image'
       asset: {
-        _type: 'reference'
+        _type: string | 'reference'
         _ref: string
         _weak?: boolean
         [INTERNAL_REF_TYPE_SCHEMA]: SanityDocument<ImageAssetShape>
@@ -27,7 +27,7 @@ describe('image type', () => {
     type ImageValue = {
       _type: 'image'
       asset: {
-        _type: 'reference'
+        _type: string | 'reference'
         _ref: string
         _weak?: boolean
         [INTERNAL_REF_TYPE_SCHEMA]: SanityDocument<ImageAssetShape>
