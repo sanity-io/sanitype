@@ -349,7 +349,12 @@ export function parseObject<S extends SanityExtendableObject>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
-  const keys = Object.keys(schema.shape)
+  // This isn't strictly correct: there may be additional keys present, however,
+  // other approaches break type inference for objects that have both known
+  // and unknown keys (such as assets).
+  //
+  // https://github.com/microsoft/TypeScript/issues/52931
+  const keys = Object.keys(schema.shape) as (keyof typeof schema.shape)[]
 
   if (!isPlainObject(input)) {
     return {

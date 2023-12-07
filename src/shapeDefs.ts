@@ -69,9 +69,9 @@ export const referenceBase: SanityObject<SanityReferenceShape> = dt({
 
 export type ReferenceBase = Infer<typeof referenceBase>
 
-export type SanityImageShape = SanityObjectShape & {
+export type SanityImageShape = {
   _type: SanityLiteral<'image'>
-  asset: SanityReference<typeof IMAGE_ASSET>
+  asset: SanityReference<SanityDocument<ImageAssetShape>>
 }
 
 export type AssetSourceSpecShape = {
