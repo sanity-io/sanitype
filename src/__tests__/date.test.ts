@@ -26,6 +26,30 @@ describe('date type', () => {
         "value": "2023-12-06",
       }
     `)
+    expect(safeParse(dateSchema, '2023-12-06 ')).toMatchInlineSnapshot(`
+      {
+        "errors": [
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a date string on the format "YYYY-MM-DD" but got ""2023-12-06 """,
+            "path": [],
+          },
+        ],
+        "status": "fail",
+      }
+    `)
+    expect(safeParse(dateSchema, '2023-1-6')).toMatchInlineSnapshot(`
+      {
+        "errors": [
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a date string on the format "YYYY-MM-DD" but got ""2023-1-6""",
+            "path": [],
+          },
+        ],
+        "status": "fail",
+      }
+    `)
     expect(safeParse(dateSchema, 'xyz')).toMatchInlineSnapshot(`
       {
         "errors": [
@@ -43,7 +67,7 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "undefined"",
+            "message": "Expected a date string on the format "yyyy-mm-dd" but got "undefined"",
             "path": [],
           },
         ],
@@ -55,7 +79,7 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "{}"",
+            "message": "Expected a date string on the format "yyyy-mm-dd" but got "{}"",
             "path": [],
           },
         ],

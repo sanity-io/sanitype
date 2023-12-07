@@ -1,4 +1,3 @@
-import {parse as dateFnsParseDate, parseJSON} from 'date-fns'
 import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
 import {
   isBooleanSchema,
@@ -20,6 +19,10 @@ import {defineNonEnumerableGetter} from './helpers/defineNonEnumerableGetter'
 import {referenceBase} from './shapeDefs'
 import {getLazySchema} from './helpers/getLazySchema'
 import {inspect} from './helpers/inspect'
+import {
+  isStrictlyDateTime,
+  isStrictlyFormatted,
+} from './helpers/strictDateParse'
 import type {
   Infer,
   OutputOf,
@@ -198,6 +201,9 @@ export function parseBoolean(
         ],
       }
 }
+
+// see https://es5.github.io/#x15.9.1.15
+const ISO_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.sssZ'
 export function parseDateTime(
   schema: SanityDateTime,
   input: unknown,
@@ -214,15 +220,14 @@ export function parseDateTime(
       ],
     }
   }
-  const parsed = parseJSON(input)
-  if (isNaN(parsed.valueOf())) {
+  if (!isStrictlyDateTime(input)) {
     return {
       status: 'fail',
       errors: [
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a valid JSON datetime string as input but got "${inspect(
+          message: `Expected a datetime string on the format "${ISO_DATETIME_FORMAT}" but got "${inspect(
             input,
           )}"`,
         },
@@ -244,13 +249,15 @@ export function parseDate(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a string but got "${inspect(input)}"`,
+          message: `Expected a date string on the format "${DATE_FORMAT}" but got "${inspect(
+            input,
+          )}"`,
         },
       ],
     }
   }
-  const parsed = dateFnsParseDate(input, DATE_FORMAT, new Date())
-  if (isNaN(parsed.valueOf())) {
+
+  if (!isStrictlyFormatted(input, DATE_FORMAT)) {
     return {
       status: 'fail',
       errors: [

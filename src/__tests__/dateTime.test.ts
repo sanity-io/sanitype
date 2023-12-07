@@ -21,7 +21,20 @@ describe('datetime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a valid JSON datetime string as input but got ""2023-12-06""",
+            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06""",
+            "path": [],
+          },
+        ],
+        "status": "fail",
+      }
+    `)
+    expect(safeParse(dateTimeSchema, '2023-12-06T19:01:07  '))
+      .toMatchInlineSnapshot(`
+      {
+        "errors": [
+          {
+            "code": "INVALID_TYPE",
+            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06T19:01:07  """,
             "path": [],
           },
         ],
@@ -33,7 +46,7 @@ describe('datetime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a valid JSON datetime string as input but got ""xyz""",
+            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""xyz""",
             "path": [],
           },
         ],
