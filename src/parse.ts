@@ -74,6 +74,9 @@ export function safeParse<T extends SanityType>(
   if (isReferenceSchema(schema)) {
     return parseReference(schema, input) as any
   }
+  if (isExtendableObjectSchema(schema)) {
+    return parseObject(schema, input) as any
+  }
   if (isDocumentSchema(schema)) {
     return parseDocument(schema, input) as any
   }
@@ -91,9 +94,6 @@ export function safeParse<T extends SanityType>(
   }
   if (isPrimitiveUnionSchema(schema)) {
     return parsePrimitiveUnion(schema, input) as any
-  }
-  if (isExtendableObjectSchema(schema)) {
-    return parseObject(schema, input) as any
   }
 
   return {
