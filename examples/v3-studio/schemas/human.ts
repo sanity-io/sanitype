@@ -3,6 +3,8 @@ import {
   boolean,
   document,
   extend,
+  file,
+  image,
   literal,
   object,
   string,
@@ -13,10 +15,16 @@ const pet = object({name: string()})
 export const human = document({
   _type: literal('human'),
   name: string(),
+  profilePicture: image({
+    caption: string(),
+  }),
   address: object({
     street: string(),
     city: string(),
     country: string(),
+  }),
+  cv: file({
+    description: string(),
   }),
   pets: array(
     union([
