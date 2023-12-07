@@ -47,7 +47,7 @@ export const documentBase: SanityObject<SanityDocumentShape> = dt({
 })
 
 export type SanityReferenceShape = {
-  _type: SanityString | SanityLiteral<'reference'>
+  _type: SanityLiteral<'reference'>
   _ref: SanityString
   _weak: SanityOptional<SanityBoolean>
 }
