@@ -1,6 +1,8 @@
 import {
   isAssetSchema,
   isBooleanSchema,
+  isDateSchema,
+  isDateTimeSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
@@ -80,6 +82,12 @@ function convertField<S extends SanityAny>(
   }
   if (isAssetSchema(schema)) {
     return {...assetToV3Schema(schema, hoisted), name: fieldName}
+  }
+  if (isDateTimeSchema(schema)) {
+    return {name: fieldName, type: 'datetime'}
+  }
+  if (isDateSchema(schema)) {
+    return {name: fieldName, type: 'date'}
   }
   if (
     isStringSchema(schema) ||

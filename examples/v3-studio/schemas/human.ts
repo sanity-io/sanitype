@@ -1,6 +1,7 @@
 import {
   array,
   boolean,
+  dateTime,
   document,
   extend,
   file,
@@ -18,6 +19,7 @@ export const human = document({
   profilePicture: image({
     caption: string(),
   }),
+  favoriteTimestamp: dateTime(),
   address: object({
     street: string(),
     city: string(),
