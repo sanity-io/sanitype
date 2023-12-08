@@ -213,8 +213,8 @@ const value = parse(schema, {
 - [x] array (of both primitives and objects and unions of either primitives or typed objects)
 - [x] union
 - [x] recursive types
-- [ ] image
-- [ ] file
+- [x] image
+- [x] file
 - [ ] date + datetime
 - [ ] other string derivatives: text, email, url (probably best solved by [_refinement_](https://zod.dev/?id=refine))
 - [ ] block array / portable text
