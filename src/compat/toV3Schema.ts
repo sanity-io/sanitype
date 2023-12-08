@@ -1,7 +1,6 @@
 import {
   isAssetSchema,
   isBooleanSchema,
-  isImageSchema,
   isLiteralSchema,
   isNumberSchema,
   isObjectArraySchema,
@@ -51,7 +50,7 @@ function convertItem<S extends SanityAny>(
   schema: S,
   hoisted: Map<string, SanityV3SchemaType[]>,
 ) {
-  if (isImageSchema(schema)) {
+  if (isAssetSchema(schema)) {
     return assetToV3Schema(schema, hoisted)
   }
   if (isObjectSchema(schema)) {
