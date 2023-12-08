@@ -2,6 +2,7 @@ import {
   array,
   block,
   boolean,
+  dateTime,
   document,
   extend,
   file,
@@ -13,6 +14,7 @@ import {
   union,
 } from 'sanitype'
 import {pet} from './pet'
+import type {Infer} from 'sanitype'
 
 export const human = document({
   _type: literal('human'),
@@ -20,6 +22,7 @@ export const human = document({
   profilePicture: image({
     caption: string(),
   }),
+  favoriteTimestamp: dateTime(),
   address: object({
     street: string(),
     city: string(),
@@ -66,3 +69,5 @@ export const human = document({
     ]),
   ),
 })
+
+export type Human = Infer<typeof human>
