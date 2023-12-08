@@ -1,5 +1,5 @@
 import {describe, expect, test} from 'vitest'
-import {literal, number, object, string, union} from '../creators'
+import {file, image, literal, number, object, string, union} from '../creators'
 import {parse, safeParse} from '../parse'
 
 describe('typed object union', () => {
@@ -15,6 +15,12 @@ describe('typed object union', () => {
         status: literal('failed'),
         error: string(),
       }),
+      image({
+        caption: string(),
+      }),
+      file({
+        description: string(),
+      }),
     ])
 
     parse(u, {_type: 'success', status: 'success', data: 'it succeeded'})
@@ -23,6 +29,12 @@ describe('typed object union', () => {
     const u = union([
       object({
         _type: literal('a'),
+      }),
+      image({
+        caption: string(),
+      }),
+      file({
+        description: string(),
       }),
       union([
         object({
@@ -50,6 +62,55 @@ describe('typed object union', () => {
 
     expect(() => parse(u, {_type: 'x'})).toThrowErrorMatchingInlineSnapshot(
       `[Error: Invalid input at "<root>": Type "x" not found among valid union types]`,
+    )
+
+    expect(
+      parse(u, {
+        _type: 'image',
+        asset: {
+          _type: 'reference',
+          _ref: '123',
+        },
+        caption: 'Some caption',
+      }),
+    ).toEqual({
+      _type: 'image',
+      asset: {
+        _type: 'reference',
+        _ref: '123',
+      },
+      caption: 'Some caption',
+    })
+
+    expect(
+      parse(u, {
+        _type: 'file',
+        asset: {
+          _type: 'reference',
+          _ref: '123',
+        },
+        description: 'Some description',
+      }),
+    ).toEqual({
+      _type: 'file',
+      asset: {
+        _type: 'reference',
+        _ref: '123',
+      },
+      description: 'Some description',
+    })
+
+    expect(() =>
+      parse(u, {
+        _type: 'image',
+        asset: {
+          _type: 'reference',
+          _ref: '123',
+        },
+        description: 'Some description',
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Invalid input at "<root>": Cannot parse input as union type "image" (+ 1)]`,
     )
   })
   test('failed parsing when invalid literal value for discriminator', () => {

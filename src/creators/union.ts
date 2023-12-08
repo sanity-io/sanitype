@@ -1,5 +1,6 @@
 import {defineType} from '../helpers/defineType'
 import {
+  isAssetSchema,
   isLiteralSchema,
   isObjectUnionSchema,
   isPrimitiveSchema,
@@ -8,6 +9,7 @@ import {
   isTypedObjectSchema,
 } from '../asserters'
 import type {
+  SanityAsset,
   SanityBlock,
   SanityLiteral,
   SanityObjectUnion,
@@ -22,7 +24,8 @@ export type FlattenUnionTypes<
     | SanityTypedObject
     | SanityReference
     | SanityObjectUnion<any>
-    | SanityBlock,
+    | SanityBlock
+    | SanityAsset,
 > = T extends SanityObjectUnion<infer UnionTypes>
   ? UnionTypes extends SanityObjectUnion<any>
     ? FlattenUnionTypes<UnionTypes>
@@ -42,6 +45,7 @@ export function union<
     | SanityTypedObject
     | SanityReference
     | SanityBlock
+    | SanityAsset
     | SanityObjectUnion<any>,
 >(unionTypes: UnionTypes[]): SanityObjectUnion<FlattenUnionTypes<UnionTypes>>
 export function union<
@@ -81,7 +85,8 @@ export function union<
       schema =>
         isTypedObjectSchema(schema) ||
         isObjectUnionSchema(schema) ||
-        isReferenceSchema(schema),
+        isReferenceSchema(schema) ||
+        isAssetSchema(schema),
     )
   ) {
     return defineType({
