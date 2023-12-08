@@ -3,6 +3,7 @@ import {
   SANITY_EXTENDABLE_OBJECT,
   SANITY_OBJECT_LIKE,
   type SanityAsset,
+  type SanityBlock,
   type SanityBoolean,
   type SanityDate,
   type SanityDateTime,
@@ -56,6 +57,10 @@ export function isImageSchema(schema: SanityType): schema is SanityImage {
 export function isFileSchema(schema: SanityType): schema is SanityFile {
   return schema.typeName === 'file'
 }
+export function isBlockSchema(schema: SanityType): schema is SanityBlock {
+  return schema.typeName === 'block'
+}
+
 export function isAssetSchema(schema: SanityType): schema is SanityAsset {
   return (SANITY_ASSET as any).includes(schema.typeName)
 }
@@ -120,7 +125,7 @@ export function isTypedObjectSchema(
   schema: SanityType,
 ): schema is SanityTypedObject {
   return (
-    isObjectSchema(schema) &&
+    isObjectLikeSchema(schema) &&
     schema.shape._type &&
     isLiteralSchema(schema.shape._type) &&
     typeof schema.shape._type.value === 'string'

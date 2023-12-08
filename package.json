@@ -31,6 +31,7 @@
     "coverage": "vitest run --coverage",
     "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch",
     "example:studio": "vite --config examples/studio/vite.config.ts examples/studio",
+    "example:studio-v3": "(cd examples/v3-studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
     "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
