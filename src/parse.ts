@@ -20,6 +20,7 @@ import {inspect} from './helpers/inspect'
 import type {
   Infer,
   OutputOf,
+  SanityAsset,
   SanityBlock,
   SanityBoolean,
   SanityDocument,
@@ -267,6 +268,7 @@ function findUnionSchemaForType(
   | SanityObjectUnion
   | SanityReference
   | SanityBlock
+  | SanityAsset
   | undefined {
   return unionSchema.union.find(
     (
@@ -274,7 +276,8 @@ function findUnionSchemaForType(
         | SanityTypedObject
         | SanityObjectUnion
         | SanityReference
-        | SanityBlock,
+        | SanityBlock
+        | SanityAsset,
     ) => {
       if (isObjectUnionSchema(objectDef)) {
         return findUnionSchemaForType(objectDef, typeName)

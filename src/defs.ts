@@ -53,10 +53,11 @@ export interface SanityLiteral<
 }
 
 export interface SanityObjectUnion<
-  Def extends SanityTypedObject | SanityReference | SanityBlock =
+  Def extends SanityTypedObject | SanityReference | SanityBlock | SanityAsset =
     | SanityTypedObject
     | SanityReference
-    | SanityBlock,
+    | SanityBlock
+    | SanityAsset,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'union'
