@@ -1,5 +1,6 @@
 import {
   array,
+  block,
   boolean,
   dateTime,
   document,
@@ -7,12 +8,13 @@ import {
   file,
   image,
   literal,
+  number,
   object,
   string,
   union,
 } from 'sanitype'
+import {pet} from './pet'
 
-const pet = object({name: string()})
 export const human = document({
   _type: literal('human'),
   name: string(),
@@ -28,6 +30,27 @@ export const human = document({
   cv: file({
     description: string(),
   }),
+  portableText: array(
+    union([
+      block({
+        _type: literal('myCustomBlock'),
+        styles: [literal('normal'), literal('h1'), literal('h2')],
+        lists: [literal('bullet'), literal('number')],
+        inlineTypes: [
+          object({
+            _type: literal('author'),
+            name: string(),
+          }),
+        ],
+        decorators: [literal('strong'), literal('em')],
+        annotations: [
+          object({_type: literal('author'), foo: number()}),
+          object({_type: literal('book'), bar: number()}),
+        ],
+      }),
+      image({}),
+    ]),
+  ),
   pets: array(
     union([
       extend(pet, {

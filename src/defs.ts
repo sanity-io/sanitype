@@ -179,6 +179,7 @@ export const SANITY_OBJECT_LIKE = [
   'object',
   'document',
   'reference',
+  'block',
   ...SANITY_ASSET,
 ] as const
 
