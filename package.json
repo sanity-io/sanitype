@@ -31,6 +31,7 @@
     "coverage": "vitest run --coverage",
     "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch",
     "example:studio": "vite --config examples/studio/vite.config.ts examples/studio",
+    "example:v3-studio": "(cd examples/v3-studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
     "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
@@ -52,10 +53,10 @@
   },
   "devDependencies": {
     "@bjoerge/mutiny": "^0.5.1",
-    "@sanity/client": "^6.9.3",
+    "@sanity/client": "^6.10.0",
     "@sanity/pkg-utils": "^3.3.5",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
     "@vitest/ui": "^1.0.4",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
@@ -67,7 +68,7 @@
     "rimraf": "^5.0.5",
     "tsx": "^4.6.2",
     "typescript": "^5.3.3",
-    "vite": "^5.0.7",
+    "vite": "^5.0.8",
     "vitest": "^1.0.4"
   },
   "engines": {
