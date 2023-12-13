@@ -7,6 +7,7 @@ tsconfig.*
 .eslintrc.cjs
 .prettierignore
 .prettierrc
+.github
 package.config.ts
 DESIGN_PRINCIPLES.md
 vitest.config.ts
