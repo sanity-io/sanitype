@@ -2,12 +2,12 @@ import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 
-import {toV3Schema} from '../../src/compat/toV3Schema'
+import {toClassicSchema} from '../../src/compat/next-to-v3'
 import {human} from './schemas/human'
 
 export default defineConfig({
   name: 'default',
-  title: 'Sanity v3 Studio',
+  title: 'Sanity Classic (v3) Studio',
 
   projectId: 'ppsg7ml5',
   dataset: 'production',
@@ -15,6 +15,6 @@ export default defineConfig({
   plugins: [deskTool(), visionTool()],
 
   schema: {
-    types: toV3Schema(human),
+    types: toClassicSchema(human),
   },
 })

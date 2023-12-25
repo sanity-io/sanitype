@@ -1,0 +1,1 @@
+export {toClassicSchema} from './toClassicSchema'

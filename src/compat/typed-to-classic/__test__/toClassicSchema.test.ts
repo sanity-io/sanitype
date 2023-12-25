@@ -12,9 +12,9 @@ import {
   object,
   string,
   union,
-} from '../creators'
-import {extend} from '../utils/extend'
-import {toV3Schema} from './toV3Schema'
+} from '../../../creators'
+import {extend} from '../../../utils/extend'
+import {toClassicSchema} from '../toClassicSchema'
 
 const pet = object({name: string()})
 export const human = document({
@@ -70,8 +70,8 @@ export const human = document({
   ),
 })
 
-test('toV3Schema', () => {
-  expect(toV3Schema(human)).toMatchInlineSnapshot(`
+test('toClassicSchema', () => {
+  expect(toClassicSchema(human)).toMatchInlineSnapshot(`
     [
       {
         "fields": [

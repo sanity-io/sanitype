@@ -259,7 +259,7 @@ Forms need to have the same feature set as current sanity schemas (although with
 ## Compatibility layer
 
 - [x] [partially done] implement a function taking a new schema + form as input and convert it to a sanity schema compatible with v3
-- [ ] Codemod/migrator from v3 style schema to ts-first schema + form definition
+- [ ] Codemod/migrator from classic (v3) style schema to ts-first schema + form definition
 
 # Open questions
 
