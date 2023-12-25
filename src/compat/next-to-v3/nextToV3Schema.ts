@@ -14,7 +14,7 @@ import {
   isPrimitiveUnionSchema,
   isReferenceSchema,
   isStringSchema,
-} from '../asserters'
+} from '../../asserters'
 import type {
   SanityAny,
   SanityAsset,
@@ -23,11 +23,11 @@ import type {
   SanityObjectArray,
   SanityObjectLike,
   SanityObjectUnion,
-} from '../defs'
+} from '../../defs'
 
 type SanityV3SchemaType = any
 
-export function toV3Schema<S extends SanityDocument>(
+export function nextToV3Schema<S extends SanityDocument>(
   schema: S,
 ): SanityV3SchemaType[] {
   const typeLiteral = schema.shape._type

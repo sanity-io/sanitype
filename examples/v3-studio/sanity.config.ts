@@ -1,7 +1,7 @@
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
-import {toV3Schema} from '../../src/compat/toV3Schema'
+import {nextToV3Schema} from '../../src/compat/next-to-v3'
 import {human} from './schemas/human'
 
 export default defineConfig({
@@ -14,6 +14,6 @@ export default defineConfig({
   plugins: [deskTool(), visionTool()],
 
   schema: {
-    types: toV3Schema(human),
+    types: nextToV3Schema(human),
   },
 })
