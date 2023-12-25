@@ -1,7 +1,4 @@
-import parseJSON from 'date-fns/parseJSON'
-import parse from 'date-fns/parse'
-import format from 'date-fns/format'
-import isValid from 'date-fns/isValid'
+import {format, isValid, parse, parseJSON} from 'date-fns'
 
 export function isStrictlyDateTime(input: string) {
   return parseJSON(input).toJSON() === input

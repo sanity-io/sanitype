@@ -49,7 +49,7 @@
     "vercel-build": "vite build --config examples/studio/vite.config.ts examples/studio"
   },
   "dependencies": {
-    "date-fns": "^2.30.0"
+    "date-fns": "^3.0.6"
   },
   "devDependencies": {
     "@bjoerge/mutiny": "^0.5.1",
