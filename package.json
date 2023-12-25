@@ -53,6 +53,7 @@
   },
   "browserslist": "extends @sanity/browserslist-config",
   "dependencies": {
+    "@sanity/types": "^3.61.0",
     "date-fns": "^4.1.0"
   },
   "devDependencies": {

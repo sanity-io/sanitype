@@ -1,3 +1,5 @@
+import type * as classic from '@sanity/types'
+
 import {
   isAssetSchema,
   isBlockSchema,
@@ -25,11 +27,9 @@ import {
   type SanityObjectUnion,
 } from '../../defs'
 
-type SanityClassicSchemaType = any
-
 export function toClassicSchema<S extends SanityDocument>(
   schema: S,
-): SanityClassicSchemaType[] {
+): classic.SchemaTypeDefinition[] {
   const typeLiteral = schema.shape._type
 
   if (
@@ -56,20 +56,20 @@ export function toClassicSchema<S extends SanityDocument>(
 
 function convertItem<S extends SanityAny>(
   schema: S,
-  hoisted: Map<string, SanityClassicSchemaType[]>,
-) {
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+): classic.ArrayOfType | classic.ArrayOfType[] {
   if (isAssetSchema(schema)) {
-    return assetToClassicSchema(schema, hoisted)
+    return assetToClassicSchema(schema, hoisted) as classic.ArrayOfType
   }
   if (isBlockSchema(schema)) {
-    return blockToClassicSchema(schema, hoisted)
+    return blockToClassicSchema(schema, hoisted) as classic.ArrayOfType
   }
   if (isPrimitiveUnionSchema(schema)) {
     // we don't support this currently in v3, so fallback to the first type
     return convertItem(schema.union[0], hoisted)
   }
   if (isObjectLikeSchema(schema)) {
-    return objectToClassicSchema(schema, hoisted)
+    return objectToClassicSchema(schema, hoisted) as classic.ArrayOfType
   }
   if (isLiteralSchema(schema)) {
     return {
@@ -94,19 +94,21 @@ function convertItem<S extends SanityAny>(
 function convertField<S extends SanityAny>(
   fieldName: string,
   schema: S,
-  hoisted: Map<string, SanityClassicSchemaType[]>,
-) {
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+): classic.FieldDefinition | classic.FieldDefinition[] {
   if (isObjectSchema(schema)) {
-    return {...objectToClassicSchema(schema, hoisted), name: fieldName}
+    return [{...objectToClassicSchema(schema, hoisted), name: fieldName}]
   }
   if (isLiteralSchema(schema)) {
-    return {
-      name: fieldName,
-      type: typeof schema.value,
-      options: {
-        list: [schema.value],
+    return [
+      {
+        name: fieldName,
+        type: typeof schema.value,
+        options: {
+          list: [schema.value],
+        },
       },
-    }
+    ]
   }
   if (isReferenceSchema(schema)) {
     throw new Error('References not implemented.')
@@ -137,15 +139,15 @@ function convertField<S extends SanityAny>(
       of: isObjectUnionSchema(schema.element)
         ? schema.element.union.map(u => convertItem(u, hoisted))
         : [convertItem(schema.element, hoisted)],
-    }
+    } as classic.FieldDefinition<'array'>
   }
   return []
 }
 
 export function objectToClassicSchema<S extends SanityObjectLike>(
   schema: S,
-  hoisted: Map<string, SanityClassicSchemaType[]>,
-): SanityClassicSchemaType {
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+) {
   const typeLiteral = schema.shape._type
 
   const typeName =
@@ -162,8 +164,8 @@ export function objectToClassicSchema<S extends SanityObjectLike>(
 
 export function blockToClassicSchema<S extends SanityBlock>(
   schema: S,
-  hoisted: Map<string, SanityClassicSchemaType[]>,
-): SanityClassicSchemaType {
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+) {
   const typeLiteral = schema.shape._type
 
   const typeName =
@@ -181,8 +183,8 @@ export function blockToClassicSchema<S extends SanityBlock>(
 
 export function assetToClassicSchema<S extends SanityAsset>(
   schema: S,
-  hoisted: Map<string, SanityClassicSchemaType[]>,
-): SanityClassicSchemaType {
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+) {
   const systemFieldNames = ['asset']
 
   return objectToClassicSchema(
