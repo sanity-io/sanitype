@@ -49,6 +49,7 @@
     "vercel-build": "vite build --config examples/studio/vite.config.ts examples/studio"
   },
   "dependencies": {
+    "@sanity/types": "^3.20.0",
     "date-fns": "^3.0.6"
   },
   "devDependencies": {
