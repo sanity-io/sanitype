@@ -50,7 +50,8 @@
   },
   "dependencies": {
     "@sanity/types": "^3.23.4",
-    "date-fns": "^3.0.6"
+    "date-fns": "^3.0.6",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@bjoerge/mutiny": "^0.5.1",
