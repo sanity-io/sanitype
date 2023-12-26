@@ -113,13 +113,24 @@ export function block<
     TypeName
   >
 > {
+  const style =
+    options.styles.length > 1 ? union(options.styles) : options.styles[0]
+
+  const lists =
+    options.lists.length > 1 ? union(options.lists) : options.lists[0]
+
+  const markDefs =
+    options.annotations.length > 1
+      ? union(options.annotations)
+      : options.annotations[0]
+
   return defineType({
     typeName: 'block',
     shape: {
       _type: options._type || literal('block'),
-      style: optional(union([...options.styles])),
+      style: optional(style),
       level: optional(number()),
-      listType: optional(union([...options.lists])),
+      listType: optional(lists),
       children: array(
         union([
           ...options.inlineTypes,
@@ -130,7 +141,7 @@ export function block<
           }),
         ]),
       ),
-      markDefs: array(union([...options.annotations])),
+      markDefs,
     },
   }) as any
 }
