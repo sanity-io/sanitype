@@ -1,17 +1,31 @@
-import {camelCase} from 'lodash'
+import camelCase from 'lodash/camelCase'
 import {
+  isDateSchema,
+  isDateTimeSchema,
   isLiteralSchema,
+  isObjectArraySchema,
   isObjectLikeSchema,
-  isObjectSchema,
+  isObjectUnionSchema,
   isOptionalSchema,
+  isPrimitiveArraySchema,
   isPrimitiveSchema,
+  isPrimitiveUnionSchema,
 } from '../../asserters'
-import * as creator from '../../creators'
 import {getInstanceName} from '../../content-utils/getInstanceName'
+import * as creator from '../../creators'
 import {findCommon} from './findCommon'
+import type {
+  SanityArray,
+  SanityObjectArray,
+  SanityObjectLike,
+  SanityObjectUnion,
+  SanityOptional,
+  SanityPrimitiveArray,
+  SanityPrimitiveUnion,
+  SanityType,
+} from '../../defs'
 import type {FindCommon} from './findCommon'
 import type {SourceFile} from './types'
-import type {SanityObject, SanityType} from '../../defs'
 
 type Serialized = {
   imports: Creator[]
@@ -98,8 +112,14 @@ function _serialize(
   type: SanityType,
   commonMap: WeakMap<SanityType, string>,
 ): Serialized {
-  if (isObjectSchema(type)) {
+  if (isObjectLikeSchema(type)) {
     return serializeObjectType(type, commonMap)
+  }
+  if (isObjectArraySchema(type) || isPrimitiveArraySchema(type)) {
+    return serializeArray(type, commonMap)
+  }
+  if (isObjectUnionSchema(type) || isPrimitiveUnionSchema(type)) {
+    return serializeUnion(type, commonMap)
   }
   if (isLiteralSchema(type)) {
     return {
@@ -108,18 +128,24 @@ function _serialize(
       source: `literal(${JSON.stringify(type.value)})`,
     }
   }
-  if (isOptionalSchema(type) || isPrimitiveSchema(type)) {
+  if (isOptionalSchema(type)) {
+    return serializeOptional(type, commonMap)
+  }
+  if (isPrimitiveSchema(type) || isDateSchema(type) || isDateTimeSchema(type)) {
+    const c = creator[type.typeName as keyof typeof creator]
+    if (!c) throw new Error(`No creator for ${type.typeName}`)
     return {
       refs: [],
-      imports: [creator[type.typeName as keyof typeof creator]],
+      imports: [c],
       source: `${type.typeName}()`,
     }
   }
+
   throw new Error(`Todo: ${type.typeName}`)
 }
 
 function serializeObjectType(
-  type: SanityObject,
+  type: SanityObjectLike,
   commonMap: WeakMap<SanityType, string>,
 ): Serialized {
   const serializedShape = Object.entries(type.shape).map(
@@ -140,8 +166,57 @@ function serializeObjectType(
     .join(',\n')
 
   return {
-    refs: [...serializedShape.flatMap(s => s.ref || [])],
+    refs: serializedShape.flatMap(s => s.ref || []),
     imports: [creator.object, ...serializedShape.flatMap(s => s.imports)],
     source: `object({${fieldsSource}})`,
+  }
+}
+
+function serializeArray(
+  type: SanityObjectArray | SanityPrimitiveArray,
+  commonMap: WeakMap<SanityType, string>,
+): Serialized {
+  const serializedElement = _serialize(type.element, commonMap)
+
+  return {
+    refs: serializedElement.refs,
+    imports: [creator.array, ...serializedElement.imports],
+    source: `array(${serializedElement.source})`,
+  }
+}
+
+function serializeOptional(
+  type: SanityOptional<SanityType>,
+  commonMap: WeakMap<SanityType, string>,
+): Serialized {
+  const serializedInner = _serialize(type.type, commonMap)
+
+  return {
+    refs: serializedInner.refs,
+    imports: [creator.optional, ...serializedInner.imports],
+    source: `optional(${serializedInner.source})`,
+  }
+}
+
+function serializeUnion(
+  type: SanityObjectUnion | SanityPrimitiveUnion,
+  commonMap: WeakMap<SanityType, string>,
+): Serialized {
+  const serializedUnionTypes = type.union.map(unionType => {
+    const serialized = _serialize(unionType, commonMap)
+    const ref = commonMap.get(unionType)
+    return {
+      imports: serialized.imports,
+      ref: commonMap.get(unionType),
+      source: ref || serialized.source,
+    }
+  })
+
+  const unionsSource = serializedUnionTypes.join(',\n')
+
+  return {
+    refs: [...serializedUnionTypes.flatMap(s => s.ref || [])],
+    imports: [creator.union, ...serializedUnionTypes.flatMap(s => s.imports)],
+    source: `union([${unionsSource}])`,
   }
 }

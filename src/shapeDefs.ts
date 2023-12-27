@@ -57,6 +57,38 @@ const REFERENCE_LITERAL: SanityLiteral<'reference'> = dt({
   value: 'reference',
 })
 
+export const slug: SanityObject<{
+  _type: SanityLiteral<'slug'>
+  current: SanityOptional<SanityString>
+}> = dt({
+  typeName: 'object',
+  shape: {
+    _type: dt({
+      typeName: 'literal',
+      value: 'slug',
+    }),
+    current: OPTIONAL_STRING,
+  },
+})
+
+export const geopoint: SanityObject<{
+  _type: SanityLiteral<'geopoint'>
+  lat: SanityNumber
+  lng: SanityNumber
+  alt: SanityNumber
+}> = dt({
+  typeName: 'object',
+  shape: {
+    _type: dt({
+      typeName: 'literal',
+      value: 'geopoint',
+    }),
+    lat: NUMBER,
+    lng: NUMBER,
+    alt: NUMBER,
+  },
+})
+
 export const referenceBase: SanityObject<SanityReferenceShape> = dt({
   typeName: 'object',
   shape: {

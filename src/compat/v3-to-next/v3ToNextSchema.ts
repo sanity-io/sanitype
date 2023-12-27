@@ -7,11 +7,14 @@ import {
   dateTime,
   document,
   file,
+  geopoint,
   image,
   literal,
   number,
   object,
   optional,
+  referenceBase,
+  slug,
   string,
   union,
 } from '../../'
@@ -27,16 +30,24 @@ export type HoistedTypeRefs = {[name: string]: {ref: SanityType | null}}
 function convertType(
   typeDef: v3.SchemaTypeDefinition,
   hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
 ): SanityType {
   if (isObjectDefinition(typeDef)) {
-    return convertObject(typeDef, hoisted)
+    return convertObject(typeDef, hoisted, schema)
   }
   if (isArrayDefinition(typeDef)) {
-    return convertArray(typeDef, hoisted)
+    return convertArray(typeDef, hoisted, schema)
   }
   if (isBlockDefinition(typeDef)) {
-    return convertBlock(typeDef, hoisted)
+    return convertBlock(typeDef, hoisted, schema)
   }
+
+  const alias = schema.find(type => type.name === typeDef.type)
+
+  if (alias) {
+    return convertType(alias, hoisted, schema)
+  }
+
   switch (typeDef.type) {
     case 'string':
       return string()
@@ -46,25 +57,46 @@ function convertType(
       return boolean()
     case 'date':
       return date()
+    case 'slug':
+      return slug
+    case 'geopoint':
+      return geopoint
     case 'datetime':
       return dateTime()
     case 'url':
+      return string()
+    case 'text':
       return string()
     case 'email':
       return string()
     case 'image':
       return image(
-        convertFields((typeDef as v3.ImageDefinition).fields || [], hoisted),
+        convertFields(
+          (typeDef as v3.ImageDefinition).fields || [],
+          hoisted,
+          schema,
+        ),
       )
     case 'file':
       return file(
-        convertFields((typeDef as v3.FileDefinition).fields || [], hoisted),
+        convertFields(
+          (typeDef as v3.FileDefinition).fields || [],
+          hoisted,
+          schema,
+        ),
       )
+    case 'reference':
+      // todo: support reference to other types
+      return referenceBase
   }
   throw new Error(`Unknown field type: ${typeDef.type}`)
 }
 
-function convertFields(fields: v3.FieldDefinition[], hoisted: HoistedTypeRefs) {
+function convertFields(
+  fields: v3.FieldDefinition[],
+  hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
+) {
   return Object.fromEntries(
     fields.map((field): [string, SanityType] => {
       const {name, ...fieldType} = field
@@ -72,6 +104,7 @@ function convertFields(fields: v3.FieldDefinition[], hoisted: HoistedTypeRefs) {
       const convertedType = convertType(
         fieldType as v3.SchemaTypeDefinition,
         hoisted,
+        schema,
       )
       const rules = collectValidationRules(fieldType as v3.SchemaTypeDefinition)
 
@@ -86,29 +119,37 @@ function convertFields(fields: v3.FieldDefinition[], hoisted: HoistedTypeRefs) {
 function convertDocument(
   type: v3.DocumentDefinition,
   hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
 ) {
   return document({
     _type: literal(type.name),
-    ...convertFields(type.fields, hoisted),
+    ...convertFields(type.fields, hoisted, schema),
   })
 }
 
-function convertObject(type: v3.ObjectDefinition, hoisted: HoistedTypeRefs) {
+function convertObject(
+  type: v3.ObjectDefinition,
+  hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
+) {
   return object({
     ...(type.name ? {_type: literal(type.name)} : {}),
-    ...convertFields(type.fields, hoisted),
+    ...convertFields(type.fields, hoisted, schema),
   })
 }
 
 function convertBlock(
   blockDefinition: v3.BlockDefinition,
   hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
 ) {
   const inlineTypes = (blockDefinition.of || []).map(
-    annotation => convertArrayMember(annotation, hoisted) as SanityTypedObject,
+    annotation =>
+      convertArrayMember(annotation, hoisted, schema) as SanityTypedObject,
   )
   const annotations = (blockDefinition.marks?.annotations || []).map(
-    annotation => convertArrayMember(annotation, hoisted) as SanityTypedObject,
+    annotation =>
+      convertArrayMember(annotation, hoisted, schema) as SanityTypedObject,
   )
   const decorators = (blockDefinition.marks?.decorators || []).map(decorator =>
     literal(decorator.value),
@@ -129,15 +170,25 @@ function convertBlock(
   })
 }
 
-function convertArrayMember(ofType: v3.ArrayOfType, hoisted: HoistedTypeRefs) {
-  return convertType(ofType as v3.SchemaTypeDefinition, hoisted)
+function convertArrayMember(
+  ofType: v3.ArrayOfType,
+  hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
+) {
+  return convertType(ofType as v3.SchemaTypeDefinition, hoisted, schema)
 }
 
-function convertArray(type: v3.ArrayDefinition, hoisted: HoistedTypeRefs) {
+function convertArray(
+  type: v3.ArrayDefinition,
+  hoisted: HoistedTypeRefs,
+  schema: v3.SchemaTypeDefinition[],
+) {
   if (type.of.length === 1) {
-    return array(convertArrayMember(type.of[0], hoisted) as any)
+    return array(convertArrayMember(type.of[0], hoisted, schema) as any)
   }
-  return array(union(type.of.map(of => convertArrayMember(of, hoisted) as any)))
+  return array(
+    union(type.of.map(of => convertArrayMember(of, hoisted, schema) as any)),
+  )
 }
 
 function isDocumentDefinition(
@@ -175,10 +226,13 @@ export function v3ToNextSchema(
   v3Schema.forEach(type => {
     const name = type.name
     if (isDocumentDefinition(type)) {
-      hoisted[name].ref = convertDocument(type, hoisted)
+      hoisted[name].ref = convertDocument(type, hoisted, v3Schema)
     }
     if (isObjectDefinition(type)) {
-      hoisted[name].ref = convertObject(type, hoisted)
+      hoisted[name].ref = convertObject(type, hoisted, v3Schema)
+    }
+    if (isArrayDefinition(type)) {
+      hoisted[name].ref = convertArray(type, hoisted, v3Schema)
     }
   })
 
