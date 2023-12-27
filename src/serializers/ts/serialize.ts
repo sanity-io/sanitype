@@ -1,14 +1,14 @@
 import {camelCase} from 'lodash'
-import prettier from 'prettier'
 import {
   isLiteralSchema,
   isObjectLikeSchema,
   isObjectSchema,
   isPrimitiveSchema,
-} from '../asserters'
-import * as creator from '../creators'
-import {getInstanceName} from '../content-utils/getInstanceName'
-import type {SanityObject, SanityType} from '../defs'
+} from '../../asserters'
+import * as creator from '../../creators'
+import {getInstanceName} from '../../content-utils/getInstanceName'
+import type {SourceFile} from './types'
+import type {SanityObject, SanityType} from '../../defs'
 
 type Serialized = {
   imports: Set<Creator>
@@ -19,23 +19,13 @@ function add<T>(set: Set<T>, value: T): Set<T> {
   set.add(value)
   return set
 }
+
 type Creator = (typeof creator)[keyof typeof creator]
 
-export async function serializePretty(type: SanityType) {
-  const {source, name} = serialize(type)
-  return {
-    name,
-    source: await prettier.format(source, {
-      semi: false,
-      bracketSpacing: false,
-      parser: 'typescript',
-    }),
-  }
-}
-
-export function serialize(type: SanityType) {
+export function serialize(type: SanityType): SourceFile {
   const serialized = _serialize(type)
   const importsList = Array.from(serialized.imports)
+    .toSorted()
     .map(c => c.name)
     .join(', ')
 
@@ -67,7 +57,7 @@ function _serialize(
   }
   if (isPrimitiveSchema(type)) {
     return {
-      imports: add(imports, creator.literal),
+      imports: add(imports, creator[type.typeName as keyof typeof creator]),
       source: `${type.typeName}()`,
     }
   }
