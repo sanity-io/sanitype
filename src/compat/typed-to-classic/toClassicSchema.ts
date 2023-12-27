@@ -117,7 +117,7 @@ function convertField<S extends SanityAny>(
     return {...assetToClassicSchema(schema, hoisted), name: fieldName}
   }
   if (isDateTimeSchema(schema)) {
-    return {name: fieldName, type: 'datetime'}
+    return {name: fieldName, type: 'dateTime'}
   }
   if (isDateSchema(schema)) {
     return {name: fieldName, type: 'date'}

@@ -44,7 +44,7 @@ export interface SanityBoolean extends SanityType<boolean> {
   typeName: 'boolean'
 }
 export interface SanityDateTime extends SanityType<string> {
-  typeName: 'datetime'
+  typeName: 'dateTime'
 }
 export interface SanityDate extends SanityType<string> {
   typeName: 'date'

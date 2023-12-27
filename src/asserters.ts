@@ -95,7 +95,7 @@ export function isDateSchema(schema: SanityType): schema is SanityDate {
   return schema.typeName === 'date'
 }
 export function isDateTimeSchema(schema: SanityType): schema is SanityDateTime {
-  return schema.typeName === 'datetime'
+  return schema.typeName === 'dateTime'
 }
 export function isNumberSchema(schema: SanityType): schema is SanityNumber {
   return schema.typeName === 'number'
