@@ -3,64 +3,115 @@ import {
   isLiteralSchema,
   isObjectLikeSchema,
   isObjectSchema,
+  isOptionalSchema,
   isPrimitiveSchema,
 } from '../../asserters'
 import * as creator from '../../creators'
 import {getInstanceName} from '../../content-utils/getInstanceName'
+import {findCommon} from './findCommon'
+import type {FindCommon} from './findCommon'
 import type {SourceFile} from './types'
 import type {SanityObject, SanityType} from '../../defs'
 
 type Serialized = {
-  imports: Set<Creator>
-  source: string
+  imports: Creator[]
   refs: string[]
-}
-
-function add<T>(set: Set<T>, value: T): Set<T> {
-  set.add(value)
-  return set
+  source: string
 }
 
 type Creator = (typeof creator)[keyof typeof creator]
 
-export function serialize(type: SanityType): SourceFile {
-  const serialized = _serialize(type)
-  const importsList = Array.from(serialized.imports)
+function getNextValid(base: string, taken: Set<string>) {
+  let i = 1
+  let candidate = base
+  while (taken.has(candidate)) {
+    candidate = `${base}${i++}`
+  }
+  return candidate
+}
+
+function getAssignableName(common: FindCommon, taken: Set<string>) {
+  const fieldnames = common.paths
+    .map(p => p.at(-1))
+    .filter((p): p is string => typeof p === 'string')
+    .flat()
+
+  const candidate =
+    (isObjectLikeSchema(common.type) && getInstanceName(common.type)) ||
+    fieldnames[0] ||
+    common.type.typeName
+
+  const name = getNextValid(candidate, taken)
+  taken.add(name)
+  return name
+}
+
+function toSource(exportName: string, serialized: Serialized) {
+  const importsList = Array.from(new Set(serialized.imports))
     .toSorted()
     .map(c => c.name)
     .join(', ')
 
-  const name = isObjectLikeSchema(type)
-    ? getInstanceName(type)
-    : `${type.typeName}Schema`
-  const source = `import {${importsList}} from 'sanitype'\nexport const ${camelCase(
-    name,
-  )} = ${serialized.source}`
+  const commonImports = Array.from(new Set(serialized.refs))
+    .toSorted()
+    .map(c => `import {${c}} from './${c}'`)
 
-  return {
-    name: camelCase(name),
-    source,
-  }
+  const source = [
+    `import {${importsList}} from 'sanitype'`,
+    ...commonImports,
+    `export const ${camelCase(exportName)} = ${serialized.source}`,
+  ]
+  return source.join('\n')
+}
+export function serialize(type: SanityType): SourceFile[] {
+  const takenNames = new Set<string>()
+
+  const typeName = getNextValid(
+    (isObjectLikeSchema(type) && getInstanceName(type)) || type.typeName,
+    takenNames,
+  )
+
+  const common = findCommon(type)
+  const commonMap = new WeakMap<SanityType, string>()
+
+  const serializedCommon = common.map(commonType => ({
+    name: getAssignableName(commonType, takenNames),
+    common: commonType,
+    serialized: _serialize(commonType.type, commonMap),
+  }))
+
+  serializedCommon.map((entry, index) => {
+    commonMap.set(entry.common.type, entry.name)
+  })
+
+  const serialized = _serialize(type, commonMap)
+
+  return serializedCommon
+    .map(({name, serialized: commonSerialized}) => ({
+      name,
+      source: toSource(name, commonSerialized),
+    }))
+    .concat({name: typeName, source: toSource(typeName, serialized)})
 }
 
 function _serialize(
   type: SanityType,
-  imports: Set<Creator> = new Set(),
-  seen: Set<SanityType> = new Set(),
-  parents: Set<SanityType> = new Set(),
+  commonMap: WeakMap<SanityType, string>,
 ): Serialized {
   if (isObjectSchema(type)) {
-    return serializeObjectType(type, imports)
+    return serializeObjectType(type, commonMap)
   }
   if (isLiteralSchema(type)) {
     return {
-      imports: add(imports, creator.literal),
+      refs: [],
+      imports: [creator.literal],
       source: `literal(${JSON.stringify(type.value)})`,
     }
   }
-  if (isPrimitiveSchema(type)) {
+  if (isOptionalSchema(type) || isPrimitiveSchema(type)) {
     return {
-      imports: add(imports, creator[type.typeName as keyof typeof creator]),
+      refs: [],
+      imports: [creator[type.typeName as keyof typeof creator]],
       source: `${type.typeName}()`,
     }
   }
@@ -69,22 +120,28 @@ function _serialize(
 
 function serializeObjectType(
   type: SanityObject,
-  imports: Set<Creator>,
-  seen: Set<SanityType> = new Set(),
-  parents: Set<SanityType> = new Set(),
+  commonMap: WeakMap<SanityType, string>,
 ): Serialized {
-  imports.add(creator.object)
-
-  const shape = Object.keys(type.shape)
-    .map(key => {
-      const field = type.shape[key]
-      return `${key}: ${_serialize(field, imports).source}`
-    })
-    .join(',\n')
-  return [
-    {
-      imports,
-      source: `object({${shape}})`,
+  const serializedShape = Object.entries(type.shape).map(
+    ([fieldName, fieldType]) => {
+      const serialized = _serialize(fieldType, commonMap)
+      const ref = commonMap.get(fieldType)
+      return {
+        imports: serialized.imports,
+        field: fieldName,
+        ref: commonMap.get(fieldType),
+        source: ref || serialized.source,
+      }
     },
-  ]
+  )
+
+  const fieldsSource = serializedShape
+    .map(({field, source}) => `${field}: ${source}`)
+    .join(',\n')
+
+  return {
+    refs: [...serializedShape.flatMap(s => s.ref || [])],
+    imports: [creator.object, ...serializedShape.flatMap(s => s.imports)],
+    source: `object({${fieldsSource}})`,
+  }
 }

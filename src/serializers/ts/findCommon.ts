@@ -6,8 +6,8 @@ import {
 } from '../../asserters'
 import type {SanityType} from '../../defs'
 
-type Path = (string | number)[]
-type FindCommon = {
+export type Path = (string | number)[]
+export type FindCommon = {
   paths: Path[]
   type: SanityType
 }
