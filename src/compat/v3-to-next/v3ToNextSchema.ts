@@ -17,7 +17,7 @@ import {
 import type {SanityType} from '../../'
 import type * as v3 from '@sanity/types'
 
-type HoistedTypeRefs = {[name: string]: {ref: SanityType | null}}
+export type HoistedTypeRefs = {[name: string]: {ref: SanityType | null}}
 
 function convertType(
   typeDef: v3.SchemaTypeDefinition,
