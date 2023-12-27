@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "useDefineForClassFields": true,
-    "lib": ["ES2022"],
+    "lib": ["ES2023"],
     // Module resolution
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
