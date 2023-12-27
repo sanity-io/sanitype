@@ -227,7 +227,7 @@ export function parseDateTime(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a datetime string on the format "${ISO_DATETIME_FORMAT}" but got "${inspect(
+          message: `Expected a dateTime string on the format "${ISO_DATETIME_FORMAT}" but got "${inspect(
             input,
           )}"`,
         },

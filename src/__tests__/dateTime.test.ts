@@ -2,8 +2,8 @@ import {describe, expect, test} from 'vitest'
 import {dateTime} from '../creators/dateTime'
 import {safeParse} from '../parse'
 
-describe('datetime type', () => {
-  test('parsing datetime', () => {
+describe('dateTime type', () => {
+  test('parsing dateTime', () => {
     const dateTimeSchema = dateTime()
     expect(safeParse(dateTimeSchema, '2023-12-06T19:01:07.512Z'))
       .toMatchInlineSnapshot(`
@@ -21,7 +21,7 @@ describe('datetime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06""",
+            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06""",
             "path": [],
           },
         ],
@@ -34,7 +34,7 @@ describe('datetime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06T19:01:07  """,
+            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06T19:01:07  """,
             "path": [],
           },
         ],
@@ -46,7 +46,7 @@ describe('datetime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a datetime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""xyz""",
+            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""xyz""",
             "path": [],
           },
         ],
