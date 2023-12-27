@@ -11,20 +11,12 @@ import type {
   SanityPrimitiveUnion,
 } from '../defs'
 
-function addKeyProperty<T extends SanityObjectUnion | SanityObjectLike>(
-  target: T,
-): T {
-  return isObjectUnionSchema(target)
-    ? {...target, union: target.union.map(addKeyProperty)}
-    : {...target, shape: {...target.shape, _key: string()}}
-}
-
 export function objectArray<
   ElementType extends SanityObjectLike | SanityObjectUnion,
 >(elementSchema: ElementType): SanityObjectArray<ElementType> {
   return defineType({
     typeName: 'objectArray',
-    element: addKeyProperty(elementSchema),
+    element: elementSchema,
   })
 }
 

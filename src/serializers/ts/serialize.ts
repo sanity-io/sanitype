@@ -13,6 +13,7 @@ import type {SanityObject, SanityType} from '../../defs'
 type Serialized = {
   imports: Set<Creator>
   source: string
+  refs: string[]
 }
 
 function add<T>(set: Set<T>, value: T): Set<T> {
@@ -45,9 +46,11 @@ export function serialize(type: SanityType): SourceFile {
 function _serialize(
   type: SanityType,
   imports: Set<Creator> = new Set(),
+  seen: Set<SanityType> = new Set(),
+  parents: Set<SanityType> = new Set(),
 ): Serialized {
   if (isObjectSchema(type)) {
-    return serializeObject(type, imports)
+    return serializeObjectType(type, imports)
   }
   if (isLiteralSchema(type)) {
     return {
@@ -64,9 +67,11 @@ function _serialize(
   throw new Error(`Todo: ${type.typeName}`)
 }
 
-function serializeObject(
+function serializeObjectType(
   type: SanityObject,
   imports: Set<Creator>,
+  seen: Set<SanityType> = new Set(),
+  parents: Set<SanityType> = new Set(),
 ): Serialized {
   imports.add(creator.object)
 
@@ -76,8 +81,10 @@ function serializeObject(
       return `${key}: ${_serialize(field, imports).source}`
     })
     .join(',\n')
-  return {
-    imports,
-    source: `object({${shape}})`,
-  }
+  return [
+    {
+      imports,
+      source: `object({${shape}})`,
+    },
+  ]
 }

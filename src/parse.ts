@@ -1,4 +1,5 @@
-import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
+import {string} from './creators'
+import {INTERNAL_REF_TYPE_SCHEMA, type SanityObjectLike} from './defs'
 import {
   isBooleanSchema,
   isDateSchema,
@@ -484,6 +485,14 @@ function isKeyedObject(value: unknown): value is {_key: string} {
   return isPlainObject(value) && typeof value._key === 'string'
 }
 
+function addKeyProperty<T extends SanityObjectUnion | SanityObjectLike>(
+  target: T,
+): T {
+  return isObjectUnionSchema(target)
+    ? {...target, union: target.union.map(addKeyProperty)}
+    : {...target, shape: {...target.shape, _key: string()}}
+}
+
 export function parseObjectArray<S extends SanityObjectArray>(
   schema: S,
   input: unknown,
@@ -511,7 +520,7 @@ export function parseObjectArray<S extends SanityObjectArray>(
       })
       return
     }
-    const parsed = safeParse(schema.element, item)
+    const parsed = safeParse(addKeyProperty(schema.element), item)
     if (parsed.status === 'fail') {
       errors.push(
         ...parsed.errors.map(err => ({

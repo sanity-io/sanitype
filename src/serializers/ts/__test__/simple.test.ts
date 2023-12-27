@@ -3,7 +3,7 @@ import {literal, number, object, string} from '../../../creators'
 import {serialize} from '../serialize'
 import {prettify} from '../prettify'
 
-test('serialize to ts', async () => {
+test('simple serialize to ts', async () => {
   expect(
     await prettify(
       serialize(

@@ -17,3 +17,7 @@ export async function prettify(sourceFile: SourceFile) {
     }),
   }
 }
+
+export async function prettifyAll(sourceFiles: SourceFile[]) {
+  return sourceFiles.map(prettify)
+}
