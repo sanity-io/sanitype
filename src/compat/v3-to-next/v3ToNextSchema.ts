@@ -11,9 +11,14 @@ import {
   literal,
   number,
   object,
+  optional,
   string,
   union,
 } from '../../'
+import {
+  collectValidationRules,
+  isOptional,
+} from './utils/collectValidationRules'
 import type {SanityType} from '../../'
 import type * as v3 from '@sanity/types'
 
@@ -63,9 +68,16 @@ function convertFields(fields: v3.FieldDefinition[], hoisted: HoistedTypeRefs) {
   return Object.fromEntries(
     fields.map((field): [string, SanityType] => {
       const {name, ...fieldType} = field
+
+      const convertedType = convertType(
+        fieldType as v3.SchemaTypeDefinition,
+        hoisted,
+      )
+      const rules = collectValidationRules(fieldType as v3.SchemaTypeDefinition)
+
       return [
         field.name,
-        convertType(fieldType as v3.SchemaTypeDefinition, hoisted),
+        isOptional(rules) ? optional(convertedType) : convertedType,
       ]
     }),
   )
