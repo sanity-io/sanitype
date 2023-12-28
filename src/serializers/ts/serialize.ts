@@ -2,6 +2,7 @@ import camelCase from 'lodash/camelCase'
 import {
   isDateSchema,
   isDateTimeSchema,
+  isDocumentSchema,
   isLiteralSchema,
   isObjectArraySchema,
   isObjectLikeSchema,
@@ -10,18 +11,20 @@ import {
   isPrimitiveArraySchema,
   isPrimitiveSchema,
   isPrimitiveUnionSchema,
+  isReferenceSchema,
 } from '../../asserters'
 import {getInstanceName} from '../../content-utils/getInstanceName'
 import * as creator from '../../creators'
 import {findCommon} from './findCommon'
 import type {
-  SanityArray,
+  SanityDocumentType,
   SanityObjectArray,
   SanityObjectLike,
   SanityObjectUnion,
   SanityOptional,
   SanityPrimitiveArray,
   SanityPrimitiveUnion,
+  SanityReference,
   SanityType,
 } from '../../defs'
 import type {FindCommon} from './findCommon'
@@ -73,15 +76,21 @@ function toSource(exportName: string, serialized: Serialized) {
   const source = [
     `import {${importsList}} from 'sanitype'`,
     ...commonImports,
+    '',
     `export const ${camelCase(exportName)} = ${serialized.source}`,
   ]
   return source.join('\n')
+}
+
+function guessName(type: SanityType) {
+  // todo: identify things like arrays, portableText, block, etc
+  return type.typeName || 'Unknown'
 }
 export function serialize(type: SanityType): SourceFile[] {
   const takenNames = new Set<string>()
 
   const typeName = getNextValid(
-    (isObjectLikeSchema(type) && getInstanceName(type)) || type.typeName,
+    (isObjectLikeSchema(type) && getInstanceName(type)) || guessName(type),
     takenNames,
   )
 
@@ -94,7 +103,7 @@ export function serialize(type: SanityType): SourceFile[] {
     serialized: _serialize(commonType.type, commonMap),
   }))
 
-  serializedCommon.map((entry, index) => {
+  serializedCommon.map(entry => {
     commonMap.set(entry.common.type, entry.name)
   })
 
@@ -112,6 +121,13 @@ function _serialize(
   type: SanityType,
   commonMap: WeakMap<SanityType, string>,
 ): Serialized {
+  if (isDocumentSchema(type)) {
+    return serializeDocumentType(type, commonMap)
+  }
+  if (isReferenceSchema(type)) {
+    return serializeReferenceType(type, commonMap)
+  }
+  // todo image, file, block, etc
   if (isObjectLikeSchema(type)) {
     return serializeObjectType(type, commonMap)
   }
@@ -169,6 +185,47 @@ function serializeObjectType(
     refs: serializedShape.flatMap(s => s.ref || []),
     imports: [creator.object, ...serializedShape.flatMap(s => s.imports)],
     source: `object({${fieldsSource}})`,
+  }
+}
+
+function serializeDocumentType(
+  type: SanityDocumentType<any>,
+  commonMap: WeakMap<SanityType, string>,
+): Serialized {
+  const serializedShape = Object.entries(type.shape).flatMap(
+    ([fieldName, fieldType]) => {
+      if (fieldName !== '_type' && fieldName.startsWith('_')) return []
+      const serialized = _serialize(fieldType, commonMap)
+      const ref = commonMap.get(fieldType)
+      return {
+        imports: serialized.imports,
+        field: fieldName,
+        ref: commonMap.get(fieldType),
+        source: ref || serialized.source,
+      }
+    },
+  )
+
+  const fieldsSource = serializedShape
+    .map(({field, source}) => `${field}: ${source}`)
+    .join(',\n')
+
+  return {
+    refs: serializedShape.flatMap(s => s.ref || []),
+    imports: [creator.document, ...serializedShape.flatMap(s => s.imports)],
+    source: `document({${fieldsSource}})`,
+  }
+}
+
+function serializeReferenceType(
+  type: SanityReference<SanityDocumentType<any>>,
+  commonMap: WeakMap<SanityType, string>,
+): Serialized {
+  const ref = commonMap.get(type.referenceType)!
+  return {
+    refs: [ref],
+    imports: [creator.reference],
+    source: `reference(${ref})`,
   }
 }
 
