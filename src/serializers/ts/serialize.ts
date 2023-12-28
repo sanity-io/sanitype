@@ -212,7 +212,7 @@ function serializeUnion(
     }
   })
 
-  const unionsSource = serializedUnionTypes.join(',\n')
+  const unionsSource = serializedUnionTypes.map(u => u.source).join(',\n')
 
   return {
     refs: [...serializedUnionTypes.flatMap(s => s.ref || [])],
