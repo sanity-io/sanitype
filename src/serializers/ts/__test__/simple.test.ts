@@ -18,6 +18,7 @@ test('simple serialize to ts', async () => {
     {
       name: 'foo',
       source: `import {literal, number, object, string} from "sanitype"
+
 export const foo = object({
   _type: literal("foo"),
   prop: string(),

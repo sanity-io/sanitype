@@ -21,6 +21,7 @@ test('serialize to ts with a common object', async () => {
     {
       name: 'address',
       source: `import {object, string} from "sanitype"
+
 export const address = object({
   street: string(),
   city: string(),
@@ -32,6 +33,7 @@ export const address = object({
       name: 'person',
       source: `import {literal, object, string} from "sanitype"
 import {address} from "./address"
+
 export const person = object({
   _type: literal("person"),
   name: string(),
