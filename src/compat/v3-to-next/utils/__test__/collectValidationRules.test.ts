@@ -11,24 +11,9 @@ test('collectValidationRules', () => {
         validation: Rule => Rule.min(2).max(5).required(),
       }),
     ),
-  ).toMatchInlineSnapshot(`
-    [
-      {
-        "args": [
-          2,
-        ],
-        "prop": "min",
-      },
-      {
-        "args": [
-          5,
-        ],
-        "prop": "max",
-      },
-      {
-        "args": [],
-        "prop": "required",
-      },
-    ]
-  `)
+  ).toEqual([
+    {args: [2], prop: 'min'},
+    {args: [5], prop: 'max'},
+    {args: [], prop: 'required'},
+  ])
 })
