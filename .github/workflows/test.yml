@@ -12,26 +12,30 @@ jobs:
     name: Test (${{ matrix.os }} / node ${{ matrix.node }})
     runs-on: ${{ matrix.os }}
     strategy:
-        matrix:
-            node-version: [18, 20]
+      # we want to know if a test fails on a specific node version
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [18, 20]
+
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Test
-      id: test
-      run: |
-        node -v
-        pnpm test
+      - name: Test
+        id: test
+        run: |
+          node -v
+          pnpm test
