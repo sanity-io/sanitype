@@ -5,12 +5,12 @@ on:
   push:
     branches: ['**']
 
+
 jobs:
   test:
     timeout-minutes: 60
     name: Test (${{ matrix.os }} / node ${{ matrix.node }})
     runs-on: ${{ matrix.os }}
-
     strategy:
       # we want to know if a test fails on a specific node version
       fail-fast: false
@@ -18,28 +18,24 @@ jobs:
         os: [ubuntu-latest]
         node: [18, 20]
 
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-      - name: Install project dependencies
-        run: npm install --ci
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Test
         id: test
         run: |
           node -v
-          npm -v
-          npm test
-
-      - name: Test types
-        id: test-types
-        run: |
-          node -v
-          npm -v
-          npm test
+          pnpm test
