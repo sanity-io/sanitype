@@ -24,10 +24,6 @@
   "module": "./dist/index.js",
   "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
-  "workspaces": [
-    "./examples/studio",
-    "./examples/v3-studio"
-  ],
   "scripts": {
     "build": "run-s clean pkg:build pkg:check",
     "check": "npm-run-all --serial clean pkg:build --parallel typecheck typecheck:examples lint test pkg:check",
@@ -75,6 +71,7 @@
     "vite": "^5.0.11",
     "vitest": "^1.2.0"
   },
+  "packageManager": "pnpm@9.6.0",
   "engines": {
     "node": ">= 18"
   },
