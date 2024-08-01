@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: Test
     runs-on: ubuntu-latest
     strategy:
         matrix:
@@ -34,3 +34,4 @@ jobs:
       run: |
         node -v
         pnpm run typecheck
+        pnpm run typecheck:examples
