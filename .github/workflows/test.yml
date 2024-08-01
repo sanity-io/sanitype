@@ -1,4 +1,4 @@
-name: Lint
+name: Unit tests
 
 on:
   pull_request:
@@ -7,9 +7,10 @@ on:
 
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
+  test:
+    timeout-minutes: 60
+    name: Test (${{ matrix.os }} / node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             node-version: [18, 20]
