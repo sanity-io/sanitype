@@ -75,7 +75,7 @@ npm install
 
 Now you can take a look at the examples in the `examples` folder (feel free to create your own example and push to a branch, e.g. to illustrate a bug, lacking feature, or something that's hard to solve with this approach compared to current day schemas)
 
-A simple Studio example can be found in `examples/studio`. Start with:
+A Studio example can be found in `examples/studio`. Start with:
 
 ```
 npm run example:studio

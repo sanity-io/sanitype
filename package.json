@@ -30,8 +30,7 @@
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch",
-    "example:studio": "vite --config examples/studio/vite.config.ts examples/studio",
-    "example:v3-studio": "(cd examples/v3-studio && npm run dev)",
+    "example:studio": "(cd examples/studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
     "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
@@ -46,7 +45,7 @@
     "typecheck:examples": "tsc -b ./examples",
     "typecheck:examples:watch": "tsc -b ./examples --watch",
     "typecheck:watch": "tsc -b ./examples --watch",
-    "vercel-build": "vite build --config examples/studio/vite.config.ts examples/studio"
+    "vercel-build": "vite build --config examples/forms/vite.config.ts examples/forms"
   },
   "dependencies": {
     "date-fns": "^3.2.0"

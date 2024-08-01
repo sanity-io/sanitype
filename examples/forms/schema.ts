@@ -6,7 +6,7 @@ import {
   optional,
   string,
   union,
-} from 'sanitype'
+} from '@sanity/sanitype'
 
 export const address = object({
   street: string(),

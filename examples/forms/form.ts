@@ -1,5 +1,5 @@
-import {defineForm} from 'sanitype'
-import {address, person} from '../schema/person'
+import {defineForm} from '@sanity/sanitype'
+import {address, person} from './schema'
 
 const addressForm = defineForm(address, {
   fields: {
