@@ -54,7 +54,6 @@
     "date-fns": "^3.6.0"
   },
   "devDependencies": {
-    "@bjoerge/mutiny": "^0.6.0",
     "@sanity/client": "^6.21.1",
     "@sanity/pkg-utils": "^6.10.7",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
