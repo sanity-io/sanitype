@@ -1,9 +1,9 @@
 {
-  "extends": "./tsconfig.settings.json",
-  "include": [],
-  "references": [
-    {"path": "./migration/tsconfig.json"},
-    {"path": "./ts/tsconfig.json"},
-    {"path": "./studio/tsconfig.json"}
-  ]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "paths": {
+      "@sanity/sanitype": ["./src"]
+    }
+  }
 }

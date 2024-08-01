@@ -1,8 +1,11 @@
 {
   "include": ["../../src", "./**/*.ts", "./**/*.tsx"],
-  "extends": "../tsconfig.settings.json",
+  "extends": "../../tsconfig.settings.json",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "jsx": "react-jsx"
+    "composite": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@sanity/sanitype": ["../../src"]
+    }
   }
 }
