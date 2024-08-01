@@ -8,7 +8,7 @@ import {
   parse,
   string,
   union,
-} from 'sanitype'
+} from '@sanity/sanitype'
 import {draft, stored} from '../../src/lifecycle'
 
 const doc = document({

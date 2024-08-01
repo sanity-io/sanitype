@@ -8,8 +8,8 @@ import {
   reference,
   string,
   union,
-} from 'sanitype'
-import type {Infer} from 'sanitype'
+  type Infer,
+} from '@sanity/sanitype'
 
 const human = document({
   _type: literal('human'),

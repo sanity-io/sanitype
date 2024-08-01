@@ -7,8 +7,8 @@ import {
   parse,
   reference,
   string,
-} from 'sanitype'
-import type {Infer} from 'sanitype'
+  type Infer,
+} from '@sanity/sanitype'
 
 const pet = document({_type: literal('pet'), name: string()})
 

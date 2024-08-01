@@ -1,6 +1,14 @@
-import {array, literal, number, object, parse, string, union} from 'sanitype'
+import {
+  array,
+  literal,
+  number,
+  object,
+  parse,
+  string,
+  union,
+  type Infer,
+} from '@sanity/sanitype'
 import {block} from '../../src/creators/block'
-import type {Infer} from 'sanitype'
 
 const someBlock = block({
   _type: literal('someBlock'),

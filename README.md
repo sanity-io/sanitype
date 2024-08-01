@@ -17,8 +17,8 @@ import {
   parse,
   string,
   union,
-} from 'sanitype'
-import type {Infer} from 'sanitype'
+} from '@sanity/sanitype'
+import type {Infer} from '@sanity/sanitype'
 
 const userSchema = document({
   _type: literal('user'),
@@ -53,10 +53,10 @@ carl.noSuchProperty
 NOTE: It's a private package, so this it requires you to be logged in to npm as a user with access to the @sanity-io organization
 
 ```sh
-npm install sanitype       # npm
-yarn add sanitype          # yarn
-bun add sanitype           # bun
-pnpm add sanitype          # pnpm
+npm install @sanity/sanitype       # npm
+yarn add @sanity/sanitype          # yarn
+bun add @sanity/sanitype           # bun
+pnpm add @sanity/sanitype          # pnpm
 ```
 
 ## Development

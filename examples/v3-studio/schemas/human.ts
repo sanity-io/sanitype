@@ -12,7 +12,7 @@ import {
   object,
   string,
   union,
-} from 'sanitype'
+} from '@sanity/sanitype'
 import {pet} from './pet'
 
 export const human = document({

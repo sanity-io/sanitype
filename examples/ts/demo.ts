@@ -1,3 +1,4 @@
+import {type SanityClient} from '@sanity/client'
 import {
   array,
   deepPartial,
@@ -8,10 +9,8 @@ import {
   reference,
   resolve,
   string,
-} from 'sanitype'
-import type {Infer} from 'sanitype'
-
-import type {SanityClient} from '@sanity/client'
+  type Infer,
+} from '@sanity/sanitype'
 
 declare const client: SanityClient
 

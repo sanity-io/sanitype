@@ -1,5 +1,12 @@
-import {array, document, literal, number, object, string} from 'sanitype'
-import type {Infer} from 'sanitype'
+import {
+  array,
+  document,
+  literal,
+  number,
+  object,
+  string,
+  type Infer,
+} from '@sanity/sanitype'
 
 export type Human = Infer<typeof human>
 

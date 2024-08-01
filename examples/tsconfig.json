@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.settings.json",
   "include": [],
   "references": [
     {"path": "./migration/tsconfig.json"},

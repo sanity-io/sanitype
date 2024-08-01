@@ -1,6 +1,5 @@
-import {array, extend, number, omit, string} from 'sanitype'
+import {array, extend, number, omit, string, type Infer} from '@sanity/sanitype'
 import * as current from './current'
-import type {Infer} from 'sanitype'
 
 export const human = extend(omit(current.human, ['birthYear', 'addresses']), {
   age: number(),

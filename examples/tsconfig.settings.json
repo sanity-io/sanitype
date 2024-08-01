@@ -5,7 +5,7 @@
     "rootDir": "../",
     "outDir": "../.tmp",
     "paths": {
-      "sanitype": ["../src"]
+      "@sanity/sanitype": ["../src"]
     }
   }
 }

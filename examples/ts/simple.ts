@@ -9,7 +9,7 @@ import {
   parse,
   string,
   union,
-} from 'sanitype'
+} from '@sanity/sanitype'
 
 const userSchema = document({
   _type: literal('user'),

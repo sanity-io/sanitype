@@ -1,5 +1,13 @@
-import {extend, lazy, literal, number, object, string} from 'sanitype'
-import type {OutputOf, SanityObjectType} from 'sanitype'
+import {
+  extend,
+  lazy,
+  literal,
+  number,
+  object,
+  string,
+  type OutputOf,
+  type SanityObjectType,
+} from '@sanity/sanitype'
 
 interface Person {
   _type: 'person'

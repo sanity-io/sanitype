@@ -9,8 +9,8 @@ import {
   reference,
   string,
   union,
-} from 'sanitype'
-import type {OutputOf} from 'sanitype'
+  type OutputOf,
+} from '@sanity/sanitype'
 
 function assertAssignable<A extends B, B>() {}
 

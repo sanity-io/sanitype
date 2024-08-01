@@ -1,4 +1,4 @@
-import {image, object, string} from 'sanitype'
+import {image, object, string} from '@sanity/sanitype'
 
 export const pet = object({
   name: string(),

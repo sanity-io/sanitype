@@ -6,8 +6,9 @@ import {
   parse,
   reference,
   string,
-} from 'sanitype'
-import type {SanityDocumentValue, SanityType} from 'sanitype'
+  type SanityDocumentValue,
+  type SanityType,
+} from '@sanity/sanitype'
 
 interface Human extends SanityDocumentValue {
   name: string

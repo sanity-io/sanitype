@@ -1,4 +1,4 @@
-import {document, literal, object, parse, string} from 'sanitype'
+import {document, literal, object, parse, string} from '@sanity/sanitype'
 
 const muxPluginVideo = document({
   _type: literal('mux.video'),

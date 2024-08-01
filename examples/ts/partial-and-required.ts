@@ -9,10 +9,10 @@ import {
   parse,
   string,
   union,
-} from 'sanitype'
+  type Infer,
+} from '@sanity/sanitype'
 import {deepRequired} from '../../src/utils/deepRequired'
 import {shallowRequired} from '../../src/utils/shallowRequired'
-import type {Infer} from 'sanitype'
 
 const doc = document({
   _type: literal('pet'),

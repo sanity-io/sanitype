@@ -7,7 +7,7 @@ import {
   parse,
   string,
   union,
-} from 'sanitype'
+} from '@sanity/sanitype'
 
 const invalidUnion = union([
   string(),

@@ -8,13 +8,11 @@ import {
   reference,
   resolve,
   string,
-} from 'sanitype'
-import type {
-  SanityArrayValue,
-  SanityDocumentValue,
-  SanityReferenceValue,
-  SanityType,
-} from 'sanitype'
+  type SanityArrayValue,
+  type SanityDocumentValue,
+  type SanityReferenceValue,
+  type SanityType,
+} from '@sanity/sanitype'
 
 // todo: define a "human" document schema with name: {first, last}
 interface Human extends SanityDocumentValue {
