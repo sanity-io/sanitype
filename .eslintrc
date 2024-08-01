@@ -48,7 +48,7 @@
           {
             "prefer": "type-imports",
             "disallowTypeAnnotations": true,
-            "fixStyle": "separate-type-imports"
+            "fixStyle": "inline-type-imports"
           }
         ],
         "sort-imports": ["error", {"ignoreDeclarationSort": true}],
