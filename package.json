@@ -47,7 +47,9 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest --typecheck",
     "typecheck": "tsc",
-    "typecheck:watch": "tsc --watch"
+    "typecheck:watch": "tsc --watch",
+    "typecheck:examples": "tsc -p ./examples/tsconfig.json",
+    "typecheck:examples:watch": "tsc -p ./examples/tsconfig.json --watch"
   },
   "browserslist": "extends @sanity/browserslist-config",
   "dependencies": {

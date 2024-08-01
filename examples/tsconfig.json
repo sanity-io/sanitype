@@ -1,9 +1,14 @@
 {
   "extends": "../tsconfig.json",
+  "include": [
+    "./forms/**/*.ts",
+    "./migration/**/*.ts",
+    "./studio/**/*.ts",
+    "./ts/**/*.ts"
+  ],
   "compilerOptions": {
-    "allowJs": true,
     "paths": {
-      "@sanity/sanitype": ["./src"]
+      "@sanity/sanitype": ["../src"]
     }
   }
 }
