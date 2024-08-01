@@ -3,6 +3,10 @@
   "version": "0.2.0",
   "description": "Experimental TypeScript-first schemas for Sanity",
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanity-io/sanitype.git"
+  },
   "license": "MIT",
   "author": "Bjørge Næss <bjoerge@gmail.com>",
   "type": "module",
