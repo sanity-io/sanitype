@@ -31,12 +31,11 @@ const petForm = defineForm(pet, {
     name: {
       title: 'Name',
       readonly: true,
-      form: {},
     },
     tag: {
+      ...tagForm,
       title: 'Tag',
       readonly: true,
-      form: tagForm,
     },
   },
 })

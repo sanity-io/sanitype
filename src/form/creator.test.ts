@@ -38,28 +38,21 @@ test('define a basic nested form', () => {
       addresses: {
         title: 'test',
         readonly: true,
-        form: {
-          draggable: true,
-          items: {
-            location: {
-              title: 'Location',
-              form: {
-                fields: {
-                  city: {title: 'City'},
-                  country: {title: 'Country'},
-                  street: {title: 'Street'},
-                },
-              },
+        draggable: true,
+        items: {
+          location: {
+            title: 'Location',
+            fields: {
+              city: {title: 'City'},
+              country: {title: 'Country'},
+              street: {title: 'Street'},
             },
-            address: {
-              title: 'Address',
-              form: {
-                fields: {
-                  city: {title: 'City'},
-                  country: {title: 'Country'},
-                  street: {title: 'Street'},
-                },
-              },
+          },
+          address: {
+            fields: {
+              city: {title: 'City'},
+              country: {title: 'Country'},
+              street: {title: 'Street'},
             },
           },
         },
