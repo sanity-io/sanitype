@@ -1,12 +1,6 @@
 {
   "extends": "./tsconfig.settings",
-  "include": [
-    "./src/**/*.ts",
-    "./examples/forms/**/*.ts",
-    "./examples/migration/**/*.ts",
-    "./examples/studio/**/*.ts",
-    "./examples/ts/**/*.ts"
-  ],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
