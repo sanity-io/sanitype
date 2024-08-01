@@ -12,15 +12,16 @@ import type {ElementType, Format} from '../helpers/utilTypes'
 export type PickShape<
   T extends SanityObject | SanityDocument,
   K extends Array<keyof OutputOf<T>>,
-> = T extends SanityObject<infer Shape>
-  ? SanityObjectShape extends Shape
-    ? SanityObjectType<Format<Pick<OutputOf<T>, ElementType<K>>>>
-    : SanityObject<Format<Pick<Shape, ElementType<K>>>>
-  : T extends SanityDocument<infer Shape>
+> =
+  T extends SanityObject<infer Shape>
     ? SanityObjectShape extends Shape
-      ? SanityDocumentType<Format<Pick<OutputOf<T>, ElementType<K>>>>
-      : SanityDocument<Format<Pick<Shape, ElementType<K>>>>
-    : never
+      ? SanityObjectType<Format<Pick<OutputOf<T>, ElementType<K>>>>
+      : SanityObject<Format<Pick<Shape, ElementType<K>>>>
+    : T extends SanityDocument<infer Shape>
+      ? SanityObjectShape extends Shape
+        ? SanityDocumentType<Format<Pick<OutputOf<T>, ElementType<K>>>>
+        : SanityDocument<Format<Pick<Shape, ElementType<K>>>>
+      : never
 
 export function pick<
   T extends SanityObject | SanityDocument,

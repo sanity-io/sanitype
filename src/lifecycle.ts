@@ -15,13 +15,12 @@ export const STORED_KEYS = [
 ] as const
 export type StoredKeys = ArrayElement<typeof STORED_KEYS>
 
-export type Stored<T extends SanityDocument<any>> = T extends SanityDocument<
-  infer DocShape
->
-  ? SanityDocument<
-      RequiredShape<Pick<DocShape, StoredKeys>> & Omit<DocShape, StoredKeys>
-    >
-  : never
+export type Stored<T extends SanityDocument<any>> =
+  T extends SanityDocument<infer DocShape>
+    ? SanityDocument<
+        RequiredShape<Pick<DocShape, StoredKeys>> & Omit<DocShape, StoredKeys>
+      >
+    : never
 
 export type Draft<T extends SanityDocument> = DeepPartial<T>
 

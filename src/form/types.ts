@@ -93,15 +93,16 @@ export type SystemFields =
 export type FindTypeByName<
   Type extends SanityObjectLike | SanityObjectUnion,
   SearchName extends string,
-> = Type extends SanityObjectUnion<infer S>
-  ? S extends SanityObjectLike
-    ? FindTypeByName<S, SearchName>
-    : unknown
-  : Type extends SanityObject<{_type: SanityLiteral<infer TName>}>
-    ? SearchName extends TName
-      ? Type
-      : never
-    : Type
+> =
+  Type extends SanityObjectUnion<infer S>
+    ? S extends SanityObjectLike
+      ? FindTypeByName<S, SearchName>
+      : unknown
+    : Type extends SanityObject<{_type: SanityLiteral<infer TName>}>
+      ? SearchName extends TName
+        ? Type
+        : never
+      : Type
 
 export type UnpackShapes<Type extends SanityObjectLike | SanityObjectUnion> =
   Type extends SanityObjectUnion<infer O>
@@ -123,11 +124,12 @@ export type ExtractArrayItemTypeNames<T extends SanityObjectArray> =
   UnpackShapes<T['element']>
 
 export type Pluck<T, K extends keyof any> = K extends keyof T ? T[K] : never
-export type GetType<T> = T extends SanityLiteral<infer Name>
-  ? Name extends string
-    ? Name
+export type GetType<T> =
+  T extends SanityLiteral<infer Name>
+    ? Name extends string
+      ? Name
+      : never
     : never
-  : never
 
 export type NamedTypeMap<T extends SanityObjectArray> =
   T extends SanityObjectArray<infer ItemType>

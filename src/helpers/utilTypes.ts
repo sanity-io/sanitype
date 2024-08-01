@@ -89,14 +89,13 @@ export type ValidateKeyOf<T extends keyof any> = T extends string
   ? ValidateFieldName<T>
   : never
 
-export type ValidateFieldName<T extends string> = Uppercase<
-  GetFirstChar<T>
-> extends ValidFirstChar
-  ? ValidateFieldChars<T>
-  : FieldError<
-      'FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE',
-      `Invalid field name ${T}: Underscore field names are reserved for system fields`
-    >
+export type ValidateFieldName<T extends string> =
+  Uppercase<GetFirstChar<T>> extends ValidFirstChar
+    ? ValidateFieldChars<T>
+    : FieldError<
+        'FIELD_NAME_CANNOT_BEGIN_WITH_UNDERSCORE',
+        `Invalid field name ${T}: Underscore field names are reserved for system fields`
+      >
 
 export type ValidateFieldChars<T extends string> = T extends ''
   ? true
@@ -128,9 +127,10 @@ export type ValidFieldChars<T extends string> = T extends ''
         >
     : never
 
-type MaybeAddKey<T> = T extends Array<infer E>
-  ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
-  : T
+type MaybeAddKey<T> =
+  T extends Array<infer E>
+    ? GroupUnderscoreKeys<Combine<MaybeAddKeyToArrayProps<E>, {_key: string}>>[]
+    : T
 
 export type MaybeAddKeyToArrayProps<T> = T extends {
   [key: string]: any

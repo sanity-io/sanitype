@@ -12,15 +12,16 @@ import type {SafeObject} from '../creators'
 export type Extends<
   Obj extends SanityObject | SanityDocument,
   Augmentation extends SafeObject<SanityObjectShape>,
-> = Obj extends SanityObject<infer Shape, infer Output>
-  ? SanityObjectShape extends Shape
-    ? SanityObjectType<Combine<Output, OutputFromShape<Augmentation>>>
-    : SanityObject<Combine<Shape, Augmentation>>
-  : Obj extends SanityDocument<infer Shape, infer Output>
+> =
+  Obj extends SanityObject<infer Shape, infer Output>
     ? SanityObjectShape extends Shape
-      ? SanityDocumentType<Combine<Output, OutputFromShape<Augmentation>>>
-      : SanityDocument<Combine<Shape, Augmentation>>
-    : never
+      ? SanityObjectType<Combine<Output, OutputFromShape<Augmentation>>>
+      : SanityObject<Combine<Shape, Augmentation>>
+    : Obj extends SanityDocument<infer Shape, infer Output>
+      ? SanityObjectShape extends Shape
+        ? SanityDocumentType<Combine<Output, OutputFromShape<Augmentation>>>
+        : SanityDocument<Combine<Shape, Augmentation>>
+      : never
 
 export function extend<
   Obj extends SanityObject | SanityDocument,

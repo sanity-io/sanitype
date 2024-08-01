@@ -271,14 +271,13 @@ export type LiteralKeys<T extends SanityObjectShape> = {
 export type InferDeepLiteralValue<T extends SanityObjectShape> =
   LiteralKeys<T> & OutputFormatFix
 
-export type InferLiteralValue<T extends SanityAny> = T extends SanityLiteral<
-  infer Literal
->
-  ? Literal
-  : T extends SanityObject<infer Shape>
-    ? InferDeepLiteralValue<Shape>
-    : T extends SanityDocument<infer Shape>
+export type InferLiteralValue<T extends SanityAny> =
+  T extends SanityLiteral<infer Literal>
+    ? Literal
+    : T extends SanityObject<infer Shape>
       ? InferDeepLiteralValue<Shape>
-      : never
+      : T extends SanityDocument<infer Shape>
+        ? InferDeepLiteralValue<Shape>
+        : never
 
 export type OutputOf<T extends SanityAny> = T['output']

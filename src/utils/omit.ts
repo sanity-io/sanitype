@@ -12,15 +12,16 @@ import type {ElementType, Format} from '../helpers/utilTypes'
 export type OmitShape<
   T extends SanityObject | SanityDocument,
   K extends Array<keyof OutputOf<T>>,
-> = T extends SanityObject<infer Shape>
-  ? SanityObjectShape extends Shape
-    ? SanityObjectType<Format<Omit<OutputOf<T>, ElementType<K>>>>
-    : SanityObject<Format<Omit<Shape, ElementType<K>>>>
-  : T extends SanityDocument<infer Shape>
+> =
+  T extends SanityObject<infer Shape>
     ? SanityObjectShape extends Shape
-      ? SanityDocumentType<Format<Omit<OutputOf<T>, ElementType<K>>>>
-      : SanityDocument<Format<Omit<Shape, ElementType<K>>>>
-    : never
+      ? SanityObjectType<Format<Omit<OutputOf<T>, ElementType<K>>>>
+      : SanityObject<Format<Omit<Shape, ElementType<K>>>>
+    : T extends SanityDocument<infer Shape>
+      ? SanityObjectShape extends Shape
+        ? SanityDocumentType<Format<Omit<OutputOf<T>, ElementType<K>>>>
+        : SanityDocument<Format<Omit<Shape, ElementType<K>>>>
+      : never
 
 export function omit<
   T extends SanityObject | SanityDocument,

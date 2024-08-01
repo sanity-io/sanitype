@@ -26,19 +26,21 @@ export type FlattenUnionTypes<
     | SanityObjectUnion<any>
     | SanityBlock
     | SanityAsset,
-> = T extends SanityObjectUnion<infer UnionTypes>
-  ? UnionTypes extends SanityObjectUnion<any>
-    ? FlattenUnionTypes<UnionTypes>
-    : UnionTypes
-  : T
+> =
+  T extends SanityObjectUnion<infer UnionTypes>
+    ? UnionTypes extends SanityObjectUnion<any>
+      ? FlattenUnionTypes<UnionTypes>
+      : UnionTypes
+    : T
 
 export type FlattenPrimitiveUnionTypes<
   T extends SanityPrimitive | SanityLiteral | SanityPrimitiveUnion<any>,
-> = T extends SanityPrimitiveUnion<infer UnionTypes>
-  ? UnionTypes extends SanityPrimitiveUnion<any>
-    ? FlattenPrimitiveUnionTypes<UnionTypes>
-    : UnionTypes
-  : T
+> =
+  T extends SanityPrimitiveUnion<infer UnionTypes>
+    ? UnionTypes extends SanityPrimitiveUnion<any>
+      ? FlattenPrimitiveUnionTypes<UnionTypes>
+      : UnionTypes
+    : T
 
 export function union<
   UnionTypes extends
