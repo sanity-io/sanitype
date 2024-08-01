@@ -1,11 +1,11 @@
 import {defineType} from '../helpers/defineType'
-import type {
-  OutputFromShape,
-  SanityObject,
-  SanityObjectShape,
-  UndefinedOptional,
+import {
+  type OutputFromShape,
+  type SanityObject,
+  type SanityObjectShape,
+  type UndefinedOptional,
 } from '../defs'
-import type {ValidFieldName} from '../helpers/utilTypes'
+import {type ValidFieldName} from '../helpers/utilTypes'
 
 export type SafeObject<Type, Allowed extends string = never> = {
   [Property in keyof Type]: Property extends Allowed

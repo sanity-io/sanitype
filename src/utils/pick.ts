@@ -1,13 +1,13 @@
 import {document, object} from '../creators'
-import type {
-  OutputOf,
-  SanityDocument,
-  SanityDocumentType,
-  SanityObject,
-  SanityObjectShape,
-  SanityObjectType,
+import {
+  type OutputOf,
+  type SanityDocument,
+  type SanityDocumentType,
+  type SanityObject,
+  type SanityObjectShape,
+  type SanityObjectType,
 } from '../defs'
-import type {ElementType, Format} from '../helpers/utilTypes'
+import {type ElementType, type Format} from '../helpers/utilTypes'
 
 export type PickShape<
   T extends SanityObject | SanityDocument,

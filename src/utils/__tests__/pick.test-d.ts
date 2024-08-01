@@ -1,10 +1,10 @@
 import {expectTypeOf, test} from 'vitest'
-import type {PickShape} from '../pick'
-import type {
-  SanityBoolean,
-  SanityDocument,
-  SanityNumber,
-  SanityString,
+import {type PickShape} from '../pick'
+import {
+  type SanityBoolean,
+  type SanityDocument,
+  type SanityNumber,
+  type SanityString,
 } from '../../defs'
 
 test('pick from document', () => {

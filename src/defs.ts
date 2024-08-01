@@ -1,11 +1,11 @@
-import type {Combine, OutputFormatFix} from './helpers/utilTypes'
-import type {
-  ReferenceBase,
-  SanityDocumentShape,
-  SanityDocumentValue,
-  SanityFileShape,
-  SanityImageShape,
-  SanityReferenceShape,
+import {type Combine, type OutputFormatFix} from './helpers/utilTypes'
+import {
+  type ReferenceBase,
+  type SanityDocumentShape,
+  type SanityDocumentValue,
+  type SanityFileShape,
+  type SanityImageShape,
+  type SanityReferenceShape,
 } from './shapeDefs'
 
 /**

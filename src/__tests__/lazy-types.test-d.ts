@@ -1,12 +1,12 @@
 import {assertType, test} from 'vitest'
 
-import type {
-  OutputOf,
-  SanityLazy,
-  SanityLiteral,
-  SanityObject,
-  SanityObjectArray,
-  SanityString,
+import {
+  type OutputOf,
+  type SanityLazy,
+  type SanityLiteral,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityString,
 } from '../defs'
 
 test('lazy string type', () => {

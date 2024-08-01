@@ -2,22 +2,21 @@ import {assertType, expectTypeOf, test} from 'vitest'
 
 import {lazy, literal, object, optional, string} from '../../creators'
 import {extend} from '../extend'
-import {deepRequired} from '../deepRequired'
+import {type DeepRequired, deepRequired} from '../deepRequired'
 import {parse} from '../../parse'
 import {omit} from '../omit'
-import type {DeepRequired} from '../deepRequired'
-import type {
-  Infer,
-  SanityBoolean,
-  SanityDocument,
-  SanityLiteral,
-  SanityNumber,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectType,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityString,
+import {
+  type Infer,
+  type SanityBoolean,
+  type SanityDocument,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectType,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityString,
 } from '../../defs'
 
 test('deep required on primitive types', () => {

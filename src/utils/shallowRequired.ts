@@ -1,14 +1,14 @@
 import {isObjectSchema, isOptionalSchema} from '../asserters'
 import {object} from '../creators'
-import type {SanityRequired} from './required'
-import type {
-  OutputOf,
-  SanityDocument,
-  SanityObject,
-  SanityObjectShape,
-  SanityObjectType,
-  _SanityDocument,
+import {
+  type OutputOf,
+  type SanityDocument,
+  type SanityObject,
+  type SanityObjectShape,
+  type SanityObjectType,
+  type _SanityDocument,
 } from '../defs'
+import {type SanityRequired} from './required'
 
 export type RequiredShape<S> = S extends SanityObjectShape
   ? {

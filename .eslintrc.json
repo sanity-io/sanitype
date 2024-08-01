@@ -51,10 +51,12 @@
             "fixStyle": "inline-type-imports"
           }
         ],
-        "sort-imports": ["error", {"ignoreDeclarationSort": true}],
+        "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+        "import/no-duplicates": ["error", {"prefer-inline": true}],
         "import/order": [
           "error",
           {
+            "alphabetize": {"order": "asc"},
             "groups": [
               "builtin",
               "external",

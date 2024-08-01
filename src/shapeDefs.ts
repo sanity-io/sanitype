@@ -1,20 +1,20 @@
 import {defineType as dt} from './helpers/defineType'
-import type {
-  Conceal,
-  Infer,
-  OutputFromShape,
-  SanityBoolean,
-  SanityDocument,
-  SanityLiteral,
-  SanityNumber,
-  SanityObject,
-  SanityOptional,
-  SanityReference,
-  SanityString,
-  SanityType,
-  UndefinedOptional,
+import {
+  type Conceal,
+  type Infer,
+  type OutputFromShape,
+  type SanityBoolean,
+  type SanityDocument,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObject,
+  type SanityOptional,
+  type SanityReference,
+  type SanityString,
+  type SanityType,
+  type UndefinedOptional,
 } from './defs'
-import type {Combine, OutputFormatFix} from './helpers/utilTypes'
+import {type Combine, type OutputFormatFix} from './helpers/utilTypes'
 
 const STRING: SanityString = dt({typeName: 'string', def: ''})
 const OPTIONAL_STRING: SanityOptional<SanityString> = dt({

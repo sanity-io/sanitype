@@ -1,12 +1,15 @@
-import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
-import {ParseError, safeParse} from './parse'
+import {
+  type Conceal,
+  INTERNAL_REF_TYPE_SCHEMA,
+  type Infer,
+  type SanityType,
+} from './defs'
+import {ParseError, type ParseOk, type ParseResult, safeParse} from './parse'
 import {
   type SanityDocumentValue,
   documentBase,
   type referenceBase,
 } from './shapeDefs'
-import type {Conceal, Infer, SanityType} from './defs'
-import type {ParseOk, ParseResult} from './parse'
 
 export type DocumentLike = Infer<typeof documentBase>
 export type ReferenceLike = Infer<typeof referenceBase>

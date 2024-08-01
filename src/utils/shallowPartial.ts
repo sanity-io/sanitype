@@ -1,15 +1,15 @@
 import {isObjectSchema, isOptionalSchema} from '../asserters'
 import {object} from '../creators'
-import type {
-  OutputOf,
-  SanityDocument,
-  SanityDocumentType,
-  SanityObject,
-  SanityObjectShape,
-  SanityObjectType,
+import {
+  type OutputOf,
+  type SanityDocument,
+  type SanityDocumentType,
+  type SanityObject,
+  type SanityObjectShape,
+  type SanityObjectType,
 } from '../defs'
-import type {Combine} from '../helpers/utilTypes'
-import type {MaybeOptionalType} from './deepPartial'
+import {type Combine} from '../helpers/utilTypes'
+import {type MaybeOptionalType} from './deepPartial'
 
 export type ShallowPartialShape<S> = S extends SanityObjectShape
   ? {

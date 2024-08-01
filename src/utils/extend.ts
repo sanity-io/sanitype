@@ -1,13 +1,13 @@
-import type {
-  OutputFromShape,
-  SanityDocument,
-  SanityDocumentType,
-  SanityObject,
-  SanityObjectShape,
-  SanityObjectType,
+import {
+  type OutputFromShape,
+  type SanityDocument,
+  type SanityDocumentType,
+  type SanityObject,
+  type SanityObjectShape,
+  type SanityObjectType,
 } from '../defs'
-import type {Combine} from '../helpers/utilTypes'
-import type {SafeObject} from '../creators'
+import {type Combine} from '../helpers/utilTypes'
+import {type SafeObject} from '../creators'
 
 export type Extends<
   Obj extends SanityObject | SanityDocument,

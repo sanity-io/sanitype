@@ -6,8 +6,8 @@ import {
 import {optional} from '../creators'
 import {safeParse} from '../parse'
 import {isObjectLike} from '../helpers/isObjectLike'
-import type {DeepPartial} from '../utils/deepPartial'
-import type {OutputOf, SanityAny} from '../defs'
+import {type DeepPartial} from '../utils/deepPartial'
+import {type OutputOf, type SanityAny} from '../defs'
 
 /**
  * Assigns values to a schema, but only if the schema has a matching key.

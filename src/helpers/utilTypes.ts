@@ -2,7 +2,7 @@
  *  Generic utility types
  */
 
-import type {SanityDocument, SanityObject} from '../defs'
+import {type SanityDocument, type SanityObject} from '../defs'
 
 /**
  * Combines two object types into a single, uniform type instead of an intersection of the two

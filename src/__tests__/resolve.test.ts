@@ -2,7 +2,7 @@ import {expect, expectTypeOf, test, vi} from 'vitest'
 import {document, literal, reference, string} from '../creators'
 import {parse} from '../parse'
 import {createResolve} from '../createResolve'
-import type {Infer} from '../defs'
+import {type Infer} from '../defs'
 
 const country = document({
   _type: literal('country'),

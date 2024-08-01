@@ -5,18 +5,18 @@ import {
   isOptionalSchema,
 } from '../asserters'
 import {object, objectArray, optional, union} from '../creators'
-import type {
-  OutputOf,
-  SanityDocument,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectShape,
-  SanityObjectType,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityType,
+import {
+  type OutputOf,
+  type SanityDocument,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectShape,
+  type SanityObjectType,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityType,
 } from '../defs'
-import type {Combine, ExtendsNever} from '../helpers/utilTypes'
+import {type Combine, type ExtendsNever} from '../helpers/utilTypes'
 
 export type MaybeOptionalType<T extends SanityType> =
   T extends SanityOptional<any> ? T : SanityOptional<T>

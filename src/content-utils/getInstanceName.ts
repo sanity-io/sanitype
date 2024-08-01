@@ -1,5 +1,5 @@
 import {isLiteralSchema} from '../asserters'
-import type {SanityObjectLike} from '../defs'
+import {type SanityObjectLike} from '../defs'
 
 export function getInstanceName(schema: SanityObjectLike) {
   const _type = schema.shape?._type

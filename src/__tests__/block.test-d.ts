@@ -1,6 +1,6 @@
 import {describe, expectTypeOf, test} from 'vitest'
 import {array, block, literal, number, object, string, union} from '../creators'
-import type {Infer} from '../defs'
+import {type Infer} from '../defs'
 
 describe('block type', () => {
   test('block type definition', () => {

@@ -1,4 +1,26 @@
-import {INTERNAL_REF_TYPE_SCHEMA} from './defs'
+import {
+  INTERNAL_REF_TYPE_SCHEMA,
+  type Infer,
+  type OutputOf,
+  type SanityAsset,
+  type SanityBlock,
+  type SanityBoolean,
+  type SanityDate,
+  type SanityDateTime,
+  type SanityDocument,
+  type SanityExtendableObject,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObjectArray,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityPrimitiveArray,
+  type SanityPrimitiveUnion,
+  type SanityReference,
+  type SanityString,
+  type SanityType,
+  type SanityTypedObject,
+} from './defs'
 import {
   isBooleanSchema,
   isDateSchema,
@@ -23,28 +45,6 @@ import {
   isStrictlyDateTime,
   isStrictlyFormatted,
 } from './helpers/strictDateParse'
-import type {
-  Infer,
-  OutputOf,
-  SanityAsset,
-  SanityBlock,
-  SanityBoolean,
-  SanityDate,
-  SanityDateTime,
-  SanityDocument,
-  SanityExtendableObject,
-  SanityLiteral,
-  SanityNumber,
-  SanityObjectArray,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityPrimitiveArray,
-  SanityPrimitiveUnion,
-  SanityReference,
-  SanityString,
-  SanityType,
-  SanityTypedObject,
-} from './defs'
 export type Path = Array<string | number | {_key: string}>
 
 export type ErrorCode =

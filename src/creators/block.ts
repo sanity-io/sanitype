@@ -1,26 +1,25 @@
 import {defineType} from '../helpers/defineType'
+import {type ElementType} from '../helpers/utilTypes'
+import {
+  type SanityBlock,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityPrimitiveArray,
+  type SanityPrimitiveUnion,
+  type SanityString,
+  type SanityTypedObject,
+} from '../defs'
 import {string} from './string'
 import {literal} from './literal'
 import {object} from './object'
 import {optional} from './optional'
-import {union} from './union'
+import {type FlattenUnionTypes, union} from './union'
 import {number} from './number'
 import {array} from './array'
-import type {FlattenUnionTypes} from './union'
-import type {ElementType} from '../helpers/utilTypes'
-import type {
-  SanityBlock,
-  SanityLiteral,
-  SanityNumber,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityPrimitiveArray,
-  SanityPrimitiveUnion,
-  SanityString,
-  SanityTypedObject,
-} from '../defs'
 
 export function _markDefRef(): SanityLiteral<`ref-${string}`> {
   return literal(`ref-$id`)

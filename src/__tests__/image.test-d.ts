@@ -1,7 +1,11 @@
 import {describe, expectTypeOf, test} from 'vitest'
 import {image, string} from '../creators'
-import type {ImageAssetShape} from '../shapeDefs'
-import type {INTERNAL_REF_TYPE_SCHEMA, Infer, SanityDocument} from '../defs'
+import {type ImageAssetShape} from '../shapeDefs'
+import {
+  type INTERNAL_REF_TYPE_SCHEMA,
+  type Infer,
+  type SanityDocument,
+} from '../defs'
 
 describe('image type', () => {
   test('plain image type definition', () => {

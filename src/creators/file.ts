@@ -1,6 +1,6 @@
 import {defineType} from '../helpers/defineType'
 import {type SanityFileShape, fileBase} from '../shapeDefs'
-import type {SanityFile, SanityObjectShape} from '../defs'
+import {type SanityFile, type SanityObjectShape} from '../defs'
 
 // TODO: Make `shape` optional.
 export function file<Shape extends SanityObjectShape = SanityObjectShape>(

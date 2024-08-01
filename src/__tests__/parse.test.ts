@@ -14,9 +14,12 @@ import {
   string,
   union,
 } from '../creators'
-import {INTERNAL_REF_TYPE_SCHEMA} from '../defs'
-import type {SanityObjectType, SanityType} from '../defs'
-import type {SanityDocumentValue} from '../shapeDefs'
+import {
+  INTERNAL_REF_TYPE_SCHEMA,
+  type SanityObjectType,
+  type SanityType,
+} from '../defs'
+import {type SanityDocumentValue} from '../shapeDefs'
 
 describe('string parsing', () => {
   test('successful parsing', () => {

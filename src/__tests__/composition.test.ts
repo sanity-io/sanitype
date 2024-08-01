@@ -10,7 +10,7 @@ import {
   union,
 } from '../creators'
 import {parse} from '../parse'
-import type {Infer} from '../defs'
+import {type Infer} from '../defs'
 
 const stringVal: string = ''
 const numVal: number = 0

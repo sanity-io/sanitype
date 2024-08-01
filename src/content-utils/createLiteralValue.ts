@@ -1,12 +1,12 @@
 import {isDocumentSchema, isLiteralSchema, isObjectSchema} from '../asserters'
 import {getLazySchema} from '../helpers/getLazySchema'
 import {isEmpty} from '../helpers/isEmpty'
-import type {
-  InferLiteralValue,
-  SanityDocument,
-  SanityLiteral,
-  SanityObject,
-  SanityType,
+import {
+  type InferLiteralValue,
+  type SanityDocument,
+  type SanityLiteral,
+  type SanityObject,
+  type SanityType,
 } from '../defs'
 
 function canCreateLiteralFrom(

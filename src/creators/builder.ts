@@ -1,10 +1,9 @@
-import {parse, safeParse} from '../parse'
-import type {ParseResult} from '../parse'
-import type {
-  OutputOf,
-  SanityOptional,
-  SanityType,
-  UndefinedOptional,
+import {type ParseResult, parse, safeParse} from '../parse'
+import {
+  type OutputOf,
+  type SanityOptional,
+  type SanityType,
+  type UndefinedOptional,
 } from '../defs'
 
 export abstract class Builder<Output> implements SanityType {

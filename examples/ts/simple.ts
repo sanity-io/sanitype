@@ -1,4 +1,5 @@
 import {
+  type Infer,
   boolean,
   document,
   literal,
@@ -9,7 +10,6 @@ import {
   string,
   union,
 } from 'sanitype'
-import type {Infer} from 'sanitype'
 
 const userSchema = document({
   _type: literal('user'),

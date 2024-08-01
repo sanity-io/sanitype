@@ -1,5 +1,5 @@
 import {isOptionalSchema} from '../asserters'
-import type {SanityOptional, SanityType} from '../defs'
+import {type SanityOptional, type SanityType} from '../defs'
 
 export type SanityRequired<S extends SanityType> =
   S extends SanityOptional<infer T> ? SanityRequired<T> : S

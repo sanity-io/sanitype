@@ -13,7 +13,7 @@ import {
 } from '../../creators'
 import {extend} from '../extend'
 import {parse} from '../../parse'
-import type {SanityObjectType} from '../../defs'
+import {type SanityObjectType} from '../../defs'
 
 describe('extends helper', () => {
   test('simple extends', () => {

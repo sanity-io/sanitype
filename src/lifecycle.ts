@@ -1,10 +1,9 @@
-import {deepPartial} from './utils/deepPartial'
+import {type ArrayElement} from '@bjoerge/mutiny'
+import {type DeepPartial, deepPartial} from './utils/deepPartial'
 import {document} from './creators'
 import {required} from './utils/required'
-import type {DeepPartial} from './utils/deepPartial'
-import type {ArrayElement} from '@bjoerge/mutiny'
-import type {SanityDocument} from './defs'
-import type {RequiredShape} from './utils/shallowRequired'
+import {type SanityDocument} from './defs'
+import {type RequiredShape} from './utils/shallowRequired'
 
 export const STORED_KEYS = [
   '_type',

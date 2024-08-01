@@ -1,10 +1,10 @@
 import {assertType, test} from 'vitest'
-import type {
-  Infer,
-  SanityDocument,
-  SanityLiteral,
-  SanityOptional,
-  SanityString,
+import {
+  type Infer,
+  type SanityDocument,
+  type SanityLiteral,
+  type SanityOptional,
+  type SanityString,
 } from '../defs'
 
 test('optional fields', () => {

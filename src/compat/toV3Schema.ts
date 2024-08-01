@@ -15,14 +15,14 @@ import {
   isReferenceSchema,
   isStringSchema,
 } from '../asserters'
-import type {
-  SanityAny,
-  SanityAsset,
-  SanityBlock,
-  SanityDocument,
-  SanityObjectArray,
-  SanityObjectLike,
-  SanityObjectUnion,
+import {
+  type SanityAny,
+  type SanityAsset,
+  type SanityBlock,
+  type SanityDocument,
+  type SanityObjectArray,
+  type SanityObjectLike,
+  type SanityObjectUnion,
 } from '../defs'
 
 type SanityV3SchemaType = any

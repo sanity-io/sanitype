@@ -1,7 +1,6 @@
-import {referenceBase} from '../shapeDefs'
+import {type SanityDocumentValue, referenceBase} from '../shapeDefs'
 import {defineType} from '../helpers/defineType'
-import type {SanityDocumentValue} from '../shapeDefs'
-import type {SanityReference, SanityType} from '../defs'
+import {type SanityReference, type SanityType} from '../defs'
 
 export function reference<RefType extends SanityType<SanityDocumentValue>>(
   to: RefType,

@@ -8,15 +8,15 @@ import {
   isReferenceSchema,
   isTypedObjectSchema,
 } from '../asserters'
-import type {
-  SanityAsset,
-  SanityBlock,
-  SanityLiteral,
-  SanityObjectUnion,
-  SanityPrimitive,
-  SanityPrimitiveUnion,
-  SanityReference,
-  SanityTypedObject,
+import {
+  type SanityAsset,
+  type SanityBlock,
+  type SanityLiteral,
+  type SanityObjectUnion,
+  type SanityPrimitive,
+  type SanityPrimitiveUnion,
+  type SanityReference,
+  type SanityTypedObject,
 } from '../defs'
 
 export type FlattenUnionTypes<

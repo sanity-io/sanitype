@@ -1,14 +1,14 @@
 import {describe, test} from 'vitest'
-import type {ElementType} from '../helpers/utilTypes'
-import type {
-  Infer,
-  SanityArray,
-  SanityNumber,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectUnion,
-  SanityPrimitiveArray,
-  SanityString,
+import {type ElementType} from '../helpers/utilTypes'
+import {
+  type Infer,
+  type SanityArray,
+  type SanityNumber,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectUnion,
+  type SanityPrimitiveArray,
+  type SanityString,
 } from '../defs'
 
 // lil helper to avoid having to alias types everywhere

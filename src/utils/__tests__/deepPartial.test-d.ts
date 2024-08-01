@@ -2,22 +2,21 @@ import {assertType, expectTypeOf, test} from 'vitest'
 
 import {lazy, literal, object, optional, string} from '../../creators'
 import {extend} from '../extend'
-import {deepPartial} from '../deepPartial'
+import {type DeepPartial, deepPartial} from '../deepPartial'
 import {parse} from '../../parse'
 import {omit} from '../omit'
-import type {DeepPartial} from '../deepPartial'
-import type {
-  Infer,
-  SanityBoolean,
-  SanityDocument,
-  SanityLiteral,
-  SanityNumber,
-  SanityObject,
-  SanityObjectArray,
-  SanityObjectType,
-  SanityObjectUnion,
-  SanityOptional,
-  SanityString,
+import {
+  type Infer,
+  type SanityBoolean,
+  type SanityDocument,
+  type SanityLiteral,
+  type SanityNumber,
+  type SanityObject,
+  type SanityObjectArray,
+  type SanityObjectType,
+  type SanityObjectUnion,
+  type SanityOptional,
+  type SanityString,
 } from '../../defs'
 
 test('deep partial on primitive types', () => {

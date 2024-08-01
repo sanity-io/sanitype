@@ -6,7 +6,7 @@ import {
   isOptionalSchema,
 } from '../asserters'
 import {getInstanceName} from '../content-utils/getInstanceName'
-import type {SanityType} from '../defs'
+import {type SanityType} from '../defs'
 
 type Err<V> = {
   ok: false
