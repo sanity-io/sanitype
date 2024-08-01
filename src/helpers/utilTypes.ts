@@ -147,4 +147,5 @@ export type GetShapeOf<T extends SanityObject | SanityDocument> =
       ? Def
       : never
 
-export type ElementType<T extends any[]> = T extends (infer E)[] ? E : never
+export type ElementType<A extends any[] | readonly any[]> =
+  A extends readonly (infer T)[] ? T : never
