@@ -15,15 +15,15 @@
     "start": "sanity start"
   },
   "dependencies": {
-    "@sanity/sanitype": "workspace:",
-    "@sanity/vision": "^3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-is": "^18.2.0",
-    "sanity": "^3",
+    "@sanity/sanitype": "workspace:^",
+    "@sanity/vision": "^3.52.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-is": "^18.3.1",
+    "sanity": "^3.52.4",
     "styled-components": "^6.1.12"
   },
   "devDependencies": {
-    "@types/react": "^18.0.25"
+    "@types/react": "^18.3.3"
   }
 }

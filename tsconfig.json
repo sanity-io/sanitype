@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.settings",
-  "include": ["./src/*/**.ts"],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
