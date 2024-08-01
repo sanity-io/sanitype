@@ -5,9 +5,9 @@ import {
   literal,
   parse,
   reference,
-  string,
   type SanityDocumentValue,
   type SanityType,
+  string,
 } from '@sanity/sanitype'
 
 interface Human extends SanityDocumentValue {

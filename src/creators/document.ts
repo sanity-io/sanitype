@@ -1,6 +1,3 @@
-import {defineType} from '../helpers/defineType'
-import {type SanityDocumentShape, documentBase} from '../shapeDefs'
-import {type Format} from '../helpers/utilTypes'
 import {
   type OutputFromShape,
   type SanityDocument,
@@ -9,6 +6,9 @@ import {
   type SanityString,
   type UndefinedOptional,
 } from '../defs'
+import {defineType} from '../helpers/defineType'
+import {type Format} from '../helpers/utilTypes'
+import {documentBase, type SanityDocumentShape} from '../shapeDefs'
 import {type SafeObject} from './object'
 
 export function document<Shape extends SanityObjectShape = SanityObjectShape>(

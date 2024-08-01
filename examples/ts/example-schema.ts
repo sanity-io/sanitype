@@ -5,11 +5,11 @@ import {
   literal,
   number,
   object,
+  type OutputOf,
   parse,
   reference,
   string,
   union,
-  type OutputOf,
 } from '@sanity/sanitype'
 
 function assertAssignable<A extends B, B>() {}

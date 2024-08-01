@@ -3,13 +3,13 @@ import {
   array,
   deepPartial,
   document,
+  type Infer,
   literal,
   object,
   parse,
   reference,
   resolve,
   string,
-  type Infer,
 } from '@sanity/sanitype'
 
 declare const client: SanityClient

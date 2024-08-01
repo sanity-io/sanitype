@@ -1,4 +1,4 @@
-import type {Human} from '../schema/human/current'
+import {type Human} from '../schema/human/current'
 import type * as v1 from '../schema/human/v1'
 
 // migrate from a v1 human to a v2 human

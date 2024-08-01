@@ -2,12 +2,12 @@ import {
   array,
   createResolve,
   document,
+  type Infer,
   literal,
   optional,
   parse,
   reference,
   string,
-  type Infer,
 } from '@sanity/sanitype'
 
 const pet = document({_type: literal('pet'), name: string()})

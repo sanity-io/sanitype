@@ -1,4 +1,5 @@
 import {test} from 'vitest'
+
 import {boolean, literal, number, object, string, union} from '../creators'
 
 test('primitive unions', () => {

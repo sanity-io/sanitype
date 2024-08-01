@@ -4,10 +4,10 @@ import {
   isPrimitiveSchema,
 } from '../asserters'
 import {optional} from '../creators'
-import {safeParse} from '../parse'
-import {isObjectLike} from '../helpers/isObjectLike'
-import {type DeepPartial} from '../utils/deepPartial'
 import {type OutputOf, type SanityAny} from '../defs'
+import {isObjectLike} from '../helpers/isObjectLike'
+import {safeParse} from '../parse'
+import {type DeepPartial} from '../utils/deepPartial'
 
 /**
  * Assigns values to a schema, but only if the schema has a matching key.

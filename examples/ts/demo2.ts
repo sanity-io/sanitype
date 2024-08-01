@@ -7,11 +7,11 @@ import {
   object,
   reference,
   resolve,
-  string,
   type SanityArrayValue,
   type SanityDocumentValue,
   type SanityReferenceValue,
   type SanityType,
+  string,
 } from '@sanity/sanitype'
 
 // todo: define a "human" document schema with name: {first, last}

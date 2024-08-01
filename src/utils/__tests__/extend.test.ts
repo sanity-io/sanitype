@@ -1,4 +1,5 @@
 import {assertType, describe, expect, test} from 'vitest'
+
 import {
   array,
   boolean,
@@ -11,9 +12,9 @@ import {
   string,
   union,
 } from '../../creators'
-import {extend} from '../extend'
-import {parse} from '../../parse'
 import {type SanityObjectType} from '../../defs'
+import {parse} from '../../parse'
+import {extend} from '../extend'
 
 describe('extends helper', () => {
   test('simple extends', () => {

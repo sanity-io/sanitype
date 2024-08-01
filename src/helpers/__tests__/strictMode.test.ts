@@ -1,5 +1,5 @@
 import {expect, test} from 'vitest'
-import {strictMode} from '../strictMode'
+
 import {
   array,
   document,
@@ -10,6 +10,7 @@ import {
   string,
   union,
 } from '../../creators'
+import {strictMode} from '../strictMode'
 
 test('valid strict mode types', () => {
   expect(() => strictMode(string())).not.toThrow()

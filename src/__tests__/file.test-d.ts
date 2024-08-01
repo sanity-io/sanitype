@@ -1,11 +1,12 @@
 import {describe, expectTypeOf, test} from 'vitest'
+
 import {file, string} from '../creators'
-import {type FileAssetShape} from '../shapeDefs'
 import {
-  type INTERNAL_REF_TYPE_SCHEMA,
   type Infer,
+  type INTERNAL_REF_TYPE_SCHEMA,
   type SanityDocument,
 } from '../defs'
+import {type FileAssetShape} from '../shapeDefs'
 
 describe('file type', () => {
   test('plain file type definition', () => {

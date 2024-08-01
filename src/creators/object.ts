@@ -1,10 +1,10 @@
-import {defineType} from '../helpers/defineType'
 import {
   type OutputFromShape,
   type SanityObject,
   type SanityObjectShape,
   type UndefinedOptional,
 } from '../defs'
+import {defineType} from '../helpers/defineType'
 import {type ValidFieldName} from '../helpers/utilTypes'
 
 export type SafeObject<Type, Allowed extends string = never> = {

@@ -1,4 +1,5 @@
 import {expect, test} from 'vitest'
+
 import {literal, object} from '../../creators'
 import {collectTypeNames} from '../strictMode'
 

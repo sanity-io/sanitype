@@ -1,5 +1,4 @@
 import {isItemObjectArrayCompatible, isObjectUnionSchema} from '../asserters'
-import {defineType} from '../helpers/defineType'
 import {
   type SanityLiteral,
   type SanityObjectArray,
@@ -9,6 +8,7 @@ import {
   type SanityPrimitiveArray,
   type SanityPrimitiveUnion,
 } from '../defs'
+import {defineType} from '../helpers/defineType'
 import {string} from './string'
 
 function addKeyProperty<T extends SanityObjectUnion | SanityObjectLike>(

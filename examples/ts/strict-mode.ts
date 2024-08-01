@@ -1,4 +1,5 @@
-import {array, document, literal, object, union} from '@sanity/sanitype'
+import {array, literal, object, union} from '@sanity/sanitype'
+
 import {strictMode} from '../../src/helpers/strictMode'
 
 const personSchema = strictMode(

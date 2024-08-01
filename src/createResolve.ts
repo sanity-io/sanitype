@@ -1,14 +1,14 @@
 import {
   type Conceal,
-  INTERNAL_REF_TYPE_SCHEMA,
   type Infer,
+  INTERNAL_REF_TYPE_SCHEMA,
   type SanityType,
 } from './defs'
 import {ParseError, type ParseOk, type ParseResult, safeParse} from './parse'
 import {
-  type SanityDocumentValue,
   documentBase,
   type referenceBase,
+  type SanityDocumentValue,
 } from './shapeDefs'
 
 export type DocumentLike = Infer<typeof documentBase>

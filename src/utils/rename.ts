@@ -4,8 +4,8 @@ import {
   type SanityLiteral,
   type SanityObject,
 } from '../defs'
+import {extend, type Extends} from './extend'
 import {omit} from './omit'
-import {type Extends, extend} from './extend'
 
 export function rename<
   const T extends SanityObject | SanityDocument,

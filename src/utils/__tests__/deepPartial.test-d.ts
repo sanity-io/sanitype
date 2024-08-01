@@ -1,10 +1,6 @@
 import {assertType, expectTypeOf, test} from 'vitest'
 
 import {lazy, literal, object, optional, string} from '../../creators'
-import {extend} from '../extend'
-import {type DeepPartial, deepPartial} from '../deepPartial'
-import {parse} from '../../parse'
-import {omit} from '../omit'
 import {
   type Infer,
   type SanityBoolean,
@@ -18,6 +14,10 @@ import {
   type SanityOptional,
   type SanityString,
 } from '../../defs'
+import {parse} from '../../parse'
+import {type DeepPartial, deepPartial} from '../deepPartial'
+import {extend} from '../extend'
+import {omit} from '../omit'
 
 test('deep partial on primitive types', () => {
   expectTypeOf<DeepPartial<SanityString>>().toEqualTypeOf<SanityString>()

@@ -4,9 +4,9 @@ import {
   literal,
   number,
   object,
-  string,
   type OutputOf,
   type SanityObjectType,
+  string,
 } from '@sanity/sanitype'
 
 interface Person {

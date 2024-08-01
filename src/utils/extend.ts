@@ -1,3 +1,4 @@
+import {type SafeObject} from '../creators'
 import {
   type OutputFromShape,
   type SanityDocument,
@@ -7,7 +8,6 @@ import {
   type SanityObjectType,
 } from '../defs'
 import {type Combine} from '../helpers/utilTypes'
-import {type SafeObject} from '../creators'
 
 export type Extends<
   Obj extends SanityObject | SanityDocument,

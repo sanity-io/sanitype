@@ -1,6 +1,7 @@
+import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
-import {visionTool} from '@sanity/vision'
+
 import {toV3Schema} from '../../src/compat/toV3Schema'
 import {human} from './schemas/human'
 

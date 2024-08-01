@@ -1,5 +1,5 @@
 import {assertType, expectTypeOf, test} from 'vitest'
-import {type ShallowPartial} from '../shallowPartial'
+
 import {
   type Infer,
   type SanityLiteral,
@@ -10,6 +10,7 @@ import {
   type SanityOptional,
   type SanityString,
 } from '../../defs'
+import {type ShallowPartial} from '../shallowPartial'
 
 test('shallow partial on nested type', () => {
   type Nested = {

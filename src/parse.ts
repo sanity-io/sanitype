@@ -1,6 +1,22 @@
 import {
-  INTERNAL_REF_TYPE_SCHEMA,
+  isBooleanSchema,
+  isDateSchema,
+  isDateTimeSchema,
+  isDocumentSchema,
+  isExtendableObjectSchema,
+  isLiteralSchema,
+  isNumberSchema,
+  isObjectArraySchema,
+  isObjectUnionSchema,
+  isOptionalSchema,
+  isPrimitiveArraySchema,
+  isPrimitiveUnionSchema,
+  isReferenceSchema,
+  isStringSchema,
+} from './asserters'
+import {
   type Infer,
+  INTERNAL_REF_TYPE_SCHEMA,
   type OutputOf,
   type SanityAsset,
   type SanityBlock,
@@ -21,30 +37,15 @@ import {
   type SanityType,
   type SanityTypedObject,
 } from './defs'
-import {
-  isBooleanSchema,
-  isDateSchema,
-  isDateTimeSchema,
-  isDocumentSchema,
-  isExtendableObjectSchema,
-  isLiteralSchema,
-  isNumberSchema,
-  isObjectArraySchema,
-  isObjectUnionSchema,
-  isOptionalSchema,
-  isPrimitiveArraySchema,
-  isPrimitiveUnionSchema,
-  isReferenceSchema,
-  isStringSchema,
-} from './asserters'
 import {defineNonEnumerableGetter} from './helpers/defineNonEnumerableGetter'
-import {referenceBase} from './shapeDefs'
 import {getLazySchema} from './helpers/getLazySchema'
 import {inspect} from './helpers/inspect'
 import {
   isStrictlyDateTime,
   isStrictlyFormatted,
 } from './helpers/strictDateParse'
+import {referenceBase} from './shapeDefs'
+
 export type Path = Array<string | number | {_key: string}>
 
 export type ErrorCode =

@@ -2,6 +2,7 @@ import {
   boolean,
   deepPartial,
   document,
+  type Infer,
   literal,
   number,
   object,
@@ -9,8 +10,8 @@ import {
   parse,
   string,
   union,
-  type Infer,
 } from '@sanity/sanitype'
+
 import {deepRequired} from '../../src/utils/deepRequired'
 import {shallowRequired} from '../../src/utils/shallowRequired'
 

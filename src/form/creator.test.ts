@@ -1,4 +1,5 @@
 import {test} from 'vitest'
+
 import {array, document, literal, object, string, union} from '../creators'
 import {defineForm} from './creators'
 

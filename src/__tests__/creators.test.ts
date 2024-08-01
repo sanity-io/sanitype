@@ -12,8 +12,8 @@ import {
   string,
   union,
 } from '../creators'
-import {extend} from '../utils/extend'
 import {type SanityObjectType} from '../defs'
+import {extend} from '../utils/extend'
 
 describe('circular schemas', () => {
   test('Circular SanityObjectType', () => {

@@ -1,5 +1,5 @@
-import {defineType} from '../helpers/defineType'
 import {type SanityLiteral} from '../defs'
+import {defineType} from '../helpers/defineType'
 
 export function literal<T extends string | number | boolean>(
   value: T,

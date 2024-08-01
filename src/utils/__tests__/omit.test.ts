@@ -1,4 +1,5 @@
 import {expect, test} from 'vitest'
+
 import {document, literal, number, object, string} from '../../creators'
 import {parse} from '../../parse'
 import {omit} from '../omit'

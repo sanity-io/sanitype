@@ -1,13 +1,13 @@
 import {
   array,
+  type Infer,
   literal,
   number,
   object,
   parse,
   string,
-  union,
-  type Infer,
 } from '@sanity/sanitype'
+
 import {block} from '../../src/creators/block'
 
 const someBlock = block({

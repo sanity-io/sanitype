@@ -1,4 +1,5 @@
 import {assertType, test} from 'vitest'
+
 import {
   array,
   boolean,
@@ -9,8 +10,8 @@ import {
   string,
   union,
 } from '../creators'
-import {parse} from '../parse'
 import {type Infer} from '../defs'
+import {parse} from '../parse'
 
 const stringVal: string = ''
 const numVal: number = 0

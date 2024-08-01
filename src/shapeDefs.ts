@@ -1,4 +1,3 @@
-import {defineType as dt} from './helpers/defineType'
 import {
   type Conceal,
   type Infer,
@@ -14,6 +13,7 @@ import {
   type SanityType,
   type UndefinedOptional,
 } from './defs'
+import {defineType as dt} from './helpers/defineType'
 import {type Combine, type OutputFormatFix} from './helpers/utilTypes'
 
 const STRING: SanityString = dt({typeName: 'string', def: ''})

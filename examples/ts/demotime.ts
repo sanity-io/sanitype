@@ -1,6 +1,7 @@
 import {
   array,
   document,
+  type Infer,
   literal,
   number,
   object,
@@ -8,7 +9,6 @@ import {
   reference,
   string,
   union,
-  type Infer,
 } from '@sanity/sanitype'
 
 const human = document({

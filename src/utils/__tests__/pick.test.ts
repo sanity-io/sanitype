@@ -1,7 +1,8 @@
 import {expect, test} from 'vitest'
+
 import {document, literal, number, object, string} from '../../creators'
-import {pick} from '../pick'
 import {parse} from '../../parse'
+import {pick} from '../pick'
 
 test('pick from a document', () => {
   const doc = document({

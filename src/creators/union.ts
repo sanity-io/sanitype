@@ -1,4 +1,3 @@
-import {defineType} from '../helpers/defineType'
 import {
   isAssetSchema,
   isLiteralSchema,
@@ -18,6 +17,7 @@ import {
   type SanityReference,
   type SanityTypedObject,
 } from '../defs'
+import {defineType} from '../helpers/defineType'
 
 export type FlattenUnionTypes<
   T extends

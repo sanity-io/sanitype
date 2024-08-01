@@ -1,4 +1,5 @@
 import {assertType, test} from 'vitest'
+
 import {
   type Infer,
   type SanityDocument,

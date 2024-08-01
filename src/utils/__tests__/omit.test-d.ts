@@ -1,11 +1,12 @@
 import {expectTypeOf, test} from 'vitest'
-import {type OmitShape} from '../omit'
+
 import {
   type SanityBoolean,
   type SanityDocument,
   type SanityNumber,
   type SanityString,
 } from '../../defs'
+import {type OmitShape} from '../omit'
 
 test('omit from document', () => {
   type Doc = SanityDocument<{

@@ -1,12 +1,12 @@
 import {isObjectSchema, isOptionalSchema} from '../asserters'
 import {object} from '../creators'
 import {
+  type _SanityDocument,
   type OutputOf,
   type SanityDocument,
   type SanityObject,
   type SanityObjectShape,
   type SanityObjectType,
-  type _SanityDocument,
 } from '../defs'
 import {type SanityRequired} from './required'
 

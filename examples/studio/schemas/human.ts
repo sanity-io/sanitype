@@ -13,6 +13,7 @@ import {
   string,
   union,
 } from '@sanity/sanitype'
+
 import {pet} from './pet'
 
 export const human = document({

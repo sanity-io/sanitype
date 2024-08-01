@@ -1,7 +1,7 @@
 import {
-  type Infer,
   boolean,
   document,
+  type Infer,
   literal,
   number,
   object,

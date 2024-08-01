@@ -1,4 +1,5 @@
 import path from 'node:path'
+
 import {defineCliConfig} from 'sanity/cli'
 
 export default defineCliConfig({

@@ -1,5 +1,5 @@
 import {describe, test} from 'vitest'
-import {type ElementType} from '../helpers/utilTypes'
+
 import {
   type Infer,
   type SanityArray,
@@ -10,6 +10,7 @@ import {
   type SanityPrimitiveArray,
   type SanityString,
 } from '../defs'
+import {type ElementType} from '../helpers/utilTypes'
 
 // lil helper to avoid having to alias types everywhere
 declare function pass<T>(): any

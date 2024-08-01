@@ -1,5 +1,4 @@
 import {assertType, describe, expect, test} from 'vitest'
-import {parse, safeParse} from '../parse'
 
 import {
   array,
@@ -19,6 +18,7 @@ import {
   type SanityObjectType,
   type SanityType,
 } from '../defs'
+import {parse, safeParse} from '../parse'
 import {type SanityDocumentValue} from '../shapeDefs'
 
 describe('string parsing', () => {
