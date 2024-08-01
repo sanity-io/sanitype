@@ -9,10 +9,10 @@
   },
   "license": "MIT",
   "author": "Bjørge Næss <bjoerge@gmail.com>",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "source": "./src/index.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
@@ -22,14 +22,19 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
-    "build": "run-s clean pkg:build pkg:check",
-    "check": "npm-run-all --serial clean pkg:build --parallel typecheck typecheck:examples lint test pkg:check",
+    "build": "run-s pkg:build pkg:check",
+    "check": "npm-run-all --serial clean pkg:build --parallel typecheck lint test pkg:check",
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
-    "dev": "run-p pkg:watch typecheck:watch typecheck:examples:watch test:watch",
+    "dev": "run-p pkg:watch typecheck:watch test:watch",
     "example:studio": "(cd examples/studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
@@ -42,11 +47,9 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest --typecheck",
     "typecheck": "tsc",
-    "typecheck:examples": "tsc -b ./examples",
-    "typecheck:examples:watch": "tsc -b ./examples --watch",
-    "typecheck:watch": "tsc -b ./examples --watch",
-    "vercel-build": "vite build --config examples/forms/vite.config.ts examples/forms"
+    "typecheck:watch": "tsc --watch"
   },
+  "browserslist": "extends @sanity/browserslist-config",
   "dependencies": {
     "date-fns": "^3.6.0"
   },
