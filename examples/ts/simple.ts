@@ -21,17 +21,26 @@ const userSchema = document({
   }),
 })
 
-type User = Infer<typeof userSchema>
+// export the User type inferred from the userSchema
+export type User = Infer<typeof userSchema>
 
-const carl = parse(userSchema, {
+// Use it to validate that a value is compatible with the schema
+const user = parse(userSchema, {
   _type: 'user',
-  name: 'Carl',
-  union: 'foo',
+  name: 'Grace Hopper',
+  union: 'this is a string, but could also be number',
   optional: true,
   nested: {
     foo: 'bar',
   },
 })
 
-//@ts-expect-error - Property 'noSuchProperty' does not exist on type 'User'.
-carl.noSuchProperty
+// 💥 type error
+// @ts-expect-error TS2339: Property noSuchProperty does not exist on type
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+user.noSuchProperty
+
+// 💥 type error
+// @ts-expect-error TS2365: Operator + cannot be applied to types {foo?: string | undefined;} and number
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+user.nested + 2

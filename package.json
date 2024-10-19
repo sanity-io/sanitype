@@ -35,7 +35,7 @@
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "run-p pkg:watch typecheck:watch test:watch",
-    "example:studio": "(cd examples/studio && npm run dev)",
+    "example:compat-studio": "(cd examples/compat-studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
     "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",

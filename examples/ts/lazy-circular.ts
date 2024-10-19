@@ -15,11 +15,11 @@ interface Person {
   parent: Person & {foo: string}
 }
 
-const lazyPerson: SanityObjectType<Person> = object({
+const personSchema: SanityObjectType<Person> = object({
   _type: literal('person'),
   name: lazy(() => number()),
   foo: literal('ok'),
-  parent: lazy(() => extend(lazyPerson, {foo: string()})),
+  parent: lazy(() => extend(personSchema, {foo: string()})),
 })
 
-declare const person: OutputOf<typeof lazyPerson>
+declare const person: OutputOf<typeof personSchema>

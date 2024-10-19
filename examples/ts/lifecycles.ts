@@ -1,31 +1,53 @@
 import {
-  boolean,
   document,
+  draft,
+  type Infer,
   literal,
-  number,
-  object,
-  optional,
   parse,
+  stored,
   string,
-  union,
 } from '@sanity/sanitype'
 
-import {draft, stored} from '../../src/lifecycle'
+// The schema for the myDocument type in its "ideal" form (i.e. published/validated state)
 
-const doc = document({
+const myDocument = document({
   _type: literal('pet'),
   name: string(),
-  union: union([string(), number()]),
-  opt: optional(boolean()),
-  nested: object({
-    foo: optional(string()),
-  }),
 })
 
-const storedDoc = parse(stored(doc), {})
+// Schema for myDocument as draft
+const myDocumentDraft = draft(myDocument)
 
-const draftDoc = draft(doc)
+// Schema for myDocument as stored
+const myDocumentStored = stored(myDocument)
+const storedMyDocument = parse(myDocumentStored, {
+  /* input */
+})
+// _rev is defined because it's stored!
+console.log(storedMyDocument._rev.toUpperCase())
 
-const parsedDraft = parse(draftDoc, {})
+// Schema for myDocument as a stored draft
+const myDocumentStoredDraft = stored(myDocumentDraft)
+const storedDraft = parse(myDocumentStoredDraft, {
+  /* input */
+})
 
-const parsedStoredDraft = parse(stored(draftDoc), {})
+// _id is defined because it's stored!
+console.log(storedDraft._id.toUpperCase())
+
+// Inferred TypeScript type of myDocument (default is published)
+type MyDocument = Infer<typeof myDocument>
+// Can create a new instances of published without having to provide _id, _rev, etc.
+// but still need to provide required fields
+const somePublished: MyDocument = {
+  _type: 'pet',
+  name: 'someName',
+}
+
+// Inferred TypeScript type of myDocument as draft
+type MyDocumentDraft = Infer<typeof myDocumentDraft>
+
+// Can create a new instances of drafts without having to provide required attributes
+const someDraft: MyDocumentDraft = {
+  _type: 'pet',
+}
