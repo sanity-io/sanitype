@@ -16,14 +16,14 @@
   },
   "dependencies": {
     "@sanity/sanitype": "workspace:^",
-    "@sanity/vision": "^3.52.4",
+    "@sanity/vision": "^3.61.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-is": "^18.3.1",
-    "sanity": "^3.52.4",
-    "styled-components": "^6.1.12"
+    "sanity": "^3.61.0",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
-    "@types/react": "^18.3.3"
+    "@types/react": "^18.3.11"
   }
 }
