@@ -32,4 +32,5 @@ const myPTArray = array(someBlock)
 type MyPTArray = Infer<typeof myPTArray>
 
 const myPTArrayValue = parse(myPTArray, [])
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 myPTArrayValue[0]._type // 'someBlock'

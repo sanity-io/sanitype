@@ -11,7 +11,8 @@ import {
   union,
 } from '@sanity/sanitype'
 
-const userSchema = document({
+// define and export a user schema
+export const userSchema = document({
   _type: literal('user'),
   name: string(),
   union: union([string(), number()]),

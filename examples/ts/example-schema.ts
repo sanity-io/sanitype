@@ -66,6 +66,7 @@ const somePersonCountry = await resolve(somePerson.address.country)
 const keys = somePerson.pets.map(somePersonsPet => somePersonsPet._key)
 
 assertAssignable<string[], typeof keys>()
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 somePerson.visitedCountries[0]!
 const references = somePerson.visitedCountries.map(visitedCountry => [
   visitedCountry._ref,

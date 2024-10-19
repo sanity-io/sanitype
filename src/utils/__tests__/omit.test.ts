@@ -23,6 +23,7 @@ test('omit from a document', () => {
   })
 
   // @ts-expect-error bar should be omitted
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   res.bar
 })
 
@@ -43,5 +44,6 @@ test('omit from an object', () => {
   })
 
   // @ts-expect-error bar should be omitted
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   res.bar
 })

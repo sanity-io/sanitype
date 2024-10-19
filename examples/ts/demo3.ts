@@ -39,7 +39,8 @@ const pet = document({
 })
 const jara = await fetchDocument('jara', pet)
 
-jara.human
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+jara.human // ok
 
 const jarasHuman = await resolve(jara.human)
 

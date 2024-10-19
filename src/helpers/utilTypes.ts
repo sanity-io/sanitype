@@ -37,7 +37,7 @@ export type GroupUnderscoreKeys<T> = Combine<
   Omit<T, UnderscoreKeys<T>>
 >
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type OutputFormatFix = {}
 
 export type AZ =
