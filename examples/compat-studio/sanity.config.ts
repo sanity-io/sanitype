@@ -1,8 +1,8 @@
+import {toClassicSchema} from '@sanity/sanitype'
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 
-import {toClassicSchema} from '../../src/compat/typed-to-classic'
 import {human} from './schemas/human'
 
 export default defineConfig({

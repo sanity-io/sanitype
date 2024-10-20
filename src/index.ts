@@ -1,4 +1,5 @@
 export * from './asserters'
+export * from './compat/typed-to-classic'
 export * from './content-utils/getInstanceName'
 export * from './content-utils/pickDeep'
 export * from './createFetchDocument'
