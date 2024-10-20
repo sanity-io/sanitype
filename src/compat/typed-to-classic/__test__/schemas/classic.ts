@@ -8,6 +8,15 @@ export const classicHuman = [
         type: 'string',
       },
       {
+        name: 'birthTime',
+        type: 'datetime',
+      },
+      {
+        name: 'favoriteTimes',
+        type: 'array',
+        of: [{type: 'datetime'}],
+      },
+      {
         name: 'address',
         type: 'object',
         fields: [

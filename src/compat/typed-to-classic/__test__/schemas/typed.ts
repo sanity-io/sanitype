@@ -2,6 +2,7 @@ import {
   array,
   block,
   boolean,
+  dateTime,
   document,
   file,
   image,
@@ -17,6 +18,8 @@ const pet = object({name: string()})
 export const human = document({
   _type: literal('human'),
   name: string(),
+  birthTime: dateTime(),
+  favoriteTimes: array(dateTime()),
   address: object({
     street: string(),
     city: string(),

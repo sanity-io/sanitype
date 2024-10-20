@@ -88,6 +88,9 @@ function convertItem<S extends SanityAny>(
       type: schema.typeName,
     }
   }
+  if (isDateTimeSchema(schema)) {
+    return {type: 'datetime'}
+  }
   throw new Error(`Unsupported schema type ${schema.typeName}}`)
 }
 
@@ -117,7 +120,7 @@ function convertField<S extends SanityAny>(
     return {...assetToClassicSchema(schema, hoisted), name: fieldName}
   }
   if (isDateTimeSchema(schema)) {
-    return {name: fieldName, type: 'dateTime'}
+    return {name: fieldName, type: 'datetime'}
   }
   if (isDateSchema(schema)) {
     return {name: fieldName, type: 'date'}
