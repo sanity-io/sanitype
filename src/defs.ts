@@ -57,6 +57,10 @@ export type SanityPrimitive =
   | SanityDate
   | SanityDateTime
 
+export interface SanityNever extends SanityType<never> {
+  typeName: 'never'
+}
+
 export interface SanityLiteral<
   Def extends boolean | string | number = boolean | string | number,
 > extends SanityType<Def> {
@@ -65,18 +69,27 @@ export interface SanityLiteral<
 }
 
 export interface SanityObjectUnion<
-  Def extends SanityTypedObject | SanityReference | SanityBlock | SanityAsset =
+  Def extends
     | SanityTypedObject
     | SanityReference
     | SanityBlock
-    | SanityAsset,
+    | SanityAsset
+    | SanityNever =
+    | SanityTypedObject
+    | SanityReference
+    | SanityBlock
+    | SanityAsset
+    | SanityNever,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'union'
   union: Def[]
 }
 export interface SanityPrimitiveUnion<
-  Def extends SanityPrimitive | SanityLiteral = SanityPrimitive | SanityLiteral,
+  Def extends SanityPrimitive | SanityLiteral | SanityNever =
+    | SanityPrimitive
+    | SanityLiteral
+    | SanityNever,
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'primitiveUnion'
@@ -223,10 +236,15 @@ export interface SanityObjectArray<
 }
 
 export interface SanityPrimitiveArray<
-  ElementType extends SanityPrimitive | SanityLiteral | SanityPrimitiveUnion =
+  ElementType extends
     | SanityPrimitive
     | SanityLiteral
-    | SanityPrimitiveUnion,
+    | SanityPrimitiveUnion
+    | SanityNever =
+    | SanityPrimitive
+    | SanityLiteral
+    | SanityPrimitiveUnion
+    | SanityNever,
   Output = OutputOf<ElementType>[],
 > extends SanityType<Output> {
   typeName: 'primitiveArray'

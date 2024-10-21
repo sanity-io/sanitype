@@ -1,5 +1,6 @@
 import {
   isDocumentSchema,
+  isNeverSchema,
   isObjectArraySchema,
   isObjectSchema,
   isObjectUnionSchema,
@@ -105,6 +106,9 @@ export function collectTypeNames<S extends SanityType>(
     const info: CollectedTypeNameInfo = {}
 
     for (const unionSchema of schema.union) {
+      if (isNeverSchema(unionSchema)) {
+        continue
+      }
       const instanceName = getInstanceName(unionSchema)
 
       const nextPath = instanceName ? [...path, instanceName] : path

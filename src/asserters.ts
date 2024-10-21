@@ -13,6 +13,7 @@ import {
   type SanityImage,
   type SanityLazy,
   type SanityLiteral,
+  type SanityNever,
   type SanityNumber,
   type SanityObject,
   type SanityObjectArray,
@@ -28,6 +29,9 @@ import {
   type SanityTypedObject,
 } from './defs'
 
+export function isNeverSchema(schema: SanityType): schema is SanityNever {
+  return schema.typeName === 'never'
+}
 export function isObjectUnionSchema(
   schema: SanityType,
 ): schema is SanityObjectUnion {

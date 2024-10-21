@@ -1,6 +1,7 @@
 import {
   isAssetSchema,
   isLiteralSchema,
+  isNeverSchema,
   isObjectUnionSchema,
   isPrimitiveSchema,
   isPrimitiveUnionSchema,
@@ -11,6 +12,7 @@ import {
   type SanityAsset,
   type SanityBlock,
   type SanityLiteral,
+  type SanityNever,
   type SanityObjectUnion,
   type SanityPrimitive,
   type SanityPrimitiveUnion,
@@ -21,6 +23,7 @@ import {defineType} from '../helpers/defineType'
 
 export type FlattenUnionTypes<
   T extends
+    | SanityNever
     | SanityTypedObject
     | SanityReference
     | SanityObjectUnion<any>
@@ -34,7 +37,11 @@ export type FlattenUnionTypes<
     : T
 
 export type FlattenPrimitiveUnionTypes<
-  T extends SanityPrimitive | SanityLiteral | SanityPrimitiveUnion<any>,
+  T extends
+    | SanityPrimitive
+    | SanityLiteral
+    | SanityPrimitiveUnion<any>
+    | SanityNever,
 > =
   T extends SanityPrimitiveUnion<infer UnionTypes>
     ? UnionTypes extends SanityPrimitiveUnion<any>
@@ -44,6 +51,7 @@ export type FlattenPrimitiveUnionTypes<
 
 export function union<
   UnionTypes extends
+    | SanityNever
     | SanityTypedObject
     | SanityReference
     | SanityBlock
@@ -52,6 +60,7 @@ export function union<
 >(unionTypes: UnionTypes[]): SanityObjectUnion<FlattenUnionTypes<UnionTypes>>
 export function union<
   UnionTypes extends
+    | SanityNever
     | SanityPrimitive
     | SanityLiteral
     | SanityPrimitiveUnion<any>,
@@ -60,6 +69,7 @@ export function union<
 ): SanityPrimitiveUnion<FlattenPrimitiveUnionTypes<UnionTypes>>
 export function union<
   UnionTypes extends
+    | SanityNever
     | SanityTypedObject
     | SanityReference
     | SanityPrimitive
@@ -68,7 +78,11 @@ export function union<
   unionTypes: UnionTypes[],
 ): UnionTypes extends SanityPrimitive
   ? SanityPrimitiveUnion<UnionTypes>
-  : UnionTypes extends SanityTypedObject | SanityReference | SanityBlock
+  : UnionTypes extends
+        | SanityTypedObject
+        | SanityReference
+        | SanityBlock
+        | SanityNever
     ? SanityObjectUnion<UnionTypes>
     : never {
   if (
@@ -76,6 +90,7 @@ export function union<
       schema =>
         isLiteralSchema(schema) ||
         isPrimitiveSchema(schema) ||
+        isNeverSchema(schema) ||
         isPrimitiveUnionSchema(schema),
     )
   ) {
@@ -88,6 +103,7 @@ export function union<
         isTypedObjectSchema(schema) ||
         isObjectUnionSchema(schema) ||
         isReferenceSchema(schema) ||
+        isNeverSchema(schema) ||
         isAssetSchema(schema),
     )
   ) {

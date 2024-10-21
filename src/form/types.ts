@@ -7,6 +7,7 @@ import {
   type SanityBoolean,
   type SanityDocument,
   type SanityLiteral,
+  type SanityNever,
   type SanityObject,
   type SanityObjectArray,
   type SanityObjectLike,
@@ -163,25 +164,31 @@ export type PrimitiveUnionTypeOptions<T extends SanityLiteral> =
   CommonFormOptions & T extends SanityLiteral ? FieldDef<T> : unknown
 
 export type ObjectUnionFormDef<
-  T extends SanityTypedObject | SanityReference | SanityBlock | SanityAsset,
+  T extends
+    | SanityTypedObject
+    | SanityReference
+    | SanityBlock
+    | SanityAsset
+    | SanityNever,
 > = CommonFormOptions & {
   types: {
-    [Name in GetType<T['shape']['_type']>]: UnionTypeOptions<
-      FindTypeByName<T, Name>
-    >
+    [Name in GetType<
+      Exclude<T, SanityNever>['shape']['_type']
+    >]: UnionTypeOptions<FindTypeByName<Exclude<T, SanityNever>, Name>>
   }
 }
 
-export type PrimitiveUnionFormDef<T extends SanityPrimitive | SanityLiteral> =
-  CommonFormOptions & T extends SanityLiteral
-    ? {
-        types: {
-          [Name in GetType<T>]: PrimitiveUnionTypeOptions<SanityLiteral<Name>>
-        }
+export type PrimitiveUnionFormDef<
+  T extends SanityPrimitive | SanityLiteral | SanityNever,
+> = CommonFormOptions & T extends SanityLiteral
+  ? {
+      types: {
+        [Name in GetType<T>]: PrimitiveUnionTypeOptions<SanityLiteral<Name>>
       }
-    : {
-        types: ['TODO']
-      }
+    }
+  : {
+      types: ['TODO']
+    }
 
 export type PrimitiveArrayFormDef<T extends SanityPrimitiveArray> =
   CommonFormOptions & {

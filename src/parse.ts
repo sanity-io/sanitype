@@ -5,6 +5,7 @@ import {
   isDocumentSchema,
   isExtendableObjectSchema,
   isLiteralSchema,
+  isNeverSchema,
   isNumberSchema,
   isObjectArraySchema,
   isObjectUnionSchema,
@@ -26,6 +27,7 @@ import {
   type SanityDocument,
   type SanityExtendableObject,
   type SanityLiteral,
+  type SanityNever,
   type SanityNumber,
   type SanityObjectArray,
   type SanityObjectUnion,
@@ -71,6 +73,9 @@ export function safeParse<T extends SanityType>(
   if (isOptionalSchema(schema)) {
     return parseOptional(schema, input) as any
   }
+  if (isNeverSchema(schema)) {
+    return parseNever(schema, input) as any
+  }
   if (isStringSchema(schema)) {
     return parseString(schema, input) as any
   }
@@ -105,7 +110,7 @@ export function safeParse<T extends SanityType>(
     return parsePrimitiveArray(schema, input) as any
   }
   if (isObjectUnionSchema(schema)) {
-    return parseUnion(schema, input) as any
+    return parseObjectUnion(schema, input) as any
   }
   if (isPrimitiveUnionSchema(schema)) {
     return parsePrimitiveUnion(schema, input) as any
@@ -283,6 +288,22 @@ export function parseOptional<T extends SanityType>(
     : safeParse(schema.type, input)
 }
 
+export function parseNever<T extends SanityType>(
+  schema: SanityNever,
+  input: unknown,
+): ParseResult<T | undefined> {
+  return {
+    status: 'fail',
+    errors: [
+      {
+        path: [],
+        code: 'INVALID_TYPE',
+        message: `Expected never but got "${inspect(input)}"`,
+      },
+    ],
+  }
+}
+
 export function parseLiteral<S extends SanityLiteral<any>>(
   schema: S,
   input: unknown,
@@ -356,28 +377,33 @@ function findUnionSchemaForType(
   | SanityBlock
   | SanityAsset
   | undefined {
-  return unionSchema.union.find(
-    (
-      objectDef:
-        | SanityTypedObject
-        | SanityObjectUnion
-        | SanityReference
-        | SanityBlock
-        | SanityAsset,
-    ) => {
-      if (isObjectUnionSchema(objectDef)) {
-        return findUnionSchemaForType(objectDef, typeName)
-      }
-      const typeLiteral = objectDef.shape._type
-      return isLiteralSchema(typeLiteral) && typeLiteral.value === typeName
-    },
-  )
+  return unionSchema.union
+    .filter(
+      (unionType): unionType is Exclude<typeof unionType, SanityNever> =>
+        !isNeverSchema(unionType),
+    )
+    .find(
+      (
+        objectDef:
+          | SanityTypedObject
+          | SanityObjectUnion
+          | SanityReference
+          | SanityBlock
+          | SanityAsset,
+      ) => {
+        if (isObjectUnionSchema(objectDef)) {
+          return findUnionSchemaForType(objectDef, typeName)
+        }
+        const typeLiteral = objectDef.shape._type
+        return isLiteralSchema(typeLiteral) && typeLiteral.value === typeName
+      },
+    )
 }
 
 function hasTypeField(input: any): input is {_type: string} {
   return '_type' in input
 }
-export function parseUnion<S extends SanityObjectUnion>(
+export function parseObjectUnion<S extends SanityObjectUnion>(
   schema: S,
   input: unknown,
 ): ParseResult<OutputOf<S>> {
