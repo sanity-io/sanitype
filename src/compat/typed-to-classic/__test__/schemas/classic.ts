@@ -65,16 +65,6 @@ export const classicHuman = [
               {
                 fields: [
                   {
-                    name: 'name',
-                    type: 'string',
-                  },
-                ],
-                name: 'author',
-                type: 'object',
-              },
-              {
-                fields: [
-                  {
                     name: 'marks',
                     of: [
                       {
@@ -92,6 +82,16 @@ export const classicHuman = [
                   },
                 ],
                 name: 'span',
+                type: 'object',
+              },
+              {
+                fields: [
+                  {
+                    name: 'name',
+                    type: 'string',
+                  },
+                ],
+                name: 'author',
                 type: 'object',
               },
             ],

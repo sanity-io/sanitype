@@ -7,6 +7,7 @@ import {
   isDateSchema,
   isDateTimeSchema,
   isLiteralSchema,
+  isNeverSchema,
   isNumberSchema,
   isObjectArraySchema,
   isObjectLikeSchema,
@@ -91,6 +92,15 @@ function convertItem<S extends SanityAny>(
   if (isDateTimeSchema(schema)) {
     return {type: 'datetime'}
   }
+  if (isNeverSchema(schema)) {
+    return []
+  }
+  if (isObjectUnionSchema(schema)) {
+    return schema.union.flatMap(unionType => convertItem(unionType, hoisted))
+  }
+  if (isPrimitiveUnionSchema(schema)) {
+    return schema.union.flatMap(unionType => convertItem(unionType, hoisted))
+  }
   throw new Error(`Unsupported schema type ${schema.typeName}}`)
 }
 
@@ -140,8 +150,8 @@ function convertField<S extends SanityAny>(
       name: fieldName,
       type: 'array',
       of: isObjectUnionSchema(schema.element)
-        ? schema.element.union.map(u => convertItem(u, hoisted))
-        : [convertItem(schema.element, hoisted)],
+        ? schema.element.union.flatMap(u => convertItem(u, hoisted))
+        : [convertItem(schema.element, hoisted)].flat(),
     } as classic.FieldDefinition<'array'>
   }
   return []
@@ -180,7 +190,7 @@ export function blockToClassicSchema<S extends SanityBlock>(
     name: typeName,
     of: (
       (children as SanityObjectArray).element as SanityObjectUnion
-    ).union.map(u => convertItem(u, hoisted)),
+    ).union.flatMap(u => convertItem(u, hoisted)),
   }
 }
 
