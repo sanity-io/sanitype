@@ -56,6 +56,7 @@ export type SanityPrimitive =
   | SanityBoolean
   | SanityDate
   | SanityDateTime
+  | SanityLiteral
 
 export interface SanityNever extends SanityType<never> {
   typeName: 'never'
