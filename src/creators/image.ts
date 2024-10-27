@@ -2,7 +2,7 @@ import {type SanityImage, type SanityObjectShape} from '../defs'
 import {defineType} from '../helpers/defineType'
 import {imageBase, type SanityImageShape} from '../shapeDefs'
 
-// TODO: Make `shape` optional.
+// TODO: Make `shape` optional, add hotspot + crop
 export function image<Shape extends SanityObjectShape = SanityObjectShape>(
   shape: Shape,
 ): SanityImage<Shape & SanityImageShape> {
