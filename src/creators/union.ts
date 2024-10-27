@@ -33,7 +33,7 @@ export type FlattenUnionTypes<
   T extends SanityObjectUnion<infer UnionTypes>
     ? UnionTypes extends SanityObjectUnion<any>
       ? FlattenUnionTypes<UnionTypes>
-      : UnionTypes
+      : Exclude<UnionTypes, SanityNever>
     : T
 
 export type FlattenPrimitiveUnionTypes<

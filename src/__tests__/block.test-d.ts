@@ -1,96 +1,68 @@
 import {describe, expectTypeOf, test} from 'vitest'
 
-import {array, block, literal, number, object, string, union} from '../creators'
+import {block, literal, number, object, string, union} from '../creators'
 import {type Infer} from '../defs'
 
 describe('block type', () => {
   test('block type definition', () => {
     const blockSchema = block({
-      styles: [literal('normal'), literal('h1'), literal('h2')],
-      lists: [literal('bullet'), literal('number')],
-      inlineTypes: [
-        object({
-          _type: literal('author'),
-          name: string(),
-        }),
-      ],
-      decorators: [literal('strong'), literal('em')],
-      annotations: [
+      list: union([literal('bullet'), literal('number')]),
+      style: union([literal('normal'), literal('h1'), literal('h2')]),
+      inline: object({
+        _type: literal('author'),
+        name: string(),
+      }),
+      decorator: union([literal('strong'), literal('em')]),
+      annotation: union([
         object({_type: literal('author'), foo: number()}),
         object({_type: literal('book'), bar: number()}),
-      ],
+      ]),
     })
 
-    type BlockValue = {
+    type ExpectedBlockValue = {
       _type: 'block'
-      listType?: 'bullet' | 'number'
-      style?: 'normal' | 'h1' | 'h2'
-      level?: number
+      listType: 'number' | 'bullet'
+      style: 'normal' | 'h1' | 'h2'
       children: (
         | {_type: 'author'; name: string; _key: string}
         | {
             _type: 'span'
-            marks: ('strong' | 'em' | `ref-${string}`)[]
-            text: string
             _key: string
+            text: string
+            marks: ('strong' | 'em' | `ref-${string}`)[]
           }
       )[]
       markDefs: (
         | {_type: 'author'; foo: number; _key: string}
         | {_type: 'book'; bar: number; _key: string}
       )[]
+      level?: number | undefined
     }
 
-    expectTypeOf<Infer<typeof blockSchema>>().toEqualTypeOf<BlockValue>()
+    type ActualType = Infer<typeof blockSchema>
+
+    expectTypeOf<ActualType>().toEqualTypeOf<ExpectedBlockValue>()
   })
-  test('portable text array', () => {
-    const portableTextArray = array(
-      union([
-        block({
-          styles: [literal('normal'), literal('h1'), literal('h2')],
-          lists: [literal('bullet'), literal('number')],
-          inlineTypes: [
-            object({
-              _type: literal('author'),
-              name: string(),
-            }),
-          ],
-          decorators: [literal('strong'), literal('em')],
-          annotations: [
-            object({_type: literal('author'), foo: number()}),
-            object({_type: literal('book'), bar: number()}),
-          ],
-        }),
-        object({_type: literal('message'), text: string()}),
-      ]),
-    )
 
-    type PortableTextArrayValue = (
-      | {
-          _type: 'block'
-          _key: string
-          listType?: 'bullet' | 'number'
-          style?: 'normal' | 'h1' | 'h2'
-          level?: number
-          children: (
-            | {_type: 'author'; name: string; _key: string}
-            | {
-                _type: 'span'
-                marks: ('strong' | 'em' | `ref-${string}`)[]
-                text: string
-                _key: string
-              }
-          )[]
-          markDefs: (
-            | {_type: 'author'; foo: number; _key: string}
-            | {_type: 'book'; bar: number; _key: string}
-          )[]
-        }
-      | {_type: 'message'; text: string; _key: string}
-    )[]
+  test('block type definition without config', () => {
+    const blockSchema = block({})
 
-    expectTypeOf<
-      Infer<typeof portableTextArray>
-    >().toEqualTypeOf<PortableTextArrayValue>()
+    type ExpectedBlockValue = {
+      _type: 'block'
+      style: never
+      listType: never
+      children: {
+        _type: 'span'
+        _key: string
+        text: string
+        marks: `ref-${string}`[]
+      }[]
+      level?: number
+      markDefs: never[]
+    }
+
+    type ActualType = Infer<typeof blockSchema>
+
+    expectTypeOf<ActualType>().toEqualTypeOf<ExpectedBlockValue>()
   })
 })

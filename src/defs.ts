@@ -98,14 +98,13 @@ export interface SanityPrimitiveUnion<
 }
 
 export type SanityObjectShape = {[key: string]: SanityAny}
+
 export type SanityNamedObjectShape = {
-  _type: SanityLiteral
-  [key: string]: SanityAny
+  _type: SanityLiteral<string>
 }
 
 export interface SanityObject<
   Shape extends SanityObjectShape = SanityObjectShape,
-  // @verify!
   Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
     OutputFromShape<Shape>
   >,
@@ -114,9 +113,12 @@ export interface SanityObject<
   shape: Shape
 }
 
+export type SanityBlockShape = SanityNamedObjectShape & {
+  children?: SanityAny
+}
+
 export interface SanityBlock<
-  Shape extends SanityNamedObjectShape = SanityNamedObjectShape,
-  // @verify!
+  Shape extends SanityBlockShape = SanityBlockShape,
   Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
     OutputFromShape<Shape>
   >,
@@ -127,7 +129,6 @@ export interface SanityBlock<
 
 export interface SanityImage<
   Shape extends SanityImageShape = SanityImageShape,
-  // @verify!
   Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
     OutputFromShape<Shape>
   >,
@@ -137,7 +138,6 @@ export interface SanityImage<
 
 export interface SanityFile<
   Shape extends SanityFileShape = SanityFileShape,
-  // @verify!
   Output extends UndefinedOptional<OutputFromShape<Shape>> = UndefinedOptional<
     OutputFromShape<Shape>
   >,

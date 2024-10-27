@@ -1,6 +1,7 @@
 import {
   type SanityBlock,
   type SanityLiteral,
+  type SanityNever,
   type SanityNumber,
   type SanityObject,
   type SanityObjectArray,
@@ -12,9 +13,9 @@ import {
   type SanityTypedObject,
 } from '../defs'
 import {defineType} from '../helpers/defineType'
-import {type ElementType} from '../helpers/utilTypes'
 import {array} from './array'
 import {literal} from './literal'
+import {never} from './never'
 import {number} from './number'
 import {object} from './object'
 import {optional} from './optional'
@@ -26,110 +27,140 @@ export function _markDefRef(): SanityLiteral<`ref-${string}`> {
 }
 
 export type BlockObjectShape<
-  Styles extends SanityLiteral<string>,
-  Lists extends SanityLiteral<string>,
-  InlineTypes extends (
+  StyleType extends
+    | SanityNever
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  ListType extends
+    | SanityNever
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  InlineType extends
+    | SanityNever
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
-  Decorators extends SanityLiteral<string>,
-  Annotations extends (
+    | SanityObjectUnion<SanityTypedObject>,
+  DecoratorType extends
+    | SanityNever
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  AnnotationType extends
+    | SanityNever
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
-  TypeName extends SanityLiteral<string>,
+    | SanityObjectUnion<SanityTypedObject>,
+  TypeName extends SanityLiteral<string> = SanityLiteral<'block'>,
 > = {
   _type: TypeName
-  style: SanityOptional<SanityPrimitiveUnion<Styles>>
+  style: StyleType
   level: SanityOptional<SanityNumber>
-  listType: SanityOptional<SanityPrimitiveUnion<Lists>>
+  listType: ListType
   children: SanityObjectArray<
     SanityObjectUnion<
-      | FlattenUnionTypes<ElementType<InlineTypes>>
+      | FlattenUnionTypes<InlineType>
       | SanityObject<{
           _type: SanityLiteral<'span'>
           marks: SanityPrimitiveArray<
-            Decorators | SanityLiteral<`ref-${string}`>
+            DecoratorType | SanityLiteral<`ref-${string}`>
           >
           text: SanityString
         }>
     >
   >
-  markDefs: SanityObjectArray<ElementType<Annotations>>
+  markDefs: SanityObjectArray<Exclude<AnnotationType, SanityNever>>
 }
 
 export type BlockOptions<
-  Styles extends SanityLiteral<string>,
-  Lists extends SanityLiteral<string>,
-  InlineTypes extends (
+  StyleType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>> = never,
+  ListType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>> = never,
+  InlineType extends
+    | void
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
-  Decorators extends SanityLiteral<string>,
-  Annotations extends (
+    | SanityObjectUnion<SanityTypedObject> = never,
+  DecoratorType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>> = never,
+  AnnotationType extends
+    | void
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
+    | SanityObjectUnion<SanityTypedObject> = never,
   TypeName extends SanityLiteral<string> = SanityLiteral<'block'>,
 > = {
   _type?: TypeName
-  styles: Styles[]
-  lists: Lists[]
-  decorators: Decorators[]
-  inlineTypes: InlineTypes
-  annotations: Annotations
+  style?: StyleType
+  list?: ListType
+  decorator?: DecoratorType
+  inline?: InlineType
+  annotation?: AnnotationType
 }
 
+export type VoidNever<T> = void extends T ? SanityNever : Exclude<T, void>
+
 export function block<
-  Styles extends SanityLiteral<string>,
-  Lists extends SanityLiteral<string>,
-  InlineTypes extends (
+  StyleType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  ListType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  InlineType extends
+    | void
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
-  Decorators extends SanityLiteral<string>,
-  Annotations extends (
+    | SanityObjectUnion<SanityTypedObject>,
+  DecoratorType extends
+    | void
+    | SanityLiteral<string>
+    | SanityPrimitiveUnion<SanityLiteral<string>>,
+  AnnotationType extends
+    | void
     | SanityTypedObject
-    | SanityObjectUnion<SanityTypedObject>
-  )[],
+    | SanityObjectUnion<SanityTypedObject>,
   TypeName extends SanityLiteral<string> = SanityLiteral<'block'>,
 >(
   options: BlockOptions<
-    Styles,
-    Lists,
-    InlineTypes,
-    Decorators,
-    Annotations,
+    StyleType,
+    ListType,
+    InlineType,
+    DecoratorType,
+    AnnotationType,
     TypeName
   >,
 ): SanityBlock<
   BlockObjectShape<
-    Styles,
-    Lists,
-    InlineTypes,
-    Decorators,
-    Annotations,
+    VoidNever<StyleType>,
+    VoidNever<ListType>,
+    VoidNever<InlineType>,
+    VoidNever<DecoratorType>,
+    VoidNever<AnnotationType>,
     TypeName
   >
 > {
+  const markDefRefSchema = _markDefRef()
+  const marksSchema = options.decorator
+    ? array(union([options.decorator, markDefRefSchema]))
+    : array(markDefRefSchema)
+
+  const spanType = object({
+    _type: literal('span'),
+    marks: marksSchema,
+    text: string(),
+  })
   return defineType({
     typeName: 'block',
     shape: {
       _type: options._type || literal('block'),
-      style: optional(union([...options.styles])),
+      ...(options.style ? {style: optional(options.style)} : {}),
       level: optional(number()),
-      listType: optional(union([...options.lists])),
-      children: array(
-        union([
-          ...options.inlineTypes,
-          object({
-            _type: literal('span'),
-            marks: array(union([...options.decorators, _markDefRef()])),
-            text: string(),
-          }),
-        ]),
-      ),
-      markDefs: array(union([...options.annotations])),
+      ...(options.list ? {list: optional(options.list)} : {}),
+      children: array(union([spanType, options.inline || never()])),
+      ...(options.annotation ? {markDefs: array(options.annotation)} : {}),
     },
   }) as any
 }
