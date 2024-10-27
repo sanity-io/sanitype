@@ -1,7 +1,10 @@
 import {expect, expectTypeOf, test, vi} from 'vitest'
 
 import {createResolve} from '../createResolve'
-import {document, literal, reference, string} from '../creators'
+import {document} from '../creators/document'
+import {literal} from '../creators/literal'
+import {reference} from '../creators/reference'
+import {string} from '../creators/string'
 import {type Infer} from '../defs'
 import {parse} from '../parse'
 

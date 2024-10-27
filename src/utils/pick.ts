@@ -1,4 +1,5 @@
-import {document, object} from '../creators'
+import {document} from '../creators/document'
+import {object} from '../creators/object'
 import {
   type OutputOf,
   type SanityDocument,

@@ -1,6 +1,7 @@
 import {describe, expect, test} from 'vitest'
 
-import {image, string} from '../creators'
+import {image} from '../creators/image'
+import {string} from '../creators/string'
 import {safeParse} from '../parse'
 
 const plainImageSchema = image({})

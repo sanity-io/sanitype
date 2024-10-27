@@ -1,15 +1,12 @@
 import {describe, expectTypeOf, test} from 'vitest'
 
-import {
-  array,
-  literal,
-  number,
-  object,
-  objectArray,
-  string,
-  union,
-} from '../creators'
+import {array, objectArray} from '../creators/array'
+import {literal} from '../creators/literal'
 import {never} from '../creators/never'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {type Infer} from '../defs'
 
 describe('array types', () => {

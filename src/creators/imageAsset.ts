@@ -1,14 +1,12 @@
 import {assetSourceData} from './assetSourceData'
+import {boolean} from './boolean'
+import {document} from './document'
 import {geopoint} from './geopoint'
-import {
-  boolean,
-  document,
-  literal,
-  number,
-  object,
-  optional,
-  string,
-} from './index'
+import {literal} from './literal'
+import {number} from './number'
+import {object} from './object'
+import {optional} from './optional'
+import {string} from './string'
 
 const imageDimensions = object({
   _type: literal('sanity.imageDimensions'),

@@ -1,6 +1,7 @@
 import {describe, expect, test} from 'vitest'
 
-import {file, string} from '../creators'
+import {file} from '../creators/file'
+import {string} from '../creators/string'
 import {safeParse} from '../parse'
 
 const plainFileSchema = file({})

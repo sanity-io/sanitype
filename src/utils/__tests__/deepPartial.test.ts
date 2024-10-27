@@ -1,6 +1,11 @@
 import {expect, test} from 'vitest'
 
-import {array, literal, number, object, string, union} from '../../creators'
+import {array} from '../../creators/array'
+import {literal} from '../../creators/literal'
+import {number} from '../../creators/number'
+import {object} from '../../creators/object'
+import {string} from '../../creators/string'
+import {union} from '../../creators/union'
 import {parse} from '../../parse'
 import {deepPartial} from '../deepPartial'
 

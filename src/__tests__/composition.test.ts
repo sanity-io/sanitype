@@ -1,15 +1,12 @@
 import {assertType, test} from 'vitest'
 
-import {
-  array,
-  boolean,
-  literal,
-  number,
-  object,
-  primitiveArray,
-  string,
-  union,
-} from '../creators'
+import {array, primitiveArray} from '../creators/array'
+import {boolean} from '../creators/boolean'
+import {literal} from '../creators/literal'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {type Infer} from '../defs'
 import {parse} from '../parse'
 

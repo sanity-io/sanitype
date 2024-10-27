@@ -3,7 +3,7 @@ import {
   isObjectSchema,
   isPrimitiveSchema,
 } from '../asserters'
-import {optional} from '../creators'
+import {optional} from '../creators/optional'
 import {type OutputOf, type SanityAny} from '../defs'
 import {isObjectLike} from '../helpers/isObjectLike'
 import {safeParse} from '../parse'

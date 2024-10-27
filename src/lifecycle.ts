@@ -1,4 +1,4 @@
-import {document} from './creators'
+import {document} from './creators/document'
 import {type SanityDocument} from './defs'
 import {type ElementType} from './helpers/utilTypes'
 import {type DeepPartial, deepPartial} from './utils/deepPartial'

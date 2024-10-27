@@ -1,6 +1,11 @@
 import {test} from 'vitest'
 
-import {array, document, literal, object, string, union} from '../creators'
+import {array} from '../creators/array'
+import {document} from '../creators/document'
+import {literal} from '../creators/literal'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {defineForm} from './creators'
 
 const person = document({

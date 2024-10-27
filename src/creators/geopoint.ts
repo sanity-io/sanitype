@@ -1,4 +1,7 @@
-import {literal, number, object, optional} from '@sanity/sanitype'
+import {literal} from './literal'
+import {number} from './number'
+import {object} from './object'
+import {optional} from './optional'
 
 const _geopoint = object({
   _type: literal('geopoint'),

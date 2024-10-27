@@ -1,17 +1,15 @@
 import {assertType, describe, expect, test} from 'vitest'
 
-import {
-  array,
-  boolean,
-  document,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  string,
-  union,
-} from '../../creators'
+import {array} from '../../creators/array'
+import {boolean} from '../../creators/boolean'
+import {document} from '../../creators/document'
+import {lazy} from '../../creators/lazy'
+import {literal} from '../../creators/literal'
+import {number} from '../../creators/number'
+import {object} from '../../creators/object'
+import {optional} from '../../creators/optional'
+import {string} from '../../creators/string'
+import {union} from '../../creators/union'
 import {type SanityObjectType} from '../../defs'
 import {parse} from '../../parse'
 import {extend} from '../extend'

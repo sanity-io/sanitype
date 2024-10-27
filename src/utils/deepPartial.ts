@@ -4,7 +4,10 @@ import {
   isObjectUnionSchema,
   isOptionalSchema,
 } from '../asserters'
-import {object, objectArray, optional, union} from '../creators'
+import {objectArray} from '../creators/array'
+import {object} from '../creators/object'
+import {optional} from '../creators/optional'
+import {union} from '../creators/union'
 import {
   type OutputOf,
   type SanityDocument,

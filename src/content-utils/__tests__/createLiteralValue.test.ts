@@ -1,6 +1,9 @@
 import {expect, test} from 'vitest'
 
-import {document, literal, object, string} from '../../creators'
+import {document} from '../../creators/document'
+import {literal} from '../../creators/literal'
+import {object} from '../../creators/object'
+import {string} from '../../creators/string'
 import {createLiteralValue} from '../createLiteralValue'
 
 test('create literal value from document schema', () => {

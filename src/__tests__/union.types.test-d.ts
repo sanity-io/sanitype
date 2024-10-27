@@ -1,7 +1,12 @@
 import {test} from 'vitest'
 
-import {boolean, literal, number, object, string, union} from '../creators'
+import {boolean} from '../creators/boolean'
+import {literal} from '../creators/literal'
 import {never} from '../creators/never'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 
 test('primitive unions', () => {
   union([string(), union([number(), boolean()])])

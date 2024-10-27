@@ -1,6 +1,8 @@
 import {expect, test} from 'vitest'
 
-import {boolean, object, string} from '../../creators'
+import {boolean} from '../../creators/boolean'
+import {object} from '../../creators/object'
+import {string} from '../../creators/string'
 import {pickDeep} from '../pickDeep'
 
 const obj = object({

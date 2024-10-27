@@ -1,5 +1,9 @@
 import {assetSourceData} from './assetSourceData'
-import {document, literal, number, optional, string} from './index'
+import {document} from './document'
+import {literal} from './literal'
+import {number} from './number'
+import {optional} from './optional'
+import {string} from './string'
 
 // static type definition
 const _fileAsset = document({

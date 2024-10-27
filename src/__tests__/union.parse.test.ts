@@ -1,6 +1,12 @@
 import {describe, expect, test} from 'vitest'
 
-import {file, image, literal, number, object, string, union} from '../creators'
+import {file} from '../creators/file'
+import {image} from '../creators/image'
+import {literal} from '../creators/literal'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {parse, safeParse} from '../parse'
 
 describe('typed object union', () => {

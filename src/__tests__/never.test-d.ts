@@ -1,7 +1,11 @@
 import {describe, expectTypeOf, test} from 'vitest'
 
-import {array, literal, object, string, union} from '../creators'
+import {array} from '../creators/array'
+import {literal} from '../creators/literal'
 import {never} from '../creators/never'
+import {object} from '../creators/object'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {type Infer} from '../defs'
 
 describe('never type', () => {

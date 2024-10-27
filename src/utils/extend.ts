@@ -1,4 +1,4 @@
-import {type SafeObject} from '../creators'
+import {type SafeObject} from '../creators/object'
 import {
   type OutputFromShape,
   type SanityDocument,

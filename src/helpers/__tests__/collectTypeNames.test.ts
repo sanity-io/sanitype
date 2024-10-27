@@ -1,6 +1,7 @@
 import {expect, test} from 'vitest'
 
-import {literal, object} from '../../creators'
+import {literal} from '../../creators/literal'
+import {object} from '../../creators/object'
 import {collectTypeNames} from '../strictMode'
 
 test('collectTypeNames', () => {

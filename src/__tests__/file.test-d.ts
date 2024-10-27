@@ -1,6 +1,7 @@
 import {describe, expectTypeOf, test} from 'vitest'
 
-import {file, string} from '../creators'
+import {file} from '../creators/file'
+import {string} from '../creators/string'
 import {
   type Infer,
   type INTERNAL_REF_TYPE_SCHEMA,

@@ -1,4 +1,7 @@
-import {literal, object, optional, string} from './index'
+import {literal} from './literal'
+import {object} from './object'
+import {optional} from './optional'
+import {string} from './string'
 
 /**
  * @internal

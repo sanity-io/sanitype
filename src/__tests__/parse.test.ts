@@ -1,18 +1,16 @@
 import {assertType, describe, expect, test} from 'vitest'
 
-import {
-  array,
-  document,
-  file,
-  image,
-  lazy,
-  literal,
-  object,
-  optional,
-  reference,
-  string,
-  union,
-} from '../creators'
+import {array} from '../creators/array'
+import {document} from '../creators/document'
+import {file} from '../creators/file'
+import {image} from '../creators/image'
+import {lazy} from '../creators/lazy'
+import {literal} from '../creators/literal'
+import {object} from '../creators/object'
+import {optional} from '../creators/optional'
+import {reference} from '../creators/reference'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {
   INTERNAL_REF_TYPE_SCHEMA,
   type SanityObjectType,

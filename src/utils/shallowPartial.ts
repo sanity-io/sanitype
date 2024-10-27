@@ -1,5 +1,5 @@
 import {isObjectSchema, isOptionalSchema} from '../asserters'
-import {object} from '../creators'
+import {object} from '../creators/object'
 import {
   type OutputOf,
   type SanityDocument,

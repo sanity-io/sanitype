@@ -1,17 +1,13 @@
 import {describe, expect, test} from 'vitest'
 
-import {
-  array,
-  lazy,
-  literal,
-  number,
-  object,
-  objectArray,
-  optional,
-  primitiveArray,
-  string,
-  union,
-} from '../creators'
+import {array, objectArray, primitiveArray} from '../creators/array'
+import {lazy} from '../creators/lazy'
+import {literal} from '../creators/literal'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
+import {optional} from '../creators/optional'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {type SanityObjectType} from '../defs'
 import {extend} from '../utils/extend'
 

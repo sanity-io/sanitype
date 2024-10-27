@@ -1,6 +1,10 @@
 import {assertType, expectTypeOf, test} from 'vitest'
 
-import {lazy, literal, object, optional, string} from '../../creators'
+import {lazy} from '../../creators/lazy'
+import {literal} from '../../creators/literal'
+import {object} from '../../creators/object'
+import {optional} from '../../creators/optional'
+import {string} from '../../creators/string'
 import {
   type Infer,
   type SanityBoolean,

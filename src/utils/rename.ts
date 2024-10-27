@@ -1,4 +1,4 @@
-import {literal} from '../creators'
+import {literal} from '../creators/literal'
 import {
   type SanityDocument,
   type SanityLiteral,

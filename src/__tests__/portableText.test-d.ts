@@ -1,7 +1,12 @@
 import {describe, expectTypeOf, test} from 'vitest'
 
-import {block, literal, number, object, string, union} from '../creators'
+import {block} from '../creators/block'
+import {literal} from '../creators/literal'
+import {number} from '../creators/number'
+import {object} from '../creators/object'
 import {portableText} from '../creators/portableText'
+import {string} from '../creators/string'
+import {union} from '../creators/union'
 import {type Infer} from '../defs'
 
 describe('block type', () => {

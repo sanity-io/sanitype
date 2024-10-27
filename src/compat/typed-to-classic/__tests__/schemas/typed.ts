@@ -1,17 +1,15 @@
-import {
-  array,
-  block,
-  boolean,
-  dateTime,
-  document,
-  file,
-  image,
-  literal,
-  number,
-  object,
-  string,
-  union,
-} from '../../../../creators'
+import {array} from '../../../../creators/array'
+import {block} from '../../../../creators/block'
+import {boolean} from '../../../../creators/boolean'
+import {dateTime} from '../../../../creators/dateTime'
+import {document} from '../../../../creators/document'
+import {file} from '../../../../creators/file'
+import {image} from '../../../../creators/image'
+import {literal} from '../../../../creators/literal'
+import {number} from '../../../../creators/number'
+import {object} from '../../../../creators/object'
+import {string} from '../../../../creators/string'
+import {union} from '../../../../creators/union'
 import {extend} from '../../../../utils/extend'
 
 const pet = object({name: string()})
