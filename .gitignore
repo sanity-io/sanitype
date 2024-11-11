@@ -4,3 +4,4 @@ tsconfig.vitest-temp.json
 tmp
 tsconfig.tsbuildinfo
 .tmp
+coverage

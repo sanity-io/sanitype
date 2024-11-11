@@ -7,5 +7,10 @@ export default defineConfig({
     },
     exclude: [...configDefaults.exclude, '.tmp/**'],
     includeSource: ['./src/**/*.ts'],
+    coverage: {
+      reporter: ['text-summary', 'json-summary', 'json'],
+      reportOnFailure: true,
+      include: ['src/**'],
+    },
   },
 })
