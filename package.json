@@ -38,7 +38,7 @@
     "example:compat-studio": "(cd examples/compat-studio && npm run dev)",
     "examples": "run-p example:*",
     "format": "prettier --write --cache --ignore-unknown .",
-    "lint": "eslint . --ext .cjs,.js,.ts,.tsx --quiet",
+    "lint": "eslint . --quiet",
     "pkg:build": "pkg build --strict",
     "pkg:check": "pkg check --strict",
     "pkg:watch": "pkg watch --strict",
