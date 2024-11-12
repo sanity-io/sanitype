@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/sanity-io/sanitype/compare/sanitype-v0.5.0...sanitype-v0.6.0) (2024-11-12)
+
+
+### Features
+
+* add loader utils ([dcd643b](https://github.com/sanity-io/sanitype/commit/dcd643bea632cb8121150f05bfdd5a98831c9029))
+
 ## [0.5.0](https://github.com/sanity-io/sanitype/compare/sanitype-v0.4.0...sanitype-v0.5.0) (2024-11-11)
 
 
