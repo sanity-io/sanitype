@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.0...sanitype-v0.6.1) (2024-11-12)
+
+
+### Bug Fixes
+
+* export missing util type ([494a600](https://github.com/sanity-io/sanitype/commit/494a6008e64907bacfc105d0fdb442c0d28c721f))
+
 ## [0.6.0](https://github.com/sanity-io/sanitype/compare/sanitype-v0.5.0...sanitype-v0.6.0) (2024-11-12)
 
 
