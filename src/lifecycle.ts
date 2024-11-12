@@ -1,6 +1,11 @@
 import {document} from './creators/document'
 import {type SanityDocument} from './defs'
-import {type ElementType} from './helpers/utilTypes'
+import {
+  type ElementType,
+  type Format,
+  type RequireSome,
+} from './helpers/utilTypes'
+import {type DocumentLike} from './loader/createReferenceLoader'
 import {type DeepPartial, deepPartial} from './utils/deepPartial'
 import {required} from './utils/required'
 import {type RequiredShape} from './utils/shallowRequired'
@@ -15,7 +20,11 @@ export const STORED_KEYS = [
 
 export type StoredKeys = ElementType<typeof STORED_KEYS>
 
-export type Stored<T extends SanityDocument<any>> =
+export type StoredDocument<T extends DocumentLike> = Format<
+  RequireSome<T, StoredKeys>
+>
+
+export type Stored<T extends SanityDocument> =
   T extends SanityDocument<infer DocShape>
     ? SanityDocument<
         RequiredShape<Pick<DocShape, StoredKeys>> & Omit<DocShape, StoredKeys>

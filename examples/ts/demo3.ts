@@ -1,16 +1,16 @@
 import {
   array,
   document,
-  fetchDocument,
   lazy,
   literal,
+  loadDocument,
+  loadReference,
   object,
   reference,
-  resolve,
   type SanityArrayValue,
+  type SanityDocumentType,
   type SanityDocumentValue,
   type SanityReferenceValue,
-  type SanityType,
   string,
 } from '@sanity/sanitype'
 
@@ -20,16 +20,17 @@ interface Human extends SanityDocumentValue {
   coworkers: SanityArrayValue<SanityReferenceValue<Human>>
 }
 
-const human: SanityType<Human> = lazy(() =>
-  document({
-    _type: literal('human'),
-    name: object({first: string(), last: string()}),
-    coworkers: array(reference(human)),
-  }),
+const human = lazy(
+  (): SanityDocumentType<Human> =>
+    document({
+      _type: literal('human'),
+      name: object({first: string(), last: string()}),
+      coworkers: array(reference(human)),
+    }),
 )
 
 // todo: fetch a human
-const knut = await fetchDocument('knut', human)
+const knut = await loadDocument(human, 'knut')
 
 // todo: make a "pet" document schema
 const pet = document({
@@ -37,15 +38,15 @@ const pet = document({
   name: string(),
   human: reference(human),
 })
-const jara = await fetchDocument('jara', pet)
+const jara = await loadDocument(pet, 'jara')
 
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 jara.human // ok
 
-const jarasHuman = await resolve(jara.human)
+const jarasHuman = await loadReference(jara.human)
 
 const jarasHumansCoworkers = await Promise.all(
-  jarasHuman.coworkers.map(async coworker => await resolve(coworker)),
+  jarasHuman.coworkers.map(async coworker => await loadReference(coworker)),
 )
 jarasHumansCoworkers.forEach(hum => {
   console.log(hum._id)

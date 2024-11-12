@@ -149,3 +149,5 @@ export type GetShapeOf<T extends SanityObject | SanityDocument> =
 
 export type ElementType<A extends any[] | readonly any[]> =
   A extends readonly (infer T)[] ? T : never
+
+export type RequireSome<T, K extends keyof T> = Omit<T, K> & {[P in K]-?: T[P]}

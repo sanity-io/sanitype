@@ -5,10 +5,10 @@ import {
   document,
   type Infer,
   literal,
+  loadReference,
   object,
   parse,
   reference,
-  resolve,
   string,
 } from '@sanity/sanitype'
 
@@ -47,7 +47,7 @@ const jaraAsJson = client.fetch('*[_type == "pet" && _id=="jara"][0]')
 const jaraTheDog = parse(pet, jaraAsJson)
 
 const humansOfJara = await Promise.all(
-  jaraTheDog.humans.map(humanReference => resolve(humanReference)),
+  jaraTheDog.humans.map(humanReference => loadReference(humanReference)),
 )
 
 humansOfJara.forEach(humanOfJara => console.log(humanOfJara))

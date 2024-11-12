@@ -1,6 +1,6 @@
 import {
   array,
-  createResolve,
+  createReferenceLoader,
   document,
   type Infer,
   literal,
@@ -27,7 +27,7 @@ declare const personOutput: Infer<typeof person>
 type Person = Infer<typeof person>
 
 const aPerson = parse(person, {})
-const resolve = createResolve(async () => {})
+const resolve = createReferenceLoader(async () => {})
 console.log(aPerson.favoritePet.__schema__)
 const allPets = await Promise.all(
   aPerson.pets.map(aPersonsPet => resolve(aPersonsPet)),

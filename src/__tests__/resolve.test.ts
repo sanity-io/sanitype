@@ -1,11 +1,11 @@
 import {expect, expectTypeOf, test, vi} from 'vitest'
 
-import {createResolve} from '../createResolve'
 import {document} from '../creators/document'
 import {literal} from '../creators/literal'
 import {reference} from '../creators/reference'
 import {string} from '../creators/string'
 import {type Infer} from '../defs'
+import {createReferenceLoader} from '../loader/createReferenceLoader'
 import {parse} from '../parse'
 
 const country = document({
@@ -34,7 +34,7 @@ test('resolve reference with schema', async () => {
     _id: 'usa',
     name: 'USA',
   })
-  const resolve = createResolve(fetch)
+  const resolve = createReferenceLoader(fetch)
 
   const personCountry = await resolve(person.country)
   expect(fetch.mock.calls).toEqual([['usa']])

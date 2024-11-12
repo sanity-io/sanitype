@@ -1,6 +1,6 @@
 import {
   array,
-  createResolve,
+  createReferenceLoader,
   document,
   literal,
   number,
@@ -60,7 +60,7 @@ const somePerson = parse(person, {})
 
 console.log(somePerson.address.country)
 
-const resolve = createResolve(() => Promise.resolve())
+const resolve = createReferenceLoader(() => Promise.resolve())
 const somePersonCountry = await resolve(somePerson.address.country)
 
 const keys = somePerson.pets.map(somePersonsPet => somePersonsPet._key)
