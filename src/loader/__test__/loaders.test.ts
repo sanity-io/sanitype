@@ -1,12 +1,13 @@
 import {expect, expectTypeOf, test, vi} from 'vitest'
 
-import {document} from '../creators/document'
-import {literal} from '../creators/literal'
-import {reference} from '../creators/reference'
-import {string} from '../creators/string'
-import {type Infer} from '../defs'
-import {createReferenceLoader} from '../loader/createReferenceLoader'
-import {parse} from '../parse'
+import {document} from '../../creators/document'
+import {literal} from '../../creators/literal'
+import {reference} from '../../creators/reference'
+import {string} from '../../creators/string'
+import {type Infer} from '../../defs'
+import {type StoredDocument} from '../../lifecycle'
+import {parse} from '../../parse'
+import {createReferenceLoader} from '../createReferenceLoader'
 
 const country = document({
   _type: literal('country'),
@@ -34,15 +35,17 @@ test('resolve reference with schema', async () => {
     _id: 'usa',
     name: 'USA',
   })
-  const resolve = createReferenceLoader(fetch)
+  const loadReference = createReferenceLoader(fetch)
 
-  const personCountry = await resolve(person.country)
-  expect(fetch.mock.calls).toEqual([['usa']])
+  const personCountry = await loadReference(person.country)
+  expect(fetch.mock.calls).toEqual([['usa', []]])
   expect(personCountry).toEqual({
     _type: 'country',
     _id: 'usa',
     name: 'USA',
   })
 
-  expectTypeOf(personCountry).toEqualTypeOf<Infer<typeof country>>()
+  type LoadedCountry = StoredDocument<Infer<typeof country>>
+
+  expectTypeOf(personCountry).toEqualTypeOf<LoadedCountry>()
 })
