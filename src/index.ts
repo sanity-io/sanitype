@@ -35,6 +35,7 @@ export type {
   Format,
   GetFirstChar,
   OutputFormatFix,
+  RequireSome,
   ValidateFieldChars,
   ValidFieldChar,
   ValidFieldChars,
