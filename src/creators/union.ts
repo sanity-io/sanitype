@@ -94,7 +94,10 @@ export function union<
         isPrimitiveUnionSchema(schema),
     )
   ) {
-    return defineType({typeName: 'primitiveUnion', union: unionTypes}) as any
+    return defineType({
+      typeName: 'primitiveUnion',
+      union: unionTypes.filter(schema => !isNeverSchema(schema)),
+    }) as any
   }
 
   if (
@@ -109,7 +112,7 @@ export function union<
   ) {
     return defineType({
       typeName: 'union',
-      union: unionTypes,
+      union: unionTypes.filter(schema => !isNeverSchema(schema)),
     }) as any
   }
 

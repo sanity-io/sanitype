@@ -1,4 +1,4 @@
-import {test} from 'vitest'
+import {expectTypeOf, test} from 'vitest'
 
 import {boolean} from '../creators/boolean'
 import {literal} from '../creators/literal'
@@ -7,6 +7,8 @@ import {number} from '../creators/number'
 import {object} from '../creators/object'
 import {string} from '../creators/string'
 import {union} from '../creators/union'
+import {type SanityNever, type SanityObjectUnion} from '../defs'
+import {type ElementType} from '../helpers/utilTypes'
 
 test('primitive unions', () => {
   union([string(), union([number(), boolean()])])
@@ -26,4 +28,10 @@ test('object union of object union', () => {
     union([object({_type: literal('baz'), foo: string()})]),
     union([object({_type: literal('baz'), foo: string()}), never()]),
   ])
+})
+
+test('union type excludes never type', () => {
+  expectTypeOf<ElementType<SanityObjectUnion['union']>>()
+    .extract<SanityNever>()
+    .toEqualTypeOf<never>()
 })
