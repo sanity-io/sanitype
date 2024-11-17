@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.1...sanitype-v0.6.2) (2024-11-17)
+
+
+### Bug Fixes
+
+* exclude `never` from union types ([#16](https://github.com/sanity-io/sanitype/issues/16)) ([671342d](https://github.com/sanity-io/sanitype/commit/671342d8125b4f880af8f65eace8ffc40b1a782f))
+
 ## [0.6.1](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.0...sanitype-v0.6.1) (2024-11-12)
 
 
