@@ -84,7 +84,7 @@ export interface SanityObjectUnion<
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'union'
-  union: Def[]
+  union: Exclude<Def, SanityNever>[]
 }
 export interface SanityPrimitiveUnion<
   Def extends SanityPrimitive | SanityLiteral | SanityNever =
@@ -94,7 +94,7 @@ export interface SanityPrimitiveUnion<
   Output = OutputOf<Def>,
 > extends SanityType<Output> {
   typeName: 'primitiveUnion'
-  union: Def[]
+  union: Exclude<Def, SanityNever>[]
 }
 
 export type SanityObjectShape = {[key: string]: SanityAny}
