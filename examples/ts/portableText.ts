@@ -1,5 +1,6 @@
 import {
   array,
+  block,
   type Infer,
   literal,
   number,
@@ -8,8 +9,6 @@ import {
   string,
   union,
 } from '@sanity/sanitype'
-
-import {block} from '../../src/creators/block'
 
 const someBlock = block({
   _type: literal('someBlock'),
