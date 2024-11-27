@@ -8,14 +8,17 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:dev": "vitepress dev",
+    "docs:preview": "vitepress preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@sanity/sanitype": "workspace:*",
     "@shikijs/twoslash": "^1.23.1",
     "@shikijs/vitepress-twoslash": "^1.23.1",
-    "vitepress": "^1.5.0"
+    "patch-package": "^8.0.0",
+    "vitepress": "^1.5.0",
+    "vue": "^3.5.13"
   }
 }
