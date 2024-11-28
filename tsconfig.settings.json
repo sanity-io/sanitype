@@ -9,6 +9,7 @@
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
