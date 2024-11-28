@@ -67,7 +67,11 @@ function convertItem<S extends SanityAny>(
   }
   if (isPrimitiveUnionSchema(schema)) {
     // we don't support this currently in v3, so fallback to the first type
-    return convertItem(schema.union[0], hoisted)
+    const unionType = schema.union[0]
+    if (!unionType) {
+      throw new Error('Expected union schema to have at least one member type')
+    }
+    return convertItem(unionType, hoisted)
   }
   if (isObjectLikeSchema(schema)) {
     return objectToClassicSchema(schema, hoisted) as classic.ArrayOfType
