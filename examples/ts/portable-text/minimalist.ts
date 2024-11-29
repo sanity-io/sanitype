@@ -1,9 +1,15 @@
-import {array, block, parse} from '@sanity/sanitype'
+import {array, block, type Infer, parse} from '@sanity/sanitype'
 
-const blockSchema = block({})
+const minimalistPortableText = array(block({}))
 
-const portableTextSchema = array(blockSchema)
+type MinimalistPortableText = Infer<typeof minimalistPortableText>
 
-const myPTArrayValue = parse(portableTextSchema, [])
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-myPTArrayValue[0].style // 'blockSchema'
+const portableTextValue = parse(minimalistPortableText, [])
+
+const element = portableTextValue.forEach(element => {
+  // children can only contain spans
+  element.children
+
+  // children can only contain spans
+  element.style.toUpperCase()
+})

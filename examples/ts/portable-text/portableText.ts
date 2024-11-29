@@ -1,7 +1,6 @@
 import {
   array,
   block,
-  type Infer,
   literal,
   number,
   object,
@@ -10,7 +9,7 @@ import {
   union,
 } from '@sanity/sanitype'
 
-const someBlock = block({
+const myBlockSchema = block({
   _type: literal('someBlock'),
   style: union([literal('normal'), literal('h1'), literal('h2')]),
   list: union([literal('bullet'), literal('number')]),
@@ -27,9 +26,7 @@ const someBlock = block({
   ]),
 })
 
-const myPTArray = array(someBlock)
-
-type MyPTArray = Infer<typeof myPTArray>
+const myPTArray = array(myBlockSchema)
 
 const myPTArrayValue = parse(myPTArray, [])
 

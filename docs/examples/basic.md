@@ -1,6 +1,22 @@
 # Basic schema
 
-```ts twoslash
+## Hello World
+
+This might not be a super useful example, but it illustrates the basic concept of Sanitype:
+
+```ts
+import {object, string, parse} from '@sanity/sanitype'
+
+// define your string type
+const userSchema = object({
+  name: string(),
+})
+
+// parse a value
+const user = parse(userSchema, {name: 'Alice'})
+```
+
+```ts
 import * as s from '@sanity/sanitype'
 
 const movieSchema = s.document({

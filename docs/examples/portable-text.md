@@ -3,31 +3,20 @@
 ## Minimalist Portable Text
 
 ```ts twoslash
-import {
-  array,
-  block,
-  type Infer,
-  literal,
-  number,
-  object,
-  parse,
-  string,
-  union,
-} from '@sanity/sanitype'
+// @errors: 2339
+import {array, block, type Infer, parse} from '@sanity/sanitype'
 
-const minimalistPortableText = array(block({}))
+const minimalistPortableTextSchema = array(block({}))
 
-type MinimalistPortableText = Infer<typeof minimalistPortableText>
+const portableTextValue = parse(minimalistPortableTextSchema, [{}])
 
-const portableTextValue = parse(minimalistPortableText, [])
+const element = portableTextValue.forEach(element => {
+  // children can only contain spans
+  element.children
 
-const element = portableTextValue[0]
-
-// children can only contain spans
-element.children
-
-// children can only contain spans
-element.style
+  // there is no style configured on the block type, so this can never be set
+  element.style.toUpperCase()
+})
 ```
 
 ## Portable Text with decorators and annotations
@@ -44,7 +33,6 @@ import {
   string,
   union,
 } from '@sanity/sanitype'
-// ---cut-before---
 
 const blockSchema = block({
   _type: literal('myBlockType'),
