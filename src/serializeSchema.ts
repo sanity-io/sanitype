@@ -20,9 +20,13 @@ export function serializeSchema(schema: SanityType): TODO {
     return {typeName: schema.typeName, type: serializeSchema(schema.type)}
   }
   if (isObjectSchema(schema) || isDocumentSchema(schema)) {
+    const [systemAttrs, attrs] = partition(
+      Object.entries(schema.shape),
+      ([attr]) => attr.startsWith('_'),
+    )
     return {
       typeName: schema.typeName,
-      shape: Object.entries(schema.shape).map(([name, value]) => [
+      shape: [...systemAttrs, ...attrs].map(([name, value]) => [
         name,
         serializeSchema(value),
       ]),
@@ -38,4 +42,14 @@ export function serializeSchema(schema: SanityType): TODO {
   throw new Error(
     `Serializing schema type: "${schema.typeName}" not yet supported`,
   )
+}
+
+function partition<T>(arr: T[], predicate: (value: T) => boolean): [T[], T[]] {
+  const trueList: T[] = []
+  const falseList: T[] = []
+  arr.forEach((element: T) => {
+    const list = predicate(element) ? trueList : falseList
+    list.push(element)
+  })
+  return [trueList, falseList]
 }

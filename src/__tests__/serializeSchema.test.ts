@@ -100,10 +100,10 @@ test('serialize document types', () => {
             typeName: 'object',
             shape: [
               ['_type', {typeName: 'literal', value: 'address'}],
+              ['_key', {typeName: 'string'}],
               ['street', {typeName: 'string'}],
               ['city', {typeName: 'string'}],
               ['country', {typeName: 'string'}],
-              ['_key', {typeName: 'string'}],
             ],
           },
         },
