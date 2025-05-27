@@ -1,8 +1,10 @@
 import {
   isDocumentSchema,
   isLiteralSchema,
+  isObjectArraySchema,
   isObjectSchema,
   isOptionalSchema,
+  isPrimitiveArraySchema,
   isPrimitiveSchema,
 } from './asserters'
 import {type SanityType} from './defs'
@@ -24,6 +26,13 @@ export function serializeSchema(schema: SanityType): TODO {
         name,
         serializeSchema(value),
       ]),
+    }
+  }
+
+  if (isObjectArraySchema(schema) || isPrimitiveArraySchema(schema)) {
+    return {
+      typeName: schema.typeName,
+      element: serializeSchema(schema.element),
     }
   }
   throw new Error(

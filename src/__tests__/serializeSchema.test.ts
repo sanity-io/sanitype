@@ -1,5 +1,6 @@
 import {expect, test} from 'vitest'
 
+import {array} from '../creators/array'
 import {boolean} from '../creators/boolean'
 import {document} from '../creators/document'
 import {literal} from '../creators/literal'
@@ -30,17 +31,20 @@ test('serialize literal types', () => {
   expect(serializeSchema(literal(22))).toEqual({typeName: 'literal', value: 22})
 })
 
-test('serialize object types', () => {
+test('serialize document types', () => {
+  const address = object({
+    _type: literal('address'),
+    street: string(),
+    city: string(),
+    country: string(),
+  })
+
   const person = document({
     _type: literal('person'),
     name: string(),
     favoriteNumber: number(),
-    address: object({
-      _type: literal('address'),
-      street: string(),
-      city: string(),
-      country: string(),
-    }),
+    address,
+    secondaryAddresses: array(address),
   })
   expect(serializeSchema(person)).toEqual({
     typeName: 'document',
@@ -86,6 +90,22 @@ test('serialize object types', () => {
             ['city', {typeName: 'string'}],
             ['country', {typeName: 'string'}],
           ],
+        },
+      ],
+      [
+        'secondaryAddresses',
+        {
+          typeName: 'objectArray',
+          element: {
+            typeName: 'object',
+            shape: [
+              ['_type', {typeName: 'literal', value: 'address'}],
+              ['street', {typeName: 'string'}],
+              ['city', {typeName: 'string'}],
+              ['country', {typeName: 'string'}],
+              ['_key', {typeName: 'string'}],
+            ],
+          },
         },
       ],
     ],
