@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.2...sanitype-v0.7.0) (2025-05-27)
+
+
+### Features
+
+* quick and dirty serialization implementation ([9af567a](https://github.com/sanity-io/sanitype/commit/9af567a25a503f1dfd734d4737db8bdd0d5452a3))
+
 ## [0.6.2](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.1...sanitype-v0.6.2) (2024-11-17)
 
 
