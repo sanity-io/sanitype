@@ -16,7 +16,7 @@ import {
 import {defineType as dt} from './helpers/defineType'
 import {type Combine, type OutputFormatFix} from './helpers/utilTypes'
 
-const STRING: SanityString = dt({typeName: 'string', def: ''})
+const STRING: SanityString = dt({typeName: 'string'})
 const OPTIONAL_STRING: SanityOptional<SanityString> = dt({
   typeName: 'optional',
   type: STRING,
