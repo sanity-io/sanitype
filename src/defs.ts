@@ -1,4 +1,4 @@
-import {type Combine, type OutputFormatFix} from './helpers/utilTypes'
+import {type Combine, type OutputFormatFix, type XOR} from './helpers/utilTypes'
 import {
   type ReferenceBase,
   type SanityDocumentShape,
@@ -36,8 +36,14 @@ export interface SanityString extends SanityType<string> {
   typeName: 'string'
 }
 
+export type NumberConstraints = {step?: number} & XOR<
+  {min?: number; max?: number},
+  {lt?: number; gt?: number}
+>
+
 export interface SanityNumber extends SanityType<number> {
   typeName: 'number'
+  constraints?: NumberConstraints
 }
 
 export interface SanityBoolean extends SanityType<boolean> {

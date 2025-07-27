@@ -151,3 +151,9 @@ export type ElementType<A extends any[] | readonly any[]> =
   A extends readonly (infer T)[] ? T : never
 
 export type RequireSome<T, K extends keyof T> = Omit<T, K> & {[P in K]-?: T[P]}
+
+export type XOR<T, U> = T | U extends object
+  ?
+      | (T & {[K in Exclude<keyof U, keyof T>]?: never})
+      | (U & {[K in Exclude<keyof T, keyof U>]?: never})
+  : T | U

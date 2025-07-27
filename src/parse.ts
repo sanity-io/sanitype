@@ -56,6 +56,9 @@ export type ErrorCode =
   | 'INVALID_TYPE'
   | 'INVALID_PRIMITIVE_UNION'
   | 'INVALID_ENUM_VALUE'
+  | 'NUM_TOO_SMALL'
+  | 'NUM_TOO_BIG'
+  | 'NUM_NOT_MULTIPLE_OF'
   | 'INVALID_OBJECT_UNION'
   | 'ARRAY_ELEMENT_NOT_KEYED_OBJECT'
 export interface ParseErrorDetails {
@@ -179,12 +182,82 @@ export function parseString(
       }
 }
 
+export function parseNumberConstraints(
+  constraints: SanityNumber['constraints'],
+  input: number,
+): ParseResult<number> {
+  if (!constraints) {
+    return {status: 'ok', value: input}
+  }
+  if (constraints.min && input < constraints.min) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'NUM_TOO_SMALL',
+          message: `Input must be greater than, or equal to ${constraints.min}`,
+        },
+      ],
+    }
+  }
+  if (constraints.gt && input <= constraints.gt) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'NUM_TOO_SMALL',
+          message: `Input must be greater than ${constraints.gt}`,
+        },
+      ],
+    }
+  }
+  if (constraints.max && input > constraints.max) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'NUM_TOO_BIG',
+          message: `Input must less than, or equal to ${constraints.max}`,
+        },
+      ],
+    }
+  }
+  if (constraints.lt && input >= constraints.lt) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'NUM_TOO_BIG',
+          message: `Input must be less than ${constraints.lt}`,
+        },
+      ],
+    }
+  }
+  if (constraints.step && input % constraints.step !== 0) {
+    return {
+      status: 'fail',
+      errors: [
+        {
+          path: [],
+          code: 'NUM_NOT_MULTIPLE_OF',
+          message: `Input must be multiple of ${constraints.step}`,
+        },
+      ],
+    }
+  }
+  return {status: 'ok', value: input}
+}
+
 export function parseNumber(
   schema: SanityNumber,
   input: unknown,
 ): ParseResult<number> {
   return typeof input === 'number'
-    ? {status: 'ok', value: input}
+    ? parseNumberConstraints(schema.constraints, input)
     : {
         status: 'fail',
         errors: [
