@@ -8,6 +8,7 @@ import {
   type SanityDate,
   type SanityDateTime,
   type SanityDocument,
+  type SanityEnum,
   type SanityExtendableObject,
   type SanityFile,
   type SanityImage,
@@ -41,6 +42,9 @@ export function isPrimitiveUnionSchema(
   schema: SanityType,
 ): schema is SanityPrimitiveUnion {
   return schema.typeName === 'primitiveUnion'
+}
+export function isEnumSchema(schema: SanityType): schema is SanityEnum {
+  return schema.typeName === 'enum'
 }
 export function isObjectSchema(schema: SanityType): schema is SanityObject {
   return schema.typeName === 'object'

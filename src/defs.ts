@@ -69,6 +69,32 @@ export interface SanityLiteral<
   value: Def
 }
 
+export type EnumInput = string[] | {[key: string]: string | number}
+
+type EnumOutput<Def extends EnumInput> = Def extends (infer El)[]
+  ? El extends string
+    ? El
+    : never
+  : Def extends {[key: string]: string | number}
+    ? Def[keyof Def]
+    : never
+
+export type NormalizedEnum<Def extends EnumInput> = Def extends string[]
+  ? {[K in Def[number]]: K}
+  : Def extends {[key: string]: string | number}
+    ? Def
+    : Def extends {[key: string]: string | number}
+      ? Def
+      : never
+
+export interface SanityEnum<
+  Def extends EnumInput = EnumInput,
+  Output = EnumOutput<Def>,
+> extends SanityType<Output> {
+  typeName: 'enum'
+  enum: NormalizedEnum<Def>
+}
+
 export interface SanityObjectUnion<
   Def extends
     | SanityTypedObject

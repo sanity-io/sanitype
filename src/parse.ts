@@ -3,6 +3,7 @@ import {
   isDateSchema,
   isDateTimeSchema,
   isDocumentSchema,
+  isEnumSchema,
   isExtendableObjectSchema,
   isLiteralSchema,
   isNeverSchema,
@@ -25,6 +26,7 @@ import {
   type SanityDate,
   type SanityDateTime,
   type SanityDocument,
+  type SanityEnum,
   type SanityExtendableObject,
   type SanityLiteral,
   type SanityNever,
@@ -53,6 +55,7 @@ export type Path = Array<string | number | {_key: string}>
 export type ErrorCode =
   | 'INVALID_TYPE'
   | 'INVALID_PRIMITIVE_UNION'
+  | 'INVALID_ENUM_VALUE'
   | 'INVALID_OBJECT_UNION'
   | 'ARRAY_ELEMENT_NOT_KEYED_OBJECT'
 export interface ParseErrorDetails {
@@ -114,6 +117,9 @@ export function safeParse<T extends SanityType>(
   }
   if (isPrimitiveUnionSchema(schema)) {
     return parsePrimitiveUnion(schema, input) as any
+  }
+  if (isEnumSchema(schema)) {
+    return parseEnum(schema, input) as any
   }
 
   return {
@@ -361,6 +367,32 @@ export function parsePrimitiveUnion<S extends SanityPrimitiveUnion>(
         code: 'INVALID_PRIMITIVE_UNION',
         path: [],
         message: "Input doesn't match any of the valid union types",
+      },
+      ...errors,
+    ],
+  }
+}
+
+export function parseEnum<S extends SanityEnum>(
+  schema: S,
+  input: unknown,
+): ParseResult<OutputOf<S>> {
+  const errors: ParseErrorDetails[] = []
+  for (const [, enumVal] of Object.entries(schema.enum)) {
+    if (enumVal === input) {
+      return {
+        status: 'ok',
+        value: enumVal,
+      }
+    }
+  }
+  return {
+    status: 'fail',
+    errors: [
+      {
+        code: 'INVALID_ENUM_VALUE',
+        path: [],
+        message: "Input doesn't match any of the valid enum values",
       },
       ...errors,
     ],
