@@ -7,6 +7,7 @@ import {
   isDateSchema,
   isDateTimeSchema,
   isDocumentSchema,
+  isEnumSchema,
   isLiteralSchema,
   isNeverSchema,
   isNumberSchema,
@@ -168,6 +169,31 @@ function convertField<S extends SanityAny>(
         : [convertItem(schema.element, hoisted)].flat(),
     } as classic.FieldDefinition<'array'>
   }
+  if (isEnumSchema(schema)) {
+    const valueTypes = new Set(
+      Object.values(schema.enum).map(value => typeof value),
+    )
+    if (valueTypes.size > 1) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Multiple types in enum is not backwards compatible, falling back to 'string' type.",
+      )
+    }
+
+    const type = valueTypes.size === 1 ? [...valueTypes][0] : 'string'
+
+    return {
+      name: fieldName,
+      type: type!,
+      options: {
+        list: Object.entries(schema.enum).map(([label, value]) => ({
+          title: label,
+          value,
+        })),
+      },
+    }
+  }
+
   return []
 }
 
