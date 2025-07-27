@@ -6,6 +6,7 @@ import {
   isBooleanSchema,
   isDateSchema,
   isDateTimeSchema,
+  isDocumentSchema,
   isLiteralSchema,
   isNeverSchema,
   isNumberSchema,
@@ -13,6 +14,7 @@ import {
   isObjectLikeSchema,
   isObjectSchema,
   isObjectUnionSchema,
+  isOptionalSchema,
   isPrimitiveArraySchema,
   isPrimitiveUnionSchema,
   isReferenceSchema,
@@ -26,6 +28,7 @@ import {
   type SanityObjectArray,
   type SanityObjectLike,
   type SanityObjectUnion,
+  type SanityReference,
 } from '../../defs'
 
 export function toClassicSchema<S extends SanityDocument>(
@@ -73,6 +76,9 @@ function convertItem<S extends SanityAny>(
     }
     return convertItem(unionType, hoisted)
   }
+  if (isReferenceSchema(schema)) {
+    return referenceToClassicSchema(schema, hoisted)
+  }
   if (isObjectLikeSchema(schema)) {
     return objectToClassicSchema(schema, hoisted) as classic.ArrayOfType
   }
@@ -113,6 +119,10 @@ function convertField<S extends SanityAny>(
   schema: S,
   hoisted: Map<string, classic.SchemaTypeDefinition[]>,
 ): classic.FieldDefinition | classic.FieldDefinition[] {
+  if (isOptionalSchema(schema)) {
+    return convertField(fieldName, schema.type, hoisted)
+  }
+
   if (isObjectSchema(schema)) {
     return [{...objectToClassicSchema(schema, hoisted), name: fieldName}]
   }
@@ -128,7 +138,7 @@ function convertField<S extends SanityAny>(
     ]
   }
   if (isReferenceSchema(schema)) {
-    throw new Error('References not implemented.')
+    return {...referenceToClassicSchema(schema, hoisted), name: fieldName}
   }
   if (isAssetSchema(schema)) {
     return {...assetToClassicSchema(schema, hoisted), name: fieldName}
@@ -178,7 +188,26 @@ export function objectToClassicSchema<S extends SanityObjectLike>(
       .flatMap(([fieldName, field]) => convertField(fieldName, field, hoisted)),
   }
 }
+function referenceToClassicSchema(
+  schema: SanityReference,
+  hoisted: Map<string, classic.SchemaTypeDefinition[]>,
+) {
+  if (!isDocumentSchema(schema.referenceType)) {
+    throw new Error('References can only reference documents, not other types')
+  }
+  const referenceType = schema.referenceType.shape._type
+  if (!isLiteralSchema(referenceType)) {
+    throw new Error('References can only reference named document types')
+  }
+  const refTypeName = referenceType.value
+  let existing = hoisted.get(refTypeName)
+  if (!existing) {
+    existing = toClassicSchema(schema.referenceType)
+    hoisted.set(refTypeName, existing)
+  }
 
+  return {type: 'reference', to: {type: refTypeName}}
+}
 export function blockToClassicSchema<S extends SanityBlock>(
   schema: S,
   hoisted: Map<string, classic.SchemaTypeDefinition[]>,

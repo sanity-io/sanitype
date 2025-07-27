@@ -8,11 +8,17 @@ import {image} from '../../../../creators/image'
 import {literal} from '../../../../creators/literal'
 import {number} from '../../../../creators/number'
 import {object} from '../../../../creators/object'
+import {reference} from '../../../../creators/reference'
 import {string} from '../../../../creators/string'
 import {union} from '../../../../creators/union'
 import {extend} from '../../../../utils/extend'
 
 const pet = object({name: string()})
+const city = document({
+  _type: literal('city'),
+  name: string(),
+  country: string(),
+})
 export const human = document({
   _type: literal('human'),
   name: string(),
@@ -20,9 +26,10 @@ export const human = document({
   favoriteTimes: array(dateTime()),
   address: object({
     street: string(),
-    city: string(),
+    city: reference(city),
     country: string(),
   }),
+  citiesVisited: array(reference(city)),
   profilePicture: image({
     alt: string(),
   }),

@@ -26,13 +26,19 @@ export const classicHuman = [
           },
           {
             name: 'city',
-            type: 'string',
+            type: 'reference',
+            to: {type: 'city'},
           },
           {
             name: 'country',
             type: 'string',
           },
         ],
+      },
+      {
+        type: 'array',
+        name: 'citiesVisited',
+        of: [{type: 'reference', to: {type: 'city'}}],
       },
       {
         name: 'profilePicture',
