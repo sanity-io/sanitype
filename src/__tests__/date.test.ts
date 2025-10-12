@@ -27,12 +27,19 @@ describe('date type', () => {
         "value": "2023-12-06",
       }
     `)
-    expect(safeParse(dateSchema, '2023-12-06 ')).toMatchInlineSnapshot(`
+
+    expect(
+      safeParse(
+        dateSchema,
+        '2023-12-06 ', // note the trailing whitespace
+      ),
+    ).toMatchInlineSnapshot(`
       {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a date string on the format "YYYY-MM-DD" but got ""2023-12-06 """,
+            "input": "2023-12-06 ",
+            "message": "Expected a date string on the format "YYYY-MM-DD"",
             "path": [],
           },
         ],
@@ -44,7 +51,8 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a date string on the format "YYYY-MM-DD" but got ""2023-1-6""",
+            "input": "2023-1-6",
+            "message": "Expected a date string on the format "YYYY-MM-DD"",
             "path": [],
           },
         ],
@@ -56,7 +64,8 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a date string on the format "YYYY-MM-DD" but got ""xyz""",
+            "input": "xyz",
+            "message": "Expected a date string on the format "YYYY-MM-DD"",
             "path": [],
           },
         ],
@@ -68,7 +77,8 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a date string on the format "yyyy-mm-dd" but got "undefined"",
+            "input": undefined,
+            "message": "Expected a date string on the format "YYYY-MM-DD"",
             "path": [],
           },
         ],
@@ -80,7 +90,8 @@ describe('date type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a date string on the format "yyyy-mm-dd" but got "{}"",
+            "input": {},
+            "message": "Expected a date string on the format "YYYY-MM-DD"",
             "path": [],
           },
         ],

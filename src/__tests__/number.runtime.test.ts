@@ -14,10 +14,10 @@ test('min/max constraints', () => {
   expect(parse(min1max20, 1)).toEqual(1)
   expect(parse(min1max20, 20)).toEqual(20)
   expect(() => parse(min1max20, 0.9)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Expected number to be greater than, or equal to 1]`,
+    `[Error: Invalid input at "<root>": Expected a number greater than, or equal to 1]`,
   )
   expect(() => parse(min1max20, 20.1)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Expected input to be less than, or equal to 20]`,
+    `[Error: Invalid input at "<root>": Input must less than, or equal to 20]`,
   )
 })
 
@@ -26,10 +26,10 @@ test('lt/gt constraints', () => {
   expect(parse(gt1lt20, 1.1)).toEqual(1.1)
   expect(parse(gt1lt20, 19.9)).toEqual(19.9)
   expect(() => parse(gt1lt20, 1)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Expected number to be greater than 1]`,
+    `[Error: Invalid input at "<root>": Expected a number greater than 1]`,
   )
   expect(() => parse(gt1lt20, 20)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Expected input to be less than 20]`,
+    `[Error: Invalid input at "<root>": Expected a number less than 20]`,
   )
 })
 
@@ -38,9 +38,9 @@ test('step constraints', () => {
   expect(parse(multipleOfTwo, 2)).toEqual(2)
   expect(parse(multipleOfTwo, 4)).toEqual(4)
   expect(() => parse(multipleOfTwo, 1)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Input must be multiple of 2]`,
+    `[Error: Invalid input at "<root>": Expected a number that is a multiple of 2]`,
   )
   expect(() => parse(multipleOfTwo, 9)).toThrowErrorMatchingInlineSnapshot(
-    `[Error: Invalid input at "<root>": Input must be multiple of 2]`,
+    `[Error: Invalid input at "<root>": Expected a number that is a multiple of 2]`,
   )
 })

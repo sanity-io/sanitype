@@ -139,7 +139,10 @@ describe('typed object union', () => {
         "errors": [
           {
             "code": "INVALID_OBJECT_UNION",
-            "message": "Input must be an object with a "_type"-property",
+            "input": {
+              "status": "neither",
+            },
+            "message": "Expected an object with a "_type"-property",
             "path": [],
           },
         ],
@@ -161,13 +164,19 @@ describe('typed object union', () => {
       }),
     ])
 
-    expect(safeParse(u, {status: 'success', data: {num: 'should be number'}}))
+    expect(safeParse(u, {status: 'success', data: {num: 'not a number'}}))
       .toMatchInlineSnapshot(`
         {
           "errors": [
             {
               "code": "INVALID_OBJECT_UNION",
-              "message": "Input must be an object with a "_type"-property",
+              "input": {
+                "data": {
+                  "num": "not a number",
+                },
+                "status": "success",
+              },
+              "message": "Expected an object with a "_type"-property",
               "path": [],
             },
           ],

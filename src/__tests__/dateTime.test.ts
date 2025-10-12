@@ -22,7 +22,8 @@ describe('dateTime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06""",
+            "input": "2023-12-06",
+            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ"",
             "path": [],
           },
         ],
@@ -31,23 +32,25 @@ describe('dateTime type', () => {
     `)
     expect(safeParse(dateTimeSchema, '2023-12-06T19:01:07  '))
       .toMatchInlineSnapshot(`
-      {
-        "errors": [
-          {
-            "code": "INVALID_TYPE",
-            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""2023-12-06T19:01:07  """,
-            "path": [],
-          },
-        ],
-        "status": "fail",
-      }
-    `)
+        {
+          "errors": [
+            {
+              "code": "INVALID_TYPE",
+              "input": "2023-12-06T19:01:07  ",
+              "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ"",
+              "path": [],
+            },
+          ],
+          "status": "fail",
+        }
+      `)
     expect(safeParse(dateTimeSchema, 'xyz')).toMatchInlineSnapshot(`
       {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ" but got ""xyz""",
+            "input": "xyz",
+            "message": "Expected a dateTime string on the format "YYYY-MM-DDTHH:mm:ss.sssZ"",
             "path": [],
           },
         ],
@@ -59,7 +62,8 @@ describe('dateTime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "undefined"",
+            "input": undefined,
+            "message": "Expected a string",
             "path": [],
           },
         ],
@@ -71,7 +75,8 @@ describe('dateTime type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "{}"",
+            "input": {},
+            "message": "Expected a string",
             "path": [],
           },
         ],

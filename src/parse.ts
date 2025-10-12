@@ -63,6 +63,7 @@ export type ErrorCode =
   | 'ARRAY_ELEMENT_NOT_KEYED_OBJECT'
 export interface ParseErrorDetails {
   path: Path
+  input: unknown
   code: ErrorCode
   message: string
 }
@@ -131,6 +132,7 @@ export function safeParse<T extends SanityType>(
       {
         path: [],
         code: 'INVALID_TYPE',
+        input,
         message: `Invalid input: ${inspect(input)}. Parsing of schema type "${
           schema.typeName
         }" is not supported.`,
@@ -176,7 +178,8 @@ export function parseString(
           {
             path: [],
             code: 'INVALID_TYPE',
-            message: `Expected a string but got "${inspect(input)}"`,
+            input,
+            message: `Expected a string`,
           },
         ],
       }
@@ -196,7 +199,8 @@ export function parseNumberConstraints(
         {
           path: [],
           code: 'NUM_TOO_SMALL',
-          message: `Input must be greater than, or equal to ${constraints.min}`,
+          input,
+          message: `Expected a number greater than, or equal to ${constraints.min}`,
         },
       ],
     }
@@ -208,7 +212,8 @@ export function parseNumberConstraints(
         {
           path: [],
           code: 'NUM_TOO_SMALL',
-          message: `Input must be greater than ${constraints.gt}`,
+          input,
+          message: `Expected a number greater than ${constraints.gt}`,
         },
       ],
     }
@@ -220,6 +225,7 @@ export function parseNumberConstraints(
         {
           path: [],
           code: 'NUM_TOO_BIG',
+          input,
           message: `Input must less than, or equal to ${constraints.max}`,
         },
       ],
@@ -232,7 +238,8 @@ export function parseNumberConstraints(
         {
           path: [],
           code: 'NUM_TOO_BIG',
-          message: `Input must be less than ${constraints.lt}`,
+          input,
+          message: `Expected a number less than ${constraints.lt}`,
         },
       ],
     }
@@ -244,7 +251,8 @@ export function parseNumberConstraints(
         {
           path: [],
           code: 'NUM_NOT_MULTIPLE_OF',
-          message: `Input must be multiple of ${constraints.step}`,
+          input,
+          message: `Expected a number that is a multiple of ${constraints.step}`,
         },
       ],
     }
@@ -264,7 +272,8 @@ export function parseNumber(
           {
             path: [],
             code: 'INVALID_TYPE',
-            message: `Expected a number but got "${inspect(input)}"`,
+            input,
+            message: `Expected a number`,
           },
         ],
       }
@@ -281,7 +290,8 @@ export function parseBoolean(
           {
             path: [],
             code: 'INVALID_TYPE',
-            message: `Expected a boolean but got "${inspect(input)}"`,
+            input,
+            message: `Expected a boolean`,
           },
         ],
       }
@@ -300,7 +310,8 @@ export function parseDateTime(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a string but got "${inspect(input)}"`,
+          input,
+          message: `Expected a string`,
         },
       ],
     }
@@ -312,9 +323,8 @@ export function parseDateTime(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a dateTime string on the format "${ISO_DATETIME_FORMAT}" but got "${inspect(
-            input,
-          )}"`,
+          input,
+          message: `Expected a dateTime string on the format "${ISO_DATETIME_FORMAT}"`,
         },
       ],
     }
@@ -322,7 +332,9 @@ export function parseDateTime(
   return {status: 'ok', value: input}
 }
 
-const DATE_FORMAT = 'yyyy-mm-dd'
+// date-fns format
+const DATE_FNS_FORMAT = 'yyyy-mm-dd'
+
 export function parseDate(
   schema: SanityDate,
   input: unknown,
@@ -334,24 +346,22 @@ export function parseDate(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a date string on the format "${DATE_FORMAT}" but got "${inspect(
-            input,
-          )}"`,
+          input,
+          message: `Expected a date string on the format "${DATE_FNS_FORMAT.toUpperCase()}"`,
         },
       ],
     }
   }
 
-  if (!isStrictlyFormatted(input, DATE_FORMAT)) {
+  if (!isStrictlyFormatted(input, DATE_FNS_FORMAT)) {
     return {
       status: 'fail',
       errors: [
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected a date string on the format "${DATE_FORMAT.toUpperCase()}" but got "${inspect(
-            input,
-          )}"`,
+          input,
+          message: `Expected a date string on the format "${DATE_FNS_FORMAT.toUpperCase()}"`,
         },
       ],
     }
@@ -377,7 +387,8 @@ export function parseNever<T extends SanityType>(
       {
         path: [],
         code: 'INVALID_TYPE',
-        message: `Expected never but got "${inspect(input)}"`,
+        input,
+        message: `Expected never`,
       },
     ],
   }
@@ -395,9 +406,8 @@ export function parseLiteral<S extends SanityLiteral<any>>(
           {
             path: [],
             code: 'INVALID_TYPE',
-            message: `Expected literal value "${
-              schema.value
-            }" but got "${inspect(input)}"`,
+            input,
+            message: `Expected literal value "${schema.value}"`,
           },
         ],
       }
@@ -438,6 +448,7 @@ export function parsePrimitiveUnion<S extends SanityPrimitiveUnion>(
     errors: [
       {
         code: 'INVALID_PRIMITIVE_UNION',
+        input,
         path: [],
         message: "Input doesn't match any of the valid union types",
       },
@@ -464,6 +475,7 @@ export function parseEnum<S extends SanityEnum>(
     errors: [
       {
         code: 'INVALID_ENUM_VALUE',
+        input,
         path: [],
         message: "Input doesn't match any of the valid enum values",
       },
@@ -518,8 +530,9 @@ export function parseObjectUnion<S extends SanityObjectUnion>(
       errors: [
         {
           code: 'INVALID_OBJECT_UNION',
+          input,
           path: [],
-          message: `Input must be an object with a "_type"-property`,
+          message: `Expected an object with a "_type"-property`,
         },
       ],
     }
@@ -531,6 +544,7 @@ export function parseObjectUnion<S extends SanityObjectUnion>(
       errors: [
         {
           code: 'INVALID_OBJECT_UNION',
+          input,
           path: [],
           message: `Type "${input._type}" not found among valid union types`,
         },
@@ -546,6 +560,7 @@ export function parseObjectUnion<S extends SanityObjectUnion>(
     errors: [
       {
         code: 'INVALID_OBJECT_UNION',
+        input,
         path: [],
         message: `Cannot parse input as union type "${input._type}"`,
       },
@@ -583,9 +598,8 @@ export function parseObject<S extends SanityExtendableObject>(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected an object with keys {${keys.join(
-            ', ',
-          )}} but got "${inspect(input)}"`,
+          input,
+          message: `Expected an object with keys {${keys.join(', ')}}`,
         },
       ],
     }
@@ -627,7 +641,8 @@ export function parseObjectArray<S extends SanityObjectArray>(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected an array but got "${inspect(typeof input)}"`,
+          input,
+          message: `Expected an array"`,
         },
       ],
     }
@@ -638,6 +653,7 @@ export function parseObjectArray<S extends SanityObjectArray>(
     if (!isKeyedObject(item)) {
       errors.push({
         code: 'ARRAY_ELEMENT_NOT_KEYED_OBJECT',
+        input,
         path: [index],
         message: 'Expected an object with a "_key" property',
       })
@@ -673,7 +689,8 @@ export function parsePrimitiveArray<S extends SanityPrimitiveArray>(
         {
           path: [],
           code: 'INVALID_TYPE',
-          message: `Expected an array but got "${inspect(typeof input)}"`,
+          input,
+          message: `Expected an array`,
         },
       ],
     }

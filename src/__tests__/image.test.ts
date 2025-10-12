@@ -65,7 +65,8 @@ describe('image type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected an object with keys {_type, _ref, _weak} but got "undefined"",
+            "input": undefined,
+            "message": "Expected an object with keys {_type, _ref, _weak}",
             "path": [
               "asset",
             ],
@@ -84,7 +85,8 @@ describe('image type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected literal value "reference" but got "undefined"",
+            "input": undefined,
+            "message": "Expected literal value "reference"",
             "path": [
               "asset",
               "_type",
@@ -92,7 +94,8 @@ describe('image type', () => {
           },
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "undefined"",
+            "input": undefined,
+            "message": "Expected a string",
             "path": [
               "asset",
               "_ref",
@@ -115,7 +118,8 @@ describe('image type', () => {
         "errors": [
           {
             "code": "INVALID_TYPE",
-            "message": "Expected a string but got "undefined"",
+            "input": undefined,
+            "message": "Expected a string",
             "path": [
               "caption",
             ],
