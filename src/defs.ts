@@ -129,7 +129,7 @@ export interface SanityPrimitiveUnion<
   union: Exclude<Def, SanityNever>[]
 }
 
-export type SanityObjectShape = {[key: string]: SanityAny}
+export type SanityObjectShape = {[key in string]: SanityAny}
 
 export type SanityNamedObjectShape = {
   _type: SanityLiteral<string>
