@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.2...sanitype-v0.7.0) (2025-10-21)
+
+
+### Features
+
+* add min/max/lgt/gt/step number constraints ([097fa38](https://github.com/sanity-io/sanitype/commit/097fa380bdce41b166cbe9bbfd72f8c33a85843d))
+* add safeint, uint32, int32, float32, float64 ([ad72f7e](https://github.com/sanity-io/sanitype/commit/ad72f7e9d266ac72cc685b854e88886a02ee3413))
+* add support enums ([4b61658](https://github.com/sanity-io/sanitype/commit/4b61658d5401a0b40bbf3476d93dd23495dd7b72))
+* **compat:** add support for converting references ([80f2bf4](https://github.com/sanity-io/sanitype/commit/80f2bf47b854ffb0d8d5d9ed155a6678ba4f4eb3))
+* **compat:** support converting enums to string/number equivalents ([1b00ac7](https://github.com/sanity-io/sanitype/commit/1b00ac71a511d3071c08e767d649277eeee9fcd5))
+
+
+### Bug Fixes
+
+* **deps:** upgrade dependencies to latest ([ee3f533](https://github.com/sanity-io/sanitype/commit/ee3f53321b8dce8be2592d330a26de75b86cb997))
+* harmonize parse errors, add input to parse error ([0298cf1](https://github.com/sanity-io/sanitype/commit/0298cf1304ca74eb69f06cebdfbf0c2d82358873))
+* tweak Shape type ([8a13f44](https://github.com/sanity-io/sanitype/commit/8a13f44518c6ff2bd6c7fa1e9639d70615f9aef7))
+
 ## [0.6.2](https://github.com/sanity-io/sanitype/compare/sanitype-v0.6.1...sanitype-v0.6.2) (2024-11-17)
 
 
